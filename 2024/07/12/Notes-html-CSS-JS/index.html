@@ -16,15 +16,15 @@
   <meta name="author" content="John Doe">
   <meta name="keywords" content="">
   
-    <meta name="description" content="还没开始施工….先贴菜鸟链接！ html JS CSS">
+    <meta name="description" content="短学期做可视化需要速通一下前端三件套，所以边用边记了一点，不太系统。如果硬要看的话请保证已经学过c++">
 <meta property="og:type" content="article">
 <meta property="og:title" content="前端三件套学习笔记">
 <meta property="og:url" content="http://example.com/2024/07/12/Notes-html-CSS-JS/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="还没开始施工….先贴菜鸟链接！ html JS CSS">
+<meta property="og:description" content="短学期做可视化需要速通一下前端三件套，所以边用边记了一点，不太系统。如果硬要看的话请保证已经学过c++">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-07-12T09:31:54.000Z">
-<meta property="article:modified_time" content="2024-07-12T09:37:18.923Z">
+<meta property="article:modified_time" content="2024-07-16T01:27:34.329Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="html">
 <meta property="article:tag" content="CSS">
@@ -44,6 +44,8 @@
   <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.16.2/katex.min.css" />
 
 
 
@@ -234,7 +236,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          13 字
+          1.3k 字
         
       </span>
     
@@ -245,7 +247,7 @@
         
         
         
-          1 分钟
+          11 分钟
         
       </span>
     
@@ -287,10 +289,147 @@
             
               <div class="markdown-body">
                 
-                <p>还没开始施工….先贴菜鸟链接！</p>
+                <p>还没开始施工…先贴菜鸟链接！</p>
 <p><a target="_blank" rel="noopener" href="https://www.runoob.com/html/html-tutorial.html">html</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.runoob.com/js/js-tutorial.html">JS</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.runoob.com/css/css-tutorial.html">CSS</a></p>
+<h1>JS</h1>
+<p><s>没想到我竟然先试图学习JS，这难道是镜子带给我的蜜汁自信？</s></p>
+<h3 id="插入">插入</h3>
+<p>使用<code>&lt;script&gt;</code>与<code>&lt;\script&gt;</code>将JS代码插入html中，例如</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">HTML</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>        <br>    	<span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">            <span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;Try java script!&#x27;</span>);</span><br><span class="language-javascript">        </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>    <br>    <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>    <br>    <br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>（测试了，alert 里面用双引号也不报错，在输入如<code>I'm...</code>之类的文本时是刚需。</p>
+<p>也可将js代码单独写一个文件（例如<code>example.js</code>），然后在html文件中这样引用它：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;example.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>src=后面可以是js文件的绝对路径或者相对本html文件的路径，比如上面那个代码在js与html放在同一文件夹里面时可以使用。此时在script里面写的js代码将毫无用处</p>
+<h3 id="注释">注释</h3>
+<p>同cpp，使用//进行单行注释，/**/进行多行注释</p>
+<p>单行注释快捷键：ctrl + /</p>
+<p>多行注释快捷键：ctrl + shift + /</p>
+<h3 id="变量与常量">变量与常量</h3>
+<ul>
+<li>
+<p>变量声明</p>
+<p>变量声明不用强调其类型，可以<code>let number = 25, str = &quot;25&quot;; </code>甚至可以转身就给之前赋数值的变量赋一个字符串</p>
+</li>
+<li>
+<p>常量声明</p>
+</li>
+</ul>
+<p>​		常量声明用<code>const</code>代替<code>let</code>即可，其值一旦声明不可改变，声明时必定要赋值</p>
+<ul>
+<li>
+<p>变量类型</p>
+<ul>
+<li>
+<p>Number类</p>
+<p>包括整形和浮点数，存在Infinity和NaN两个特殊数据</p>
+<ul>
+<li>Infinity可由1/0得到，也可以直接调用该变量</li>
+<li>NaN表示运算出错，一旦出现，则其相关所有运算结果都是NaN</li>
+<li>运算中，求幂的符号是<code>**</code>，允许小数次幂；单个<code>+</code>用在变量前有类型转换（为Number）的作用；存在<code>+=</code>系列、自增自减、位运算全家桶，但多出一个<code>&gt;&gt;&gt;</code>无符号右移。</li>
+</ul>
+</li>
+<li>
+<p>BigInt类</p>
+<p>​	表示绝对值在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>53</mn></msup><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2^{53}-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">53</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span>范围外的大数，类似于long long，声明时在值后面加一个’n’（例如const bi = 2147483647n）</p>
+</li>
+<li>
+<p>String类</p>
+<ul>
+<li>允许用单引号（‘hello’），双引号（“hello”），反引号（`hello`）进行包含</li>
+<li>其中前两种近似等价，最后一种允许使用<code>$&#123;&#125;</code>将表达式或变量包装嵌入字符串，表达式会被计算，例如：</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html">alert( `the result is $&#123;1 + 2&#125;` );<br></code></pre></td></tr></table></figure>
+<p>​	会弹出一个显示3的弹窗。</p>
+<ul>
+<li>类比cpp中的string，可以使用加号连接起来，且如果加法运算一个操作数是字符串，则结果就是字符串。</li>
+</ul>
+</li>
+<li>
+<p>Boolean类（同cpp)</p>
+</li>
+<li>
+<p>null值</p>
+<p><strong>不属于任何类型，不像cpp那样作“空指针”之用</strong></p>
+</li>
+<li>
+<p>undefined值</p>
+<p>声明但未被赋值则为undefined</p>
+</li>
+<li>
+<p>Object类</p>
+</li>
+<li>
+<p>Symbol类</p>
+</li>
+</ul>
+</li>
+<li>
+<p>可以使用typeof运算符（不是函数）查看参数的类型，使用方法同cpp。</p>
+</li>
+<li>
+<p>在算数函数/表达式中，自动将变量转换为number</p>
+</li>
+<li>
+<p>可以使用<code>String(var)</code>的方式进行类型转换</p>
+</li>
+<li>
+<p>转换为布尔时，若值为空则为false，否则true</p>
+<p>​	这就说明，如果将字符串“0”进行转换，得到值是true。</p>
+</li>
+<li>
+<p>不同类型比较时会进行类型转换（转为number)，这导致其无法直接区分0和false，需要使用严格相等<code>===</code>与严格不相等<code>!==</code>进行比较</p>
+<ul>
+<li>特殊情况：<code>null == undefined </code></li>
+</ul>
+</li>
+</ul>
+<h3 id="交互函数">交互函数</h3>
+<ul>
+<li>
+<p>alert：弹窗一个，只有确定按钮，该弹窗弹出期间不能与其他东西交互（被称为模态窗，下面两种函数的弹窗也是模态窗）</p>
+</li>
+<li>
+<p>prompt：接收title和default两个参数，前者为显示的文本，后者为默认输入的值（可以没有），弹出一个有输入框的窗口，如果点取消返回null，否则为输入的内容（字符串）</p>
+</li>
+<li>
+<p>confirm：接收一个参数Question，返回值为布尔</p>
+</li>
+</ul>
+<h3 id="条件语句">条件语句</h3>
+<ul>
+<li>if … else (if) …</li>
+<li>三目运算符 … ? … : …</li>
+<li>switch…case…</li>
+</ul>
+<h3 id="循环语句">循环语句</h3>
+<ul>
+<li>最普通的while()和for(;;)同cpp</li>
+<li>for…of</li>
+<li>for…in</li>
+</ul>
+<h3 id="函数">函数</h3>
+<p>目前看来大部分内容与cpp是一致的，如果遇到特性我将在下面列出</p>
+<ul>
+<li>
+<p>函数表达式创建函数</p>
+<p>（我记得cpp应该是有类似的功能的，好像是仿函数？但是我完全不熟，特此记录）</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> sayHi = <span class="hljs-keyword">function</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">alert</span>( <span class="hljs-string">&quot;Hello&quot;</span> );<br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p>由上面一点性质，可以将函数作为参数进行传递，参考下方代码。（感觉函数指针也是之前见过但是不熟的东西…）</p>
+</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">ask</span>(<span class="hljs-params">question, yes, no</span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-title function_">confirm</span>(question)) <span class="hljs-title function_">yes</span>()<br>  <span class="hljs-keyword">else</span> <span class="hljs-title function_">no</span>();<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">showOk</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">alert</span>( <span class="hljs-string">&quot;You agreed.&quot;</span> );<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">showCancel</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">alert</span>( <span class="hljs-string">&quot;You canceled the execution.&quot;</span> );<br>&#125;<br><br><span class="hljs-comment">// 用法：函数 showOk 和 showCancel 被作为参数传入到 ask</span><br><span class="hljs-title function_">ask</span>(<span class="hljs-string">&quot;Do you agree?&quot;</span>, showOk, showCancel);<br></code></pre></td></tr></table></figure>
+<ul>
+<li>箭头函数</li>
+</ul>
+<p>​		适用于很简单的函数，其造型如下</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">func</span> = (<span class="hljs-params">arg1, arg2, ..., argN</span>) =&gt; expression;<br></code></pre></td></tr></table></figure>
+<p>​		意思是func函数接收这N个参数，并返回expression的值。如果只有一个参数，可以不写括号。</p>
+<p>​		值得注意的是，expression可以是用大括号括起来的多行表达式，因此稍微复杂一点的函数也可以用箭头函数来写，例如：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> <span class="hljs-title function_">sum</span> = (<span class="hljs-params">a, b</span>) =&gt; &#123;  <br>  <span class="hljs-keyword">let</span> result = a + b;<br>  <span class="hljs-keyword">return</span> result; <span class="hljs-comment">// 如果我们使用了花括号，那么我们需要一个显式的 “return”</span><br>&#125;;<br><br><span class="hljs-title function_">alert</span>( <span class="hljs-title function_">sum</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>) ); <br></code></pre></td></tr></table></figure>
 
                 
               </div>
@@ -392,6 +531,12 @@
                   <article class="post-prev col-6">
                     
                     
+                      <a href="/2024/07/15/tableau-study/" title="tableau使用方法记录">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">tableau使用方法记录</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
                   </article>
                   <article class="post-next col-6">
                     
@@ -454,6 +599,11 @@
 
 
   
+
+
+  
+  
+
 
 
 
