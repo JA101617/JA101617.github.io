@@ -169,6 +169,7 @@ $$
 
 - zig-zag: 
 
+<img src="/img/ads/ads-SplayZigZag.jpg" alt="ads-SplayZigZag" style="zoom:67%;" />
 
 $$
   \begin{aligned}
@@ -242,6 +243,36 @@ $$
 
   ​	一路往下找+splay上去，链长也是$O(\log{N})$
 
+# Lesson2: RBTree & B+Tree
+
+## B+ Tree
+
+TBC
+
 ## 红黑树
 
 TBC
+
+## Lesson3: Inverted File Index
+
+**定义：**
+
+- **Index:** a mechanism for locating a given term in a text.
+- **Inverted file: ** contains a list of pointers (e.g. the number of a page) to all occurrences of that term in the text.
+
+
+
+### Distributed Indexing
+
+- **Term-partitioned Index**  存储困难，检索容易
+- **Document-partiitioned index** 存储容易，检索困难
+
+### Dynamic Indexing
+
+- 文档加入正常插入
+- 文档删除：攒够一定量删除请求（存在auxiliary index）统一处理（写满了/定期），处理时需要在main index和auxiliary index同步检索
+  - 树型结构太大就改用懒删除
+
+### Thresholding
+
+- Query:对词组按出现频率排序
