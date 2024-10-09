@@ -276,3 +276,61 @@ TBC
 ### Thresholding
 
 - Query:对词组按出现频率排序
+
+## Lesson4: Leftist Heaps & Skew Heaps
+
+为了高效实现合并，使用指针实现。
+
+### 左偏堆
+
+- 思路：使右子树相对稀疏
+- **Npl** : null path length，一个节点到其子树内**没有两个孩子的节点**的最短距离。特别的，Npl(NULL) = -1 。
+  - $Npl(X) = \displaystyle\min_{\forall C \in son(X)} \{Npl(C) + 1\}$
+  - 左偏堆要求对于所有节点的左右儿子有 $Npl(ls) \ge Npl(rs)$ 
+    - 如果不满足可以交换左右儿子实现
+- 性质
+  - 右路径长度为 r 的左偏堆至少拥有 $2^r-1$ 个节点。（此时是满二叉树）[tips : 数学归纳法]
+
+```c
+struct TreeNode{
+	ElementType Element;
+	PriorityQueue Left,Right;
+	int Npl;
+};
+```
+
+- 复杂度
+  - Merge : O(logN)
+  - DeleteMin : O(logN)
+
+### 斜堆
+
+神必算法
+
+- 每Merge必调换左右儿子
+
+- 复杂度：均摊分析
+  - $D_i = the\ \ root\ \ of\ \ the\ \ resulting\ \ tree$ 
+  - $\phi (D_i) = number\ \  of\ \ heavy\ \ nodes$
+    - heavy nodes :  右子树大于左子树的节点
+    - 除了在归并路线上的节点，其他节点的轻重性质不变化
+    - 定义最开始的右路径（即归并路线）上轻节点 $l_i$ ，重节点 $h_i$ 。
+      - 则 $l_i$ 越多 $l_i$ 越少（ $l_i$ 多则堆趋于左倾堆，则右路径长度就短，至多到 $O(\log N)$ 级别）
+    - 极端情况变化：轻全变重
+
+$$
+T_{worst}=l_1+h_1+l_2+h_2\\
+\phi_i = h_1+h_2+h\\
+\phi_{i+1} \le l_1+l_2+h\\
+T_{amortized} = T_{worst}+\phi_{i+1}-\phi_i\le 2(l_1+l_2) \Rightarrow O(\log N)  
+$$
+
+
+
+### 二项队列
+
+- 是一些堆的集合（森林）
+- k阶二项队列（ $B_k$ ）由两个k-1阶二项队列将两个根相连形成，特别的，单点是0阶。
+  - $B_k$ 共有 $2^k$ 个节点，深度为 $i$ 的一层（根为0）有 $(^k_i)$ 个
+
+![BinomialQueuesExample](/img/ads/BinomialQueuesExample.jpg)
