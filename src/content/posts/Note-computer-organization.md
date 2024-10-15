@@ -9,21 +9,19 @@ draft: false
 lang: 'zh-CN'
 ---
 
-~~目前没有老师PPT所以还没施工~~
 
-~~看起来老师不准备发PPT了所以对着智云启动了~~
 
 # 目录
 
-- Chapter1: Computer Abstraction and Technology
-- **Chapter2: Instructions: Language of the Computer**
-- **Chapter3: Arithmetic for Computers**
+- [Chapter1: Computer Abstraction and Technology](#Chapter1)
+- [**Chapter2: Instructions: Language of the Computer**](#Chapter2)
+- [**Chapter3: Arithmetic for Computers**](#Chapter3)
 - **Chapter4: The Processor: Datapath and Control**
 - **Chapter5: Large and Fast: Exploiting Memory Hierarchy**
 - Chapter 6: Parallel processor from client to Cloud (选讲，非考试内容)
 - Appendix: Storage, Networks, and Other Peripherals (了解概念)
 
-# Chapter 1
+# Chapter 1<a id="Chapter1"></a>
 
 - $Performance = \dfrac{1}{Execution Time}$
   - 算法：影响IC，可能影响CPI
@@ -92,7 +90,7 @@ $$
 
 + [x] 作业1.2,1.5,1.6,1.7,1.13
 
-# Chapter 2
+# Chapter 2<a id="Chapter2"></a>
 
 ## 2 key principles
 
@@ -121,8 +119,61 @@ $$
 
     ![RegisterTable](/img/CO/RegTable.jpg)
 
+- Memory
 
-# Chapter 3
+  - 只有读写两种操作
+  
+  - 按byte操作
+  
+  - RISC-V是Little Endian（更低位的byte放在更小的地址）（Big Endian反之）
+  
+  - RISC-V不要求Memory Alignment
+    - 对齐：存储为0到3,4到7等，起始地址是4的倍数不会跨byte
+    
+  - 示例：`A[12]=h+A[8]`，h在x21，A基址x22
+  
+    - 指令如下
+  
+      ```
+      ld x9, 64(x22)
+      add x9, x21,x9
+      sd 72(x22), x9
+      ```
+  
+      ` ld`是load double word,`64(x22)`指A[8]，即数字部分是相对基址的偏移量
+  
+  - 示例：`h=h+55`
+  
+    ```
+    addi x9 x9 55
+    ```
+  
+  - 指令的Format决定了指令的结构
+  
+    - RISC-V指令集
+  
+    ![RISC-V Instruction Format](/img/CO/RISC-VInstructionFormat.jpg)
+  
+    SB指令的imm[4:1,11]的安排是为了与S对齐 ~~没有imm[0]，很神奇吧~~，imm[12]是符号位拓展
+  
+    - MIPS指令集
+  
+    ![MIPS Instruction Format](/img/CO/MIPSInstructionFormat.jpg)
+  
+  
+
+- Logical Operations
+
+  （应有一个表格）
+
+  按位取反是不需要的（与全一取反）
+
+  - Shift Operations : funct6 + immed(6) +rs1(5) + funct3 + rd(5) + opcode(7)
+    - I format
+  - AND Operations & OR Operations : R format 
+
+
+# Chapter 3<a id="Chapter3"></a>
 
 **默认64bit为double word，一个word为32bit**
 

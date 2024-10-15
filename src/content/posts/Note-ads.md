@@ -127,12 +127,12 @@ int insert(int p, int v){
 
 ### Accounting method
 
-- 类似存款存入不会比取出少，设计每种操作的均摊成本$d_i$ ，使得相比于实际成本$c_i$有$\forall_i\ \ d_i \ge c_i$
+- 类似存款存入不会比取出少，设计每种操作的均摊成本$d_i$ ，使得相比于实际成本$c_i$有$\forall_i\ \ \hat{c_i} \ge c_i$
 - 势能函数$\phi(op_i)$ 表示整个数据结构在第i个操作前后的势能，满足$d_i-c_i = \phi(op_i)-\phi( op_{ i-1 } )$，则
 
 $$
 \begin{aligned}
-\sum_{ i=1 }^n  d_i &= \sum_{i=1}^n (c_i+\phi(op_i)-\phi( op_{i-1} ) )\\
+\sum_{ i=1 }^n  \hat{c_i} &= \sum_{i=1}^n (c_i+\phi(op_i)-\phi( op_{i-1} ) )\\
 &= \phi(op_n)-\phi(op_0)+\sum_{i=1}^n c_i
 \end{aligned}
 $$
@@ -161,7 +161,7 @@ $$
   
   $$
   \begin{aligned}
-  d_i =& 1 + \phi(T_2) - \phi(T_1)\\
+  \hat{c_i} =& 1 + \phi(T_2) - \phi(T_1)\\
    = &1 + R_2(x) - R_1(x) + (R_2(p) - R_1(p))\\
    \leq &1 + R_2(x) - R_1(x)
    \end{aligned}
@@ -172,8 +172,8 @@ $$
 <img src="/img/ads/ads-SplayZigZag.jpg" alt="ads-SplayZigZag" style="zoom:67%;" />
 
 $$
-  \begin{aligned}
-  d_i =& 2 + \phi(T_2) - \phi(T_1)\\
+\begin{aligned}
+ \hat{c_i} =& 2 + \phi(T_2) - \phi(T_1)\\
    = &2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\\
   
    \end{aligned}
@@ -181,8 +181,8 @@ $$
   因为$R_1(g) = R_2(x)$
   故
 $$
-  \begin{aligned}
-  d_i = &2 - (R_1(x) + R_1(p) )+ R_2(p)  + R_2(g)\\
+\begin{aligned}
+\hat{c_i} = &2 - (R_1(x) + R_1(p) )+ R_2(p)  + R_2(g)\\
   \leq &2 - 2R_1(x) + R_2(p) + R_2(g)
   \end{aligned}
 $$
@@ -195,7 +195,7 @@ $$
 $$
   所以
 $$
-  d_i \leq 2(R_2(x)-R_1(x))
+\hat{c_i} \leq 2(R_2(x)-R_1(x))
 $$
 
 - zig-zig : 
@@ -205,7 +205,7 @@ $$
   
   $$
   \begin{aligned}
-  d_i =& 2 + \phi(T_2) - \phi(T_1)\\
+  \hat{c_i} =& 2 + \phi(T_2) - \phi(T_1)\\
    = &2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\\
    = &2 + R_2(p) + R_2(g) - R_1(p) - R_1(x)\\
    \leq &2 + R_2(x) + R_2(g) - 2R_1(x)
@@ -217,7 +217,7 @@ $$
   所以
   $$
   \begin{aligned}
-  d_i \leq &2 + R_2(x) + R_2(g) - 2R_1(x)\leq 3(R_2(x)-R_1(x))
+  \hat{c_i} \leq &2 + R_2(x) + R_2(g) - 2R_1(x)\leq 3(R_2(x)-R_1(x))
   \end{aligned}
   $$
 
@@ -334,3 +334,51 @@ $$
   - $B_k$ 共有 $2^k$ 个节点，深度为 $i$ 的一层（根为0）有 $(^k_i)$ 个
 
 ![BinomialQueuesExample](/img/ads/BinomialQueuesExample.jpg)
+
+- 实现细节
+
+  - 子节点链表存储（长子兄弟），子树大小降序排列
+
+  - 同阶的合并
+
+    ```
+    T2->Next = T1->Lson;
+    T1->Lson = T2;
+    ```
+
+- 复杂度
+
+  - 建树：以将1~N插入为例
+
+    - $\phi = number\ \ of\ \ trees$
+
+    - 假设进行插入时现有单独的树$B_0,B_1,...,B_k, B_{k+t},....(t\ge 2)$，则插入时会与 $B_0$ 到 $B_k$ 合并得到一棵 $B_{k+1}$ ，其他不变，则 $\phi_i - \phi_{i-1} = -k$ （正在插入的那个点也是一棵树）
+
+    - $\hat{c_i} = c_i + \phi_i - \phi_{i-1} = 1+(k+1) -k = 2 $
+
+      - 为什么$c_i = 1 + (k+1)$ ？
+
+        因为要有 $k+1$ 次合并和 $O(1)$ 的创建节点
+
+    - Banking Method : 每个点初始一块钱，合并操作花掉两棵子树之一（被合并成为儿子那个点）的一块钱，则整个树至少还有一块钱（在根节点上），则整个系统钱不会为负，因而总复杂度是 $O(N)$ 的
+
+
+
+
+
+# 总结：复杂度
+
+| Heaps        | Leftist | Skew | Binomial | Fibonacci       | Binary | Link list |
+| ------------ | ------- | ---- | -------- | --------------- | ------ | --------- |
+| Make heap    | O(1)    | O(1) | O(1)     | O(1)            | O(1)   | O(1)      |
+| Find-Min     |         |      |          |                 |        |           |
+| Merge(Union) |         |      |          |                 |        |           |
+| Insert       |         |      |          |                 |        |           |
+| Delete       |         |      |          |                 |        |           |
+| Delete-Min   |         |      |          | (amortized)O(1) |        |           |
+| Decrease-Key |         |      |          |                 |        |           |
+
+| BST  | RBTree | AVL  | Splay |
+| ---- | ------ | ---- | ----- |
+|      |        |      |       |
+
