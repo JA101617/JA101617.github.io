@@ -188,7 +188,8 @@ $$
     
   - 循环的写法
   
-  - - g ~ k对应x20 ~ x24,  base A[i] 存在 x25
+	    - g ~ k对应x20 ~ x24,  base A[i] 存在 x25
+  
   
       ```c
       do{
@@ -230,11 +231,11 @@ $$
     	case  3 :    f  =  i-j ;  break ;    /*  k  =  3  */
     }
     ```
-    
+  
     使用 **jump address table** 解决
-    
+  
     假设 f ~ k 对应 x20 ~ x25， x6 存储 jump address table 的基址，则对应汇编代码如下
-    
+  
     ```
     blt x25, x0, Exit      # test if  k  <  0 
     bge x25, x5, Exit      # if  k  >=  4,  go to Exit
@@ -252,23 +253,23 @@ $$
     L3:sub $s0, $s3, $s4   # k  =  3  so  f  gets  i-j
        jalr x0, 0(x1)      # end of  switch statement
     ```
-    
+  
     代码理解：
-    
+  
     1. 为什么 `slli x7, x25, 3` ？
-    
+  
        A：每条指令都是4B的，下面每个case带2条指令，因此乘以8
-    
+  
     2. 每个case的最后一句的 `jalr x0, 0(x1)` 是什么作用？
-    
+  
        A：跳转回 x1 指令（即Exit），下一条指令没有必要存下来
-    
+  
     3. 代码中出现的 `$s0,$s3,$s4` 都是什么东西？
-    
+  
        A：这是寄存器的别名
-    
+  
     4. `ld x7 0(x7)` 是为什么？
-    
+  
        A：类似于C语言中解引用的过程，可以这么理解。如L0这种label存储的是指令单位置（是一个指向指令的指针），而x6存储的是L0的地址（也就是x6是一个二级指针），因此通过 `x7=x6+8*k` 得到的是存储Lk的地址的寄存器的地址，则此处 ld 指令过后就得到了 Lk的地址
   
 - Basic Blocks
