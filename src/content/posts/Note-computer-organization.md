@@ -20,6 +20,7 @@ lang: 'zh-CN'
 - **Chapter5: Large and Fast: Exploiting Memory Hierarchy**
 - Chapter 6: Parallel processor from client to Cloud (选讲，非考试内容)
 - Appendix: Storage, Networks, and Other Peripherals (了解概念)
+- [附录](#附录)
 
 # Chapter 1<a id="Chapter1"></a>
 
@@ -88,8 +89,6 @@ $$
 
 
 
-+ [x] 作业1.2,1.5,1.6,1.7,1.13
-
 # Chapter 2<a id="Chapter2"></a>
 
 ## 2 key principles
@@ -132,9 +131,9 @@ $$
 
     - 32b $\rightarrow$ word，64b $\rightarrow$ doublewords
 
-    功能表如下
+    功能表见[附录](#附录operands)
 
-    ![RISC-V operands](/img/CO/RegTable.jpg)
+    
 
 - Memory
 
@@ -166,6 +165,13 @@ $$
       addi x9 x9 55
       ```
 
+    - Byte/Halfword/Word Operations
+
+      寄存器都是64位不变的，因而
+
+      - 在 `lb,lh,lw` 指令时用符号位扩展
+      - 在 `lbu,lhu,lwu` 指令时用0扩展
+
 - Logical Operations
 
   ![BitwiseOperation](/img/CO/BitwiseOperation.jpg)
@@ -174,44 +180,51 @@ $$
 
   - Shift Operations : I format
   - AND Operations & OR Operations & XOR Operations: R format 
-  
+
 - Conditional Operations & Loop<a id="条件与循环"></a>
   - beq : 相等则执行；bne : 不等则执行
-  
+
     `beq x21,x22,L1`,其中L1指代一个指令，值为那条指令与本指令的相对位置。
-  
+
   - slt : 以 `slt x5, x19, x20` 为例，若 $x_{19}<x_{20}$ 则 $x_5$ 为1
-  
+
   - blt : 若 $rs_1<rs_2$ 则跳转；bge : 若 $rs_1\ge rs_2$ 则跳转
-  
+
     - 以及相应的unsigned形式bltu,bgeu
-    
+
+  - SB指令的立即数处理
+
+
+  ![branch addressing](/img/CO/BranchAddressing.jpg)
+
+  ​			会省略掉最低位的零，因而需要以half word对齐（实际设计是word对齐）
+
   - 循环的写法
-  
-	    - g ~ k对应x20 ~ x24,  base A[i] 存在 x25
-  
-  
-      ```c
+
+  	- g ~ k对应x20 ~ x24,  base A[i] 存在 x25
+
+
+  ```c
       do{
       	g = g + A[i];
       	i = i + j;
       }while(i!=h);
-      ```
-  
-      ```
+  ```
+
+  ```
       LOOP:	slli x10,x22,3  #按字节数A[i]相对于A的偏移量
       		add x10,x10,x25 #x10存储A[i]的地址
       		ld x19 ,0(x10)  #x19存储A[i]的值
       		add x20 x20 x19 
       		add x22,x22,x23
       		bne x22,x21,LOOP
-      ```
-  
-      ```
+  ```
+
+  ```
       while(A[i] == k) i+=1;
-      ```
-  
-      ```
+  ```
+
+  ```
       LOOP: slli x10,x22,3
       	  add x10,x10,x25
       	  ld x9,0(x10)
@@ -219,10 +232,10 @@ $$
       	  addi x22,x22,1
       	  beq x0,x0,LOOP
       EXIT:....
-      ```
-  
+  ```
+
   - 使用jalr实现Switch
-  
+
     ```
     switch ( k )  {
     	case  0 :    f  =  i+  j ;  break ;    /*  k  =  0  */
@@ -231,15 +244,16 @@ $$
     	case  3 :    f  =  i-j ;  break ;    /*  k  =  3  */
     }
     ```
-  
+
     使用 **jump address table** 解决
-  
+
     假设 f ~ k 对应 x20 ~ x25， x6 存储 jump address table 的基址，则对应汇编代码如下
-  
+
     ```
     blt x25, x0, Exit      # test if  k  <  0 
     bge x25, x5, Exit      # if  k  >=  4,  go to Exit
-    slli x7, x25, 3        # temp reg x7  =  8  *  k  (0<=k<=3)        add x7, x7, x6         # x7  =  address of JumpTable[k]
+    slli x7, x25, 3        # temp reg x7  =  8  *  k  (0<=k<=3) 
+    add x7, x7, x6         # x7  =  address of JumpTable[k]
     ld x7, 0(x7)           # temp reg x7 getsJumpTable[k]
     jalr x1, 0(x7)         # jump based on register x7(entrance)
     Exit:...
@@ -253,25 +267,25 @@ $$
     L3:sub $s0, $s3, $s4   # k  =  3  so  f  gets  i-j
        jalr x0, 0(x1)      # end of  switch statement
     ```
-  
+    
     代码理解：
-  
+    
     1. 为什么 `slli x7, x25, 3` ？
-  
+    
        A：每条指令都是4B的，下面每个case带2条指令，因此乘以8
-  
+    
     2. 每个case的最后一句的 `jalr x0, 0(x1)` 是什么作用？
-  
+    
        A：跳转回 x1 指令（即Exit），下一条指令没有必要存下来
-  
+    
     3. 代码中出现的 `$s0,$s3,$s4` 都是什么东西？
-  
+    
        A：这是寄存器的别名
-  
+    
     4. `ld x7 0(x7)` 是为什么？
-  
+    
        A：类似于C语言中解引用的过程，可以这么理解。如L0这种label存储的是指令单位置（是一个指向指令的指针），而x6存储的是L0的地址（也就是x6是一个二级指针），因此通过 `x7=x6+8*k` 得到的是存储Lk的地址的寄存器的地址，则此处 ld 指令过后就得到了 Lk的地址
-  
+
 - Basic Blocks
   - 要求：
     - 没有分支
@@ -286,16 +300,27 @@ $$
   - Acquire the storage resources needed for the procedure
   - Perform the desired task Place the result value in a place where the calling program can access it
   - Return control to the point of origin 
+  
 - Procedure Call Instructions
-  - jal jalr : 无条件跳转
+  - jal jalr : 无条件跳转  (作caller使用)
     - Jump-and-link : `jal x1,ProcedureAddress` [UJ型]
       - 将紧随其后的下一条指令存入 x1 （如果是 x0 就与 goto 指令等价）
+      
       - 并跳转至`ProcedureAddress`
-    - Jump-and-link-register : `jalr x0,0(x1)` [I型]
+      
+      - UJ 指令的立即数处理
+      
+        ![UJcode](\img\CO\JumpAddress.jpg)
+      
+        - 可以做到约 1MB 的跳转范围
+        - 因为省略最低位同样需要 half word 对齐
+      
+    - Jump-and-link-register : `jalr x0,0(x1)` [I型] (作callee使用)
       - 跳转到 `0(x1)` 的位置
       - 下一条指令存入 x0 （丢掉不要）
       - 因为寄存器的引入可以实现更大的跳转范围
       - 可以用作switch功能（实例见[Conditional Operations](#条件与循环)部分）
+  
 - 参数的功用
   - a0 ~ a7(x10 ~ x17) : 传参
   - ra/x1 : 传返回地址
@@ -306,7 +331,9 @@ $$
 
   - 堆：低地址到高地址
 
-  - 包括3个参数： push, pop, 堆栈指针(sp)，其中sp指向最后一个有数据的地方
+  - 包括3个参数： push, pop, 堆栈指针(sp)
+
+    sp存在两种用法：指向最后一个和指向空的，本课程使用指向最后一个的用法。
 
     以栈为例：
 
@@ -314,15 +341,20 @@ $$
 
     ```
     addi sp, sp, -8
-    sd ..., 8(sp)
+    sd ..., 0(sp)
     ```
 
     pop:
 
     ```
-    ld ..., 8(sp)
+    ld ..., 0(sp)
     addi sp, sp, 8
     ```
+
+  - 为了减少入栈出栈，对寄存器进行分类
+
+      - t0 ~ t2(x5 ~ x7) 是临时寄存器，函数调用不保存值
+      - a0 ~a7 用于传参
 
 - 样例：阶乘求解
 
@@ -360,7 +392,7 @@ $$
 
     在这段代码中，修改ra的地方除了ld只有jal，前者没啥分析价值，只看`jal ra, fact`那句。此处会将jal的后一条指令存入ra，也就是说如果运行了这句话，跳转到fact标签运行，一通操作完之后（肯定入栈和弹栈数量持平），运行`jalr zero,0(ra)`就会跳回到jal的下一句，即从`add t1, a0, zero`开始跑。
 
-    如果放到c里面理解（因为高级语言没有对应的东西），相当于在调用函数之前标记了一下函数后面那句话说是在这里断开开始递归的所以要从这里接着跑。
+    如果放到c里面理解（其实高级语言没有对应的东西），相当于在调用函数之前标记了一下函数后面那句话说是在这里断开开始递归的所以要从这里接着跑。
 
  2. 怎么理解a0的双重身份？
 
@@ -373,6 +405,51 @@ $$
     `ld a0, 0(sp)` 恢复 a0 为 $n$
 
     `mul a0, a0, t1` `jalr zero, 0(ra)` 的位置 a0 终于成为计算结果 $n!$
+    
+ 3. `addi sp, sp, 16    # Recover sp(Why not recover x1 and x10 ?)`
+
+    已经到最底层了，a0不需要往下传，下次使用就是作为 $0!$ 所以不用改； ra没有变化也不用改
+
+
+
+## Memory Layout
+
+
+
+![MemoryLayout](/img/CO/MemoryLayout.jpg)
+
+- Dynamic data : 堆栈，配有 sp
+
+  ![stack allocation](/img/CO/StackAllocation.jpg)
+
+  - fp(frame pointer) ：指向当前函数压进去的第一个参数的位置（当前进程的起始位置）
+  - save saved registers : 超过现有32个的寄存器使用（类似于c的malloc）
+
+- static data : 静态变量（如数组，字符串）、x3 (global pointer) 
+
+- text : 代码
+
+## Character Data
+
+- Byte-encoded character sets
+  - ASCII : 128 个字符，其中 33 个是控制字符
+  - Latin-1 : 在ASCII基础上加了96个可显示字符
+- Unicode : 32b
+  - UTF-8 , UTF 16:可变长度的编码
+
+## RISC-V Addressing for 32b Immediate and Address
+
+- U type指令有20位立即数，效果如下
+
+![lui operation](/img/CO/Utype-lui.jpg)
+
+​	则如果要 load 一个 32b 的数可以这样做
+
+![load 32b](/img/CO/ld32b.jpg)
+
+​	Q：为什么是 977 而非 976？
+
+​	A： 2304的符号位是1，赋值的时候符号位扩展需要补一个1消除掉
 
 # Chapter 3<a id="Chapter3"></a>
 
@@ -490,7 +567,7 @@ $\Rightarrow$ 乘数和结果右移同步，可以利用低位存储乘数
   ![image-20241006135825563](/img/CO/FloatNumberSpecialExpression.jpg)
 
   - 整个浮点数不是补码表示法而是符号-数值形式，但指数部分使用补码表示
-  - **移码表示法** ：对指数部分加上一个偏移量以方便比较大小（类似从有符号整数到无符号整数范围的位移），IEEE 754规定 float 偏移量127， double 偏移量1023。则一个浮点数实际值为 $(-1)^S\times (1+有效位数) \times 2^{指数-偏移量}$ 。
+  - **移码表示法** ：对指数部分加上一个偏移量以方便比较大小（类似从有符号整数到无符号整数范围的位移），IEEE 754规定 float 偏移量127， double 偏移量1023。则一个浮点数实际值为 $(-1)^S\times (1+$有效位数$) \times 2^{exponent-bias}$ 。
   - 所以float绝对值最小的是 $\pm 1.0\times 2^{-126}$，最大的Fraction:111111，约为2.0，绝对值最大的就是$\pm 2.0\times 2^{127}$ 。双精度分别为 $\pm 1.0\times 2^{-1022}$ 和 $\pm 2.0 \times 2^{1023}$
 
 #### 加减
@@ -518,7 +595,16 @@ $\Rightarrow$ 乘数和结果右移同步，可以利用低位存储乘数
   - round:
   - sticky:
 
-+ [ ] 作业：3.7,3.20,3.26,3.27,3.32
+# 附录<a id="附录"></a>
 
-# 
+## RISC-V operands<a id="附录operands"></a>
+
+![RISC-V operands](/img/CO/RegTable.jpg)
+
+
+##  RISC-V assembly language<a id="附录assembly language"></a>
+
+![RISC-VAssemblyLanguage1](/img/CO/RISC-VAssemblyLanguage1.jpg)
+
+![RISC-VAssemblyLanguage2](/img/CO/RISC-VAssemblyLanguage2.jpg)
 
