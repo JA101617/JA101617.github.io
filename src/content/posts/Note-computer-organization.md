@@ -310,7 +310,7 @@ $$
       
       - UJ 指令的立即数处理
       
-        ![UJcode](\img\CO\JumpAddress.jpg)
+        ![UJcode](/img/CO/JumpAddress.jpg)
       
         - 可以做到约 1MB 的跳转范围
         - 因为省略最低位同样需要 half word 对齐
@@ -608,3 +608,10 @@ $\Rightarrow$ 乘数和结果右移同步，可以利用低位存储乘数
 
 ![RISC-VAssemblyLanguage2](/img/CO/RISC-VAssemblyLanguage2.jpg)
 
+## RISC-V instruction encoding<a id="附录instruction encoding"></a>
+
+![RISC-Vinstructionencoding1](/img/CO/RISC-Vinstructionencoding1.jpg)
+
+![RISC-Vinstructionencoding2](/img/CO/RISC-Vinstructionencoding2.jpg)
+
+![RISC-Vinstructionencoding3](/img/CO/RISC-Vinstructionencoding3.jpg)
