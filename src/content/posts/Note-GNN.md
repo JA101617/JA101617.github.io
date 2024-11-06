@@ -5,7 +5,7 @@ description: '记录速通CS224W中的概念、名词等，因为时间实在不
 image: ''
 tags: [GNN]
 category: 'notebook'
-draft: false
+draft: true
 lang: 'zh-CN'
 ---
 
