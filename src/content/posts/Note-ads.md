@@ -24,6 +24,7 @@ lang: 'zh-CN'
 ## 算法
 
 - [Backtracking](#backtracking)
+- [DP](#DP)
 
 
 **注**：下文代码使用C++，以结构体数组实现
@@ -62,17 +63,22 @@ $$
 - 没有绝对值，可以为负，对于平衡的树，BF取值为$\pm 1$或 $0$
 - 故当某节点的BF值不为上述值则需要调整
 
-```
+<details>
+	<summary> code </summary>
+	<pre><code>
 struct Node{
 	int lson, rson, val, h;
 }t[maxn];
-```
+  </code></pre>
+</details>
 
 ## Rotation Operations
 
 - **Left-Rotate**
 
-```cpp
+<details>
+	<summary> code </summary>
+	<pre><code>
 int Lrotate(int p){
     int rs = t[p].rson;
     t[p].rson = t[rs].lson;
@@ -81,11 +87,14 @@ int Lrotate(int p){
     t[rs].h = max(H(t[rs].lson),H(t[rs].rson))+1;
     return rs;
 }
-```
+  </code></pre>
+</details>
 
 - **Right-Rotate**
 
-```cpp
+<details>
+	<summary> code </summary>
+	<pre><code>
 int Rrotate(int p){
     int ls = t[p].lson;
     t[p].lson = t[ls].rson;
@@ -94,27 +103,34 @@ int Rrotate(int p){
     t[ls].h = max(H(t[ls].lson),H(t[ls].rson))+1;
     return ls;
 }
-```
+  </code></pre>
+</details>
 
 <img src="/img/ads/ads-AVLRotate.png" alt="ads-AVLRotate" style="zoom:67%;" />
 
 - **LR-Rotate**：先以 $ls$ 为中心左旋再以 $p$ 为中心右旋
 
-```cpp
+<details>
+	<summary> code </summary>
+	<pre><code>
 int LRrotate(int p){
     t[p].lson = Lrotate(t[p].lson);
     return Rrotate(p);
 }
-```
+  </code></pre>
+</details>
 
 - **RL-Rotate**：先以 $rs$ 为中心右旋再以 $p$ 为中心左旋
 
-```cpp
+<details>
+	<summary> code </summary>
+	<pre><code>
 int RLrotate(int p){
     t[p].rson = Rrotate(t[p].rson);
     return Lrotate(p);
 }
-```
+  </code></pre>
+</details>
 
 ## 操作
 
@@ -131,26 +147,30 @@ int RLrotate(int p){
   - 反之 `LRrotate(D)`
 
   ![LRrot](/img/ads/AVLMaintainLRrot.jpg)
-
-  ```\
-  int H(int p){
-      return (p <= tot && p != 0)? t[p].h : -1;
-  }
-  void Maintain(int p){
-  	int ls = t[p].lson, rs = t[p].rson;
-  	if(H(ls) - H(rs) == 2){
-  		if(H(t[ls].lson) >= H(t[ls].rson)) Rrotate(p);
-  		else LRrotate(p);
-  	}
-  	else if(H(ls) - H(rs) == -2){
-  		if(H(t[rs].rson) >= H(t[rs].lson)) Lrotate(p);
-  		else RLrotate(p);
-  	}
-  	t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
-  }
-  ```
-
+  
+  <details>
+  	<summary> code </summary>
+  	<pre><code>
+    int H(int p){
+        return (p <= tot && p != 0)? t[p].h : -1;
+    }
+    void Maintain(int p){
+    	int ls = t[p].lson, rs = t[p].rson;
+    	if(H(ls) - H(rs) == 2){
+    		if(H(t[ls].lson) >= H(t[ls].rson)) Rrotate(p);
+    		else LRrotate(p);
+    	}
+    	else if(H(ls) - H(rs) == -2){
+    		if(H(t[rs].rson) >= H(t[rs].lson)) Lrotate(p);
+    		else RLrotate(p);
+    	}
+    	t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+    }
+      </code></pre>
+  </details>
+  
   - 显然复杂度 $O(1)$
+
 
 - Insert
 
@@ -159,7 +179,9 @@ int RLrotate(int p){
   - 只影响其祖先的BF值，故只用在递归的时候通过返回值提醒祖先节点进行检查。进一步观察可知，当某个节点通过Rotate完成调整后，该子树的 $BF$ 值相比插入前不变，故实际上只在离其最近的不平衡祖先进行调整
 
 
-```cpp
+<details>
+	<summary> code </summary>
+	<pre><code>
 int insert(int p, int v){
     if(!p){
         t[++tot] = (Node){0, 0, v, 0};
@@ -170,7 +192,8 @@ int insert(int p, int v){
     Maintain(p);
     return p;
 }
-```
+  </code></pre>
+</details>
 
 - Delete
   - 删除节点
@@ -178,9 +201,7 @@ int insert(int p, int v){
     - 只有左子树/右子树：用有的那个子节点替代自己（此时那个子节点一定是个叶节点）
     - 兼有左右子树：取前驱/后继替代自己，将其节点删掉
     - 从删除的叶节点向上调整即可
-
-- Find：同正常二叉树， $O(\log{n})$ 
-- 
+- Find, Predecessor, Successor, Rank：同正常二叉树， $O(\log{n})$ 
 
 
 
@@ -194,7 +215,108 @@ int insert(int p, int v){
 
 （配图见下）
 
-### 复杂度分析
+## 操作
+
+- Rotate
+
+  - 以右旋为例，设当前节点 $x$， 父亲 $y$
+    - $x$ 的右儿子给 $y$ ， $y$ 的左儿子给 $x$
+    - 若 $y$ 有父亲 $z$ 则 $x$ 顶替 $y$ 的位置
+
+
+<details>
+	<summary> code </summary>
+	<pre><code>
+  void Rotate(int x) {
+    int y = fa[x], z = fa[y], chk = get(x);
+    ch[y][chk] = ch[x][chk ^ 1];
+    if (ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y;
+    ch[x][chk ^ 1] = y;
+    fa[y] = x;
+    fa[x] = z;
+    if (z) ch[z][y == ch[z][1]] = x;
+    maintain(y);
+    maintain(x);
+  }
+  </code></pre>
+</details>
+
+  - 其中 `maintain` 只是维护子树信息，由具体使用决定，一般是 $O(1)$ ， 因而整个操作 $O(1)$ 
+
+- Splay
+
+  - 核心操作，将一个节点一路转到根
+
+<details>
+	<summary> code </summary>
+	<pre><code>
+  bool get(int x) { return x == ch[fa[x]][1]; }
+  void Splay(int x) {
+    for (int f = fa[x]; f = fa[x], f; rotate(x))
+      if (fa[f]) Rotate(get(x) == get(f) ? f : x);
+    rt = x;
+  }
+    </code></pre>
+</details>
+
+  - 复杂度单次可能 $O(N)$ ，但是均摊是 $O(\log N)$ 的，分析见下
+
+- Search
+
+  - 一路往下找 + splay上去
+  - $ O(\log{N})$ 
+
+- Delete
+
+  - 找到点并splay上去，如果计数为1则删除节点，否则合并两棵子树（查询当前根节点的前驱，将其设为根，并将其右儿子设为另一棵树的根）
+
+<details>
+	<summary> code </summary>
+	<pre><code>  void Delete(int k) {
+    Find(k);
+    if (cnt[rt] > 1) {
+      cnt[rt]--;
+      Maintain(rt);
+      return;
+    }
+    if (!ch[rt][0] && !ch[rt][1]) {
+      Clear(rt);
+      rt = 0;
+      return;
+    }
+    if (!ch[rt][0]) {
+      int cur = rt;
+      rt = ch[rt][1];
+      fa[rt] = 0;
+      Clear(cur);
+      return;
+    }
+    if (!ch[rt][1]) {
+      int cur = rt;
+      rt = ch[rt][0];
+      fa[rt] = 0;
+      Clear(cur);
+      return;
+    }
+    int cur = rt, x = Pre();
+    fa[ch[cur][1]] = x;
+    ch[x][1] = ch[cur][1];
+    Clear(cur);
+    Maintain(rt);
+  }
+    </code></pre>
+</details>
+
+  - $O(\log N)$
+
+- Insert操作
+
+  - 一路往下找+splay上去
+  - $O(\log{N})$
+
+### Splay操作的复杂度分析
+
+写完才发现oiwiki上有很详细的分析...挂个[链接]([Splay 树 - OI Wiki](https://oi-wiki.org/ds/splay/#时间复杂度))
 
 - 势能函数$\phi(p) =\sum_{i\in subtree(p)} \log{S(i)}$，其中 $S(i)$ 指 $i$ 的子树大小。记 $\log{S(i)} = rank(i)$ ，则 $\phi(p)=\sum_{i\in subtree(p)} rank(i)$
 
@@ -266,8 +388,6 @@ $$
   \end{aligned}
   $$
 
-- splay操作
-
 ​		假设一次splay共计进行了 $n$ 步，因为单zig只会在转到根出现，则总复杂度
 $$
 T_n \leq 1+3(R_n(x)-R_0(x))
@@ -276,26 +396,254 @@ $$
 
 ​		值得注意的是$R_0(x)$不一定为0
 
-- search操作
 
-  ​	一路往下找，链长是$O(\log{N})$ + splay上去
-
-- delete操作
-
-  ​	找到点并splay上去，如果计数为1则删除节点，否则合并两棵子树（查询前驱将其设为根）
-
-- insert操作
-
-  ​	一路往下找+splay上去，链长也是$O(\log{N})$
 
 
 # B+ Tree<a id="B+"></a>
 
-TBC
+是一种多叉树
+
+**定义** : A B+ tree of order M is a tree with following structural properties:
+
+- Root: a leaf / has [2~M] children
+- Nonleaf nodes (except root) : has [$\lceil M/2 \rceil$ , M] children
+- Leaf: same depth
+
+ 如图为 M = 3 的情况
+
+![image-20241026101102756](E:\CODE\MyBlog\public\img\ads\B+Order3.jpg)
+
+## 操作
+
+- Find
+  - 与当前节点的所有子节点左边界值进行比较以找到应该在的区间
+
+<details>
+	<summary> code </summary>
+	<pre><code>
+ Node Find(int key, Node cur){
+ 	int i = 0;
+ 	while( i < cur.cntSon )
+ 		if(key >= cur.keys[i] ) ++i;
+ 	if( i == cur.cntkeys ) return EmptyNode;
+ 	return Find(key, cur.son[i]);
+ }
+    </code></pre>
+</details>
+- Insert
+
+  - 先递归到对应的区间，即叶节点，此时有几种情况
+
+    - 如果那个区间包含的数不超过 M - 1 个：直接插入进去就行
+    - 否则，需要对这个区间进行分裂，上层结构也需要有相应变化
+
+      - 当前叶节点分裂成两个，各自拥有 $\lceil M/2 \rceil$ 和 $\lfloor M/2 \rfloor$ 个数
+      - 递归处理父节点，直到找到一个儿子数量没到 $M-1$ 的祖宗节点为止。如果直到根节点都不满足要求，重新建一个根节点并将原根节点分裂
+
+<details>
+	<summary>Check：检测是否已经存在</summary>
+	<pre><code>
+int Check(struct Node t, int v){
+    for(int i = t.totv; i; --i)
+        if(t.v[i - 1] == v) return 1;
+    return 0;
+}
+	</code></pre>
+</details>
+
+<details>
+	<summary>Set：更新节点属性</summary>
+	<pre><code>
+void Set(int id, int Totch, int Totv, int Leaf){
+    T[id].totch = Totch;
+    T[id].IsLeaf = Leaf;
+    T[id].totv = Totv;
+}
+	</code></pre>
+</details>
+
+<details>
+	<summary>UpdateRelation：更新节点亲子关系</summary>
+	<pre><code>
+void UpdateRelation(int ffa, int son0, int son1){
+    T[ffa].ch[0] = son0;
+    T[ffa].ch[1] = son1;
+    T[son0].fa = ffa;
+    T[son1].fa = ffa;
+}
+	</code></pre>
+</details>
+
+<details>
+	<summary>InsData：在指定数组插入数据并保持数组有序</summary>
+	<pre><code>
+void InsData(int *fro, int *dest, int *len, int val){
+    for(int i = 0; i &lt; (*len); ++i){
+        dest[i] = fro[i];
+    }
+    dest[(*len)] = val;
+    for(int i = (*len); i && dest[i - 1] &gt; val; --i){
+        dest[i] = dest[i - 1];
+        dest[i - 1] = val;
+    }
+    (*len)++;
+}*
+	</code></pre>
+</details>
+
+<details>
+	<summary>Deal：沿着链向上处理分裂</summary>
+	<pre><code>void deal(int cur, int son0, int son1, int insert_val){
+	if(!cur){
+		Set(cur = root = ++cnt, 2, 1, 0);
+		UpdateRelation(cur, son0, son1);
+		T[cur].v[0] = insert_val;
+		T[cur].fa = 0;
+		return;
+	}
+	//处理掉父亲关系问题
+	if(T[cur].totv &lt; 2){
+		InsData(T[cur].v, T[cur].v, &T[cur].totv, insert_val);
+		int pos;
+		for(pos = T[cur].totch; pos; --pos){
+			if(T[cur].ch[pos - 1] == son0){
+				T[cur].ch[pos] = son1;
+				break;
+			}
+			T[cur].ch[pos] = T[cur].ch[pos - 1];
+		}
+		T[cur].totch++;
+		T[son1].fa = cur;
+		return;
+	}
+    // 分裂示意图
+	//                                  /            \(v2)
+	//   cur(v1~v3)              cur(v1)          newnode(v3)
+	//  /   |   \        =&gt;      /    \            /      \
+	// A    son   B              A     son0        son1    B
+	//
+	InsData(T[cur].v, b, &T[cur].totv, insert_val);
+	Set(++cnt, 2, 1, 0);
+	T[cnt].v[0] = b[2];
+	Set(cur, 2, 1, 0);
+	T[cur].v[0] = b[0];
+	if(T[cur].ch[0] == son0) {
+		UpdateRelation(cnt, T[cur].ch[1], T[cur].ch[2]);
+		UpdateRelation(cur, son0, son1);
+    }
+	else if(T[cur].ch[1] == son0) {
+		UpdateRelation(cnt, son1, T[cur].ch[2]);
+		UpdateRelation(cur, T[cur].ch[0], son0);
+	}
+	else UpdateRelation(cnt, son0, son1);
+	deal(T[cur].fa, cur, cnt, b[1]);
+}
+	</code></pre>
+</details>
+
+<details>
+	<summary>Insert：插入值</summary>
+	<pre><code>
+int Insert(int cur, int val){
+    if(T[cur].IsLeaf){
+        if(Check(T[cur], val)) return 0;
+        if(T[cur].totv &lt; 3){
+            InsData(T[cur].v, T[cur].v, &T[cur].totv, val);
+        }
+        else{
+            InsData(T[cur].v, b, &T[cur].totv, val);
+            Set(++cnt, 0, 2, 1);
+            Set(cur, 0, 2, 1);
+            for(int i = 0; i &lt; 2; ++i){
+                T[cur].v[i] = b[i];
+                T[cnt].v[i] = b[2+i];
+            }
+            if(T[cur].fa)
+                deal(T[cur].fa, cur, cnt, b[2]);
+            else{
+                Set(root = ++cnt, 2, 1, 0);
+                T[root].v[0] = b[2];
+                T[root].fa = 0;
+                UpdateRelation(root, cur, cnt - 1);
+            }
+        }
+        return 1;
+    }
+    int to_node = 0;
+    for(int i = 0; i &lt; T[cur].totv; ++i)
+        if(val &gt;= T[cur].v[i]) ++to_node;
+    return Insert(T[cur].ch[to_node], val);
+}
+	</code></pre>
+</details>
+- Delete
+  - 同样是递归到相应叶节点进行处理
+    - 当删除掉当前值不会使叶节点包含值少于 $\lceil M/2 \rceil$ ，直接删除
+    - 若删除后本节点不符合要求
+      - 若兄弟节点包含多于 $\lceil M/2 \rceil$ 个值，可以从兄弟节点借一个，并更新父节点中的分隔值
+      - 否则与兄弟节点合并并删除父节点中的分隔值，递归处理父节点
 
 # 红黑树<a id="RB"></a>
 
-TBC
+**定义：**一棵红黑树需要满足如下条件：
+
+- 节点分为红黑两种颜色
+- 根节点为黑色
+
+- 空节点（NIL）为黑色
+- 红色节点的子节点一定为黑色
+- 从根节点往下到叶节点（NIL），每条路径上黑色节点数量相同
+
+**性质：**
+
+- 可以得到的导出性质（用于判别红黑树）：红黑树的红色节点的两个子节点一定同为叶子或同不为叶子（其中叶子指NIL）。
+
+-  $N$ 个内部节点（不含NIL）的红黑树的高度最大为 $2\log_2(N+1)$
+
+  证明：综合以下两条
+  $$
+  \begin{cases}
+  N \ge 2^{BlackHeight} - 1\\
+  Height \le 2BlackHeight
+  \end{cases}
+  $$
+
+## 操作
+
+- Rotate : 与 [AVL](#AVL) 的旋转操作基本一致
+
+- Insert
+
+  - 思路为先以红色节点的形式像普通BST一样插在叶节点（因为会有两个NIL所有肯定满足性质4，且插入红色节点不影响黑高），然后再调整使得红色节点不相邻。记插入节点为 x
+    - 若 x.fa 是黑色就不用调整
+    
+    - 若 x.fa 是红色，需要分类讨论并且向上递归处理。下图中橘色节点代表使红黑树失衡的子树
+      - case 1：将两个红色节点染黑，“根节点”染红，并向上递归处理（引号是因为是当前考虑的子树的根而不一定是整颗树的）
+        - 如果"根节点"没有父亲，则根节点再染黑，结束
+        - 如果”根节点“的父亲是黑，直接结束
+        - 如果根节点父亲是红的，向上递归，可能转成其他case
+      - case 2 : 基于橙色节点左旋转为case 3
+      - case 3 : 红色节点染黑，其父亲染红，再将新的黑色节点右旋上去
+	    ![Insert](/img/ads/RBT-insert.jpg)
+	- 复杂度 $O(\log N)$
+
+
+- Delete
+	- 考虑分成两部分进行分类讨论：删除和删除后平衡维护
+	- 删除
+		- case 0 : 如果整颗树只有一个节点直接删
+		
+		- case 1 : 如果该节点左右儿子都有就去前驱/后继（只取值不取颜色）代替自己并删除前驱/后继对应节点
+		- case 2 : 如果该节点左右儿子只有一个，则那个节点一定是红的（因为黑高一致），则本节点一定是黑的。用子节点代替待删除节点并染黑即可
+		- case 3 : 如果该节点没有（非空）子节点，若节点为红直接删掉，节点为黑删掉后还要维护一下
+      综合看下来最后都会转成一个叶子节点的删除，这样平衡维护就好考虑不少
+	- 平衡维护
+
+
+
+
+
+
 
 # Inverted File Index
 
@@ -331,13 +679,16 @@ TBC
 - 性质
   - 右路径长度为 r 的左偏堆至少拥有 $2^r-1$ 个节点。（此时是满二叉树）[tips : 数学归纳法]
 
-```c
+<details>
+	<summary> code </summary>
+	<pre><code>
 struct TreeNode{
 	ElementType Element;
 	PriorityQueue Left,Right;
 	int Npl;
 };
-```
+  </code></pre>
+</details>
 
 - 复杂度
   - Merge : O(logN)
@@ -383,10 +734,13 @@ $$
 - Merge：单次复杂度 $O(\log n)$ ， 均摊 $O(1)$
 	- 二项树的合并，显然 $O(1)$
 
-      ```
+<details>
+	<summary> code </summary>
+	<pre><code>
       T2->Next = T1->Lson;
       T1->Lson = T2;
-      ```
+	</code></pre>
+</details>
 
 
 - Insert：即将一棵 $B_0$ 树合并到队列中，单次最好 $O(1)$ 最坏 $O(\log n)$ ， 均摊 $O(1)$
@@ -439,9 +793,54 @@ template（略）
 
 - min-max搜索
 
-  以棋类游戏（三子棋为例）评估一个情况的优劣为其所有后继中估值最低的那种，从而得到最优解。
-
-  围棋这类，只需模糊搜索评估的优劣比人强就行。
+  以棋类游戏（三子棋为例）评估一个情况的优劣为其所有后继中估值最低的那种，从而得到最优解。左右旋不会影响整颗树的红黑平衡吗，为什么旋转的代码里面没有关于颜色的内容围棋这类，只需模糊搜索评估的优劣比人强就行。
 
   - 找到比另一分支更小的结果可以直接停掉
-  - $\alpha-\beta$ pruning
+  
+- $\alpha-\beta$ pruning
+
+# DP<a id="DP"></a>
+
+**范例：矩阵乘法次序决定**
+
+`f[l][r]` 为完成 l 到 r 的乘法的最小次数，则
+$$
+f[l][r] = \min_{k\in[l,r-1]} f[l][k]+f[k+1][r]+Row[l]*Col[k]*Col[r]
+$$
+**卡特兰数**
+
+矩阵乘法的方案数
+$$
+b_n=\sum_{i=1}^{n-1} b_ib_{n-i}
+$$
+通项公式
+$$
+h_n=\frac{1}{n+1}(_n^{2n})
+$$
+对应实例
+
+- 出栈次序
+- 括号匹配
+
+### DP 问题的特点
+
+- Optimal Substructure
+
+
+
+
+
+**样例：BST建立**
+
+| break | case | char | do   | return | switch | void |
+| ----- | ---- | ---- | ---- | ------ | ------ | ---- |
+| 0.22  | 0.18 | 0.20 | 0.05 | 0.25   | 0.02   | 0.08 |
+
+建立BST使得 $\sum prob_i\times (h_i+1)$ 最小
+
+记 $f_{i,j}$ 为 i 到 j 区间二叉树建好后的代价
+$$
+f_{i,j} = \min_{k\in[i+1,j-1]} f_{i,k-1} + f_{k+1,j} + w_{i,j}
+$$
+**样例：Floyd**
+

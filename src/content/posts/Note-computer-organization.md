@@ -16,7 +16,7 @@ lang: 'zh-CN'
 - [Chapter1: Computer Abstraction and Technology](#Chapter1)
 - [**Chapter2: Instructions: Language of the Computer**](#Chapter2)
 - [**Chapter3: Arithmetic for Computers**](#Chapter3)
-- **Chapter4: The Processor: Datapath and Control**
+- **[Chapter4: The Processor: Datapath and Control](#Chapter4)**
 - **Chapter5: Large and Fast: Exploiting Memory Hierarchy**
 - Chapter 6: Parallel processor from client to Cloud (选讲，非考试内容)
 - Appendix: Storage, Networks, and Other Peripherals (了解概念)
@@ -234,6 +234,9 @@ $$
       EXIT:....
   ```
 
+Q：LOOP的值为多少？
+A：相对调用语句 ` beq x0,x0,LOOP` 的偏移量，即 -5*4=-20
+
   - 使用jalr实现Switch
 
     ```
@@ -267,23 +270,23 @@ $$
     L3:sub $s0, $s3, $s4   # k  =  3  so  f  gets  i-j
        jalr x0, 0(x1)      # end of  switch statement
     ```
-    
+
     代码理解：
-    
+
     1. 为什么 `slli x7, x25, 3` ？
-    
+
        A：每条指令都是4B的，下面每个case带2条指令，因此乘以8
-    
+
     2. 每个case的最后一句的 `jalr x0, 0(x1)` 是什么作用？
-    
+
        A：跳转回 x1 指令（即Exit），下一条指令没有必要存下来
-    
+
     3. 代码中出现的 `$s0,$s3,$s4` 都是什么东西？
-    
+
        A：这是寄存器的别名
-    
+
     4. `ld x7 0(x7)` 是为什么？
-    
+
        A：类似于C语言中解引用的过程，可以这么理解。如L0这种label存储的是指令单位置（是一个指向指令的指针），而x6存储的是L0的地址（也就是x6是一个二级指针），因此通过 `x7=x6+8*k` 得到的是存储Lk的地址的寄存器的地址，则此处 ld 指令过后就得到了 Lk的地址
 
 - Basic Blocks
@@ -410,11 +413,7 @@ $$
 
     已经到最底层了，a0不需要往下传，下次使用就是作为 $0!$ 所以不用改； ra没有变化也不用改
 
-
-
 ## Memory Layout
-
-
 
 ![MemoryLayout](/img/CO/MemoryLayout.jpg)
 
@@ -449,7 +448,27 @@ $$
 
 ​	Q：为什么是 977 而非 976？
 
-​	A： 2304的符号位是1，赋值的时候符号位扩展需要补一个1消除掉
+​	A： 2304的符号位是1，赋值的时候符号位扩展需要补一个1消除掉（也就是值+低一位的值）
+
+## Synchronization
+
+- Load reserved: `lr.d rd,(rs1)`
+  - 从 rs1 读到 rd
+  - 内存预留
+- Store conditional: `sc.d rd,(rs1),rs2`
+  - 从 rs2 存到 rs1里面的地址
+  - 如果该地址未被占用就返回0，反之返回非零值（且不修改）
+
+## Other RISC-V Instructions
+
+- RV64I & RV32I : 64/32b寄存器
+  - RV64I中的 addw, subw, addiw, sllw,....是专门处理32b的
+- RV32I和RV64I加上后缀表示更多的功能
+  - M：支持整数乘除法
+  - A：支持原子操作
+  - F：支持单精度浮点数
+  - D：支持双精度浮点数
+  - C：支持压缩指令（有16b指令）
 
 # Chapter 3<a id="Chapter3"></a>
 
@@ -594,8 +613,205 @@ $\Rightarrow$ 乘数和结果右移同步，可以利用低位存储乘数
   - guard:
   - round:
   - sticky:
+  - [ ] TODO：理解三个extra bits的作用并了解其在浮点数运算具体操作
 
-# 附录<a id="附录"></a>
+# Chapter 4<a id="Chapter4"></a>
+
+## Implementation Overview
+
+- 1st: identical
+
+  - 从内存中取出指令
+  - 解码，（读寄存器） 
+
+- 2nd：依据指令类型，进行内存访问/计算/分支
+
+  - ALU计算
+  - 访问内存，读写
+  - 修改PC
+  
+  ![implementation](/img/CO/implementationOverview.jpg)
+  
+- PC：寄存器，电脑运行指令的指针
+  
+- Instruction Memory：存储指令，用来读取
+  
+- Registers：寄存器读出/写入
+  
+- Data Memory：更大的内存
+  
+- ALUs
+  
+  - 右下：用于寄存器加减等操作
+  - 左上：正常运行， `pc=pc+4`
+  - 右上：非正常运行（如jal），偏移值来自指令
+  
+- 多处数据汇流：需要mux
+  
+  - 下：ALU操作数可能是与立即数或者寄存器；寄存器出来的值（还没懂，待研究！！！）
+  - 中：指令可能只是算数运算，结果从ALU产生，也可能是如 `ld t1, 0(t2)` 之类从 Data Memory产出
+  - 上：是否跳转决定PC的改变量
+  
+  图上是数据流向的示意图datapath，但读还是写之类需要另外一套控制系统，如下图蓝色部分
+  
+  ![Control Part](/img/CO/CPUwithControl.jpg)
+
+## Datapath
+
+### 部件
+
+- 组合逻辑：ALU、Adder、Multiplexer
+
+- 时序逻辑：Registers、Register files、存储器
+
+  - Registers
+    - 写使能 Write Enable ： 置为1且有效时钟边沿到来时修改数据输出为输入值
+  - Register files：32个Register
+    - 32位输出端口 busA busB & 32位输入端口 busW
+    - 5位输入端口 RW RA RB 
+    - Clk & Write Enable
+    - 读操作：RA 作为地址选择的数据输出到 busA ; RB $\Rightarrow$ busB，**不受 clk 限制**
+    - 写操作：当 Write Enable 为1时 RW 作为地址选择的寄存器写入 busW 的数据，**受 clk 限制**
+  - 存储器：对应示意图中 Data Memory 的部分
+    - 输入输出端口 DataIn & DataOut
+    - 地址线 Address
+    - Clk & Write Enable
+    - 读操作： Address 处数据输出到 DataOut
+    - 写操作：当Write Enable为1且时钟边缘有效时向 Address 处写 DataIn
+
+  - Summary：三个部件在读功能时不受 clk 限制，相当于组合逻辑部件，但写操作都要在 clk 有效边缘
+
+Q ：非阻塞和阻塞赋值？
+
+A ：非阻塞等式右边的值统一评估完一起赋值；阻塞赋值是逐条进行，以这组代码为例
+
+```veri
+always @ (posedge clk)begin
+	c<=1;
+	b<=c;
+	a<=b;
+end
+```
+
+上文是非阻塞赋值，因而c = 1需要两个时钟才能给到a
+
+```veri
+always @ (posedge clk)begin
+	c=1;
+	b=c;
+	a=b;
+end
+```
+
+这是阻塞赋值，运行是逐行的，因此在一个周期内就能完成 `a=b=c=1` 的任务
+
+## 各类操作对应的 Data path 和 Control 情况
+
+**完整结构图**
+
+![image-20241106110625223](E:\CODE\MyBlog\public\img\CO\CPUFullDatapathWithControl.jpg)
+
+**Control信号的作用**
+
+![image-20241106105855273](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241106105855273.png)
+
+### R型
+
+- Instruction 流向 Reg1 和 Reg2 和 Wreg ， Reg1 与 Reg2 进入 ALU ，ALU result 直接从 Mux 流向 Reg 的 Write Data 
+- RegWrite 1， ALUSrc 0, ALU operation 取决于具体指令， MemWrite 和 MemRead 0，MemtoReg 00， PCSrc 0
+
+ ![image-20241106101336099](/img/CO/Datapath_R.jpg)
+
+## I 型
+
+- Instruction 流向 Reg1 和 WReg 及 Imm Gen ， Imm Gen 和  Reg1 进入 ALU ，结果输入 Memory address ， 再从 MUX 流回 Reg Write Data.
+- RegWrite 1, ALUSrc 1, ALU operation加, MemWrite 0, MemRead 1, MemtoReg 01, PCSrc 0
+
+![image-20241106103552151](/img/CO/Datapath_I.jpg)
+
+## S 型
+
+- Instruction 流向 Reg1,  Reg2 和 Imm Gen， Imm Gen 和 Reg1 进入 ALU，结果输入 Memory address， Reg2 流向 Memory Write Data 
+- RegWrite 0, ALUSrc 1, ALU operation加, MemWrite 1, MemRead 0, MemtoReg 无所谓 , PCSrc 0
+
+![image-20241106104113840](/img/CO/Datapath_S.jpg)
+
+## SB 型
+
+- Instruction 流向 Reg1, Reg2 和 Imm Gen，Reg1 和 Reg2 流入 ALU ， ALU 的zero 流向顶上的 MUX， Imm Gen 流向 PC 的一个加法器
+- RegWrite 0, ALUSrc 0, ALU operation减, MemWrite 0, MemRead 0, MemtoReg 无所谓, PCSrc 由 ALU 的 zero 给出
+
+![image-20241106104843079](/img/CO/Datapath_SB.jpg)
+
+## J 型
+
+- Instruction 流向 Imm Gen 和 WReg , Imm Gen 流向 Shift left1 从而进入PC的加法器， PC+4 汇入 Data Memory 右边的 MUX 再到 Reg Write Data
+- RegWrite 1, ALUSrc 无所谓, ALU operation 无所谓, MemWrite 0, MemRead 0, MemtoReg 10 , PCSrc 1
+
+![image-20241106105651232](/img/CO/Datapath_J.jpg)
+
+## 汇总：Control信号
+
+**main control**
+
+![image-20241106110151820](/img/CO/CPUmainController.jpg)
+
+**ALU control**
+
+![image-20241106110500572](/img/CO/CPUALUControl.jpg)
+
+# Pipeline
+
+## 理论基础
+
+### Five stages
+
+- IF : Instruction fetch from memory
+- ID : Instruction decode & register read （同时进行）
+- EX : Execute operation or calculate address
+- MEM : Access memory operand
+- WB : Write  result back to register
+
+不是所有指令都五步齐全，但是那一步还是要走
+
+流水线处理 $\Rightarrow$ CPI=1
+
+### 存在问题
+
+**数据竞争**：相邻两指令用到同寄存器，存在依赖关系 
+
+$\Rightarrow$ 插入 stall 
+
+- [ ] 需要对一段有依赖关系的代码算总时钟周期，能把依赖关系消除掉
+
+$\Rightarrow$ 旁路(bypass)过来（算完了马上取出来用，不走流程）
+
+**控制竞争**：比如前一条指令是跳转，那么后一条指令执行什么取决于前一条的结果
+
+$\Rightarrow$ Branch Prediction
+
+预测是否跳转（基于普遍历史经验预测），预测错误再插入stall
+
+## 实现
+
+### Datapath
+
+- 每层之间加寄存器，把结果存下来以为下一条指令做缓冲
+- 以ld指令为例：直接使用上述设计最后写回的地址出问题了 $\Rightarrow$ Write address（后面要用到的一切信号） 跟着逐级移动（不能直接跳层否则流程出问题） 
+
+### Control
+
+- IF/ID解码指令，同单周期
+- 后面边传边用边丢
+
+### Hazard
+
+#### Data Hazards
+
+- Detect
+- Solve
+
+# 附 录<a id="附录"></a>
 
 ## RISC-V operands<a id="附录operands"></a>
 
@@ -607,6 +823,10 @@ $\Rightarrow$ 乘数和结果右移同步，可以利用低位存储乘数
 ![RISC-VAssemblyLanguage1](/img/CO/RISC-VAssemblyLanguage1.jpg)
 
 ![RISC-VAssemblyLanguage2](/img/CO/RISC-VAssemblyLanguage2.jpg)
+
+## RISC-V instruction structure<a id="附录instruction structure"></a>
+
+![InstructionStructure](/img/CO/InstructionStructure.jpg)
 
 ## RISC-V instruction encoding<a id="附录instruction encoding"></a>
 
