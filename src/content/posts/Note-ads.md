@@ -37,17 +37,26 @@ lang: 'zh-CN'
 
 ## Accounting method
 
-- 类似存款存入不会比取出少，设计每种操作的均摊成本$d_i$ ，使得相比于实际成本$c_i$有$\forall_i\ \ \hat{c_i} \ge c_i$
-- 势能函数$\phi(op_i)$ 表示整个数据结构在第i个操作前后的势能，满足$\hat{c_i}-c_i = \phi(op_i)-\phi( op_{ i-1 } )$，则
+- 类似存款存入不会比取出少，设计每种操作的均摊成本$\hat{c_i}$ ，当某次操作的 $\hat{c_i} > c_i$ 差额被称为 credit ，后面如果存在 $\hat{c_i} < c_i$ 的情况，差额可以用 credit 补上，则
+
+$$
+T_{amortized} = \dfrac{\sum \hat{c_i} }{n} \ge \dfrac{\sum c_i}{n}
+$$
+
+## Potential method
+
+- 定义势能函数 $\Phi(D_i)$ ，则前文的 credit 就演化为 $\hat{c_i}-c_i = Credit_i = \Phi(op_i)-\Phi( op_{ i-1 } )$
+
+  
 
 $$
 \begin{aligned}
-\sum_{ i=1 }^n  \hat{c_i} &= \sum_{i=1}^n (c_i+\phi(op_i)-\phi( op_{i-1} ) )\\
-&= \phi(op_n)-\phi(op_0)+\sum_{i=1}^n c_i
+\sum_{ i=1 }^n  \hat{c_i} &= \sum_{i=1}^n (c_i+\Phi(op_i)-\Phi( op_{i-1} ) )\\
+&= \Phi(op_n)-\Phi(op_0)+\sum_{i=1}^n c_i
 \end{aligned}
 $$
 
-需要$\phi(op)$的复杂度不高于前面，方便起见可以让$\phi(op_0)=0$
+需要$\Phi(op)$的复杂度不高于 $\displaystyle\sum_{i=1}^n \hat{c_i}$，方便起见可以让$\Phi(op_0)=0$
 
 # AVL Trees<a id="AVL"></a>
 
@@ -268,7 +277,7 @@ int insert(int p, int v){
 </details>
 
   - 复杂度单次可能 $O(N)$ ，但是均摊是 $O(\log N)$ 的，分析见下
-- Search
+- Find
 
   - 一路往下找 + splay上去
   - $ O(\log{N})$ 
@@ -324,29 +333,28 @@ int insert(int p, int v){
 
 写完才发现oiwiki上有很详细的分析...挂个[链接](https://oi-wiki.org/ds/splay/#时间复杂度)
 
-- 势能函数$\phi(p) =\sum_{i\in subtree(p)} \log{S(i)}$，其中 $S(i)$ 指 $i$ 的子树大小。记 $\log{S(i)} = rank(i)$ ，则 $\phi(p)=\sum_{i\in subtree(p)} rank(i)$
+- 势能函数$\Phi(p) =\sum_{i\in subtree(p)} \log{S(i)}$，其中 $S(i)$ 指 $i$ 的子树大小。记 $\log{S(i)} = rank(i)$ ，则 $\Phi(p)=\sum_{i\in subtree(p)} rank(i)$
 
 - zig, zig-zig, zig-zag本体复杂度为1,2,2
 
 - zig : 
 
   <img src="/img/ads/ads-SplayZig.png" alt="ads-SplayZig" style="zoom:67%;" />
-  
   $$
   \begin{aligned}
-  \hat{c_i} =& 1 + \phi(T_2) - \phi(T_1)\\
+  \hat{c_i} =& 1 + \Phi(T_2) - \Phi(T_1)\\
    = &1 + R_2(x) - R_1(x) + (R_2(p) - R_1(p))\\
    \leq &1 + R_2(x) - R_1(x)
    \end{aligned}
   $$
-
+  
 - zig-zag: 
 
 <img src="/img/ads/ads-SplayZigZag.jpg" alt="ads-SplayZigZag" style="zoom:67%;" />
 
 $$
 \begin{aligned}
- \hat{c_i} =& 2 + \phi(T_2) - \phi(T_1)\\
+ \hat{c_i} =& 2 + \Phi(T_2) - \Phi(T_1)\\
    = &2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\\
   
 \end{aligned}
@@ -378,7 +386,7 @@ $$
   
   $$
   \begin{aligned}
-  \hat{c_i} =& 2 + \phi(T_2) - \phi(T_1)\\
+  \hat{c_i} =& 2 + \Phi(T_2) - \Phi(T_1)\\
    = &2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\\
    = &2 + R_2(p) + R_2(g) - R_1(p) - R_1(x)\\
    \leq &2 + R_2(x) + R_2(g) - 2R_1(x)
@@ -425,6 +433,7 @@ $$
 
 - Find
   - 与当前节点的所有子节点左边界值进行比较以找到应该在的区间
+  - 如果不使用二分查找优化复杂度 $O((M/\log{M})\log{N})$ ，否则 $O(\log{N})$ 。 Insert 和 Delete 操作同理。
 
 <details>
 	<summary> code </summary>
@@ -759,7 +768,7 @@ struct TreeNode{
 
 - 复杂度：均摊分析
   - $D_i = the\ \ root\ \ of\ \ the\ \ resulting\ \ tree$ 
-  - $\phi (D_i) = number\ \  of\ \ heavy\ \ nodes$
+  - $\Phi (D_i) = number\ \  of\ \ heavy\ \ nodes$
     - heavy nodes :  右子树大于左子树的节点
     - 除了在归并路线上的节点，其他节点的轻重性质不变化
     - 定义最开始的右路径（即归并路线）上轻节点 $l_i$ ，重节点 $h_i$ 。
@@ -812,11 +821,11 @@ $$
 
   - 建树
 
-    - $\phi = number\ \ of\ \ trees$
+    - $\Phi = number\ \ of\ \ trees$
 
-    - 假设进行插入时现有单独的树$B_0,B_1,...,B_k, B_{k+t},....(t\ge 2)$，则插入时会与 $B_0$ 到 $B_k$ 合并得到一棵 $B_{k+1}$ ，其他不变，则 $\phi_i - \phi_{i-1} = -k$ （正在插入的那个点也是一棵树）
+    - 假设进行插入时现有单独的树$B_0,B_1,...,B_k, B_{k+t},....(t\ge 2)$，则插入时会与 $B_0$ 到 $B_k$ 合并得到一棵 $B_{k+1}$ ，其他不变，则 $\Phi_i - \Phi_{i-1} = -k$ （正在插入的那个点也是一棵树）
 
-    - $\hat{c_i} = c_i + \phi_i - \phi_{i-1} = 1+(k+1) -k = 2 $
+    - $\hat{c_i} = c_i + \Phi_i - \Phi_{i-1} = 1+(k+1) -k = 2 $
 
       - 为什么$c_i = 1 + (k+1)$ ？
 
@@ -828,19 +837,30 @@ $$
 
 # 总结：复杂度
 
-| Heaps        | Leftist | Skew | Binomial | Fibonacci       | Binary | Link list |
-| ------------ | ------- | ---- | -------- | --------------- | ------ | --------- |
-| Make heap    | O(1)    | O(1) | O(1)     | O(1)            | O(1)   | O(1)      |
-| Find-Min     |         |      | O(1)     |                 |        |           |
-| Merge(Union) |         |      | O(1)     |                 |        |           |
-| Insert       |         |      | O(log n) |                 |        |           |
-| Delete       |         |      |          |                 |        |           |
-| Delete-Min   |         |      |          | (amortized)O(1) |        |           |
-| Decrease-Key |         |      |          |                 |        |           |
+| Heaps        | Leftist      | Skew                  | Binomial              | Fibonacci             | Binary       | Link list |
+| ------------ | ------------ | --------------------- | --------------------- | --------------------- | ------------ | --------- |
+| Make heap    | $O(1)$       | $O(1)$                | $O(1)$                | $O(1)$                | $O(1)$       | $O(1)$    |
+| Build heap   | $O(N)$       | amortized$O(N)$       | $O(N)$                | $O(N)$                | $O(N)$       | $O(N)$    |
+| Find-Min     | $O(1)$       | $O(1)$                | $O(\log{N})$          | $O(1)$                | $O(1)$       | $O(N)$    |
+| Merge(Union) | $O(\log{N})$ | amortized$O(\log{N})$ | $O(\log{N})$          | $O(1)$                | $O(N)$       | $O(1)$    |
+| Insert       | $O(\log{N})$ | amortized$O(\log{N})$ | amortized$O(\log{N})$ | $O(1)$                | $O(\log{N})$ | $O(1)$    |
+| Delete(?)    | $O(N)$       | $O(N)$                | $O(\log{N})$          | $O(\log{N})$          | $O(\log{N})$ | $O(N)$    |
+| Delete-Min   | $O(\log{N})$ | amortized$O(\log{N})$ | $O(\log{N})$          | amortized$O(\log{N})$ | $O(\log{N})$ | $O(N)$    |
+| Decrease-Key | $O(\log{N})$ | amortized$O(\log{N})$ | $O(\log{N})$          | amortized$O(1)$       | $O(\log{N})$ | $O(1)$    |
 
-| BST  | RBTree | AVL  | Splay |
-| ---- | ------ | ---- | ----- |
-|      |        |      |       |
+**注** ： 
+
+1. Make heap指初始化一个空的堆， Build heap则是依据已有数据构建堆
+2. Delete指在只知道数值的情况下删除数值对应节点
+3. Decrease-Key指将一已知节点的值修改并调整数据结构的过程
+4. Link list指无序的链表，仅用作对照
+5. Delete打问号是因为本表格中Delete的复杂度正确性未验证~~纯本人yy~~，剩余内容参考了[Wikipedia](https://en.wikipedia.org/wiki/Priority_queue#Summary_of_running_times)
+
+|        | BST    | RBTree       | AVL          | Splay                 |
+| ------ | ------ | ------------ | ------------ | --------------------- |
+| Insert | $O(N)$ | $O(\log{N})$ | $O(\log{N})$ | amortized$O(\log{N})$ |
+| Delete | $O(N)$ | $O(\log{N})$ | $O(\log{N})$ | amortized$O(\log{N})$ |
+| Find   | $O(N)$ | $O(\log{N})$ | $O(\log{N})$ | amortized$O(\log{N})$ |
 
 # Backtracking<a id="backtracking"></a>
 
