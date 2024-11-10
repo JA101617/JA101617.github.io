@@ -38,7 +38,7 @@ lang: 'zh-CN'
 ## Accounting method
 
 - 类似存款存入不会比取出少，设计每种操作的均摊成本$d_i$ ，使得相比于实际成本$c_i$有$\forall_i\ \ \hat{c_i} \ge c_i$
-- 势能函数$\phi(op_i)$ 表示整个数据结构在第i个操作前后的势能，满足$d_i-c_i = \phi(op_i)-\phi( op_{ i-1 } )$，则
+- 势能函数$\phi(op_i)$ 表示整个数据结构在第i个操作前后的势能，满足$\hat{c_i}-c_i = \phi(op_i)-\phi( op_{ i-1 } )$，则
 
 $$
 \begin{aligned}
@@ -63,14 +63,21 @@ $$
 - 没有绝对值，可以为负，对于平衡的树，BF取值为$\pm 1$或 $0$
 - 故当某节点的BF值不为上述值则需要调整
 
+**树高**
+
+- 记 $n_h$ 为树高 h 的情况下节点数最小值，那么 $n_h = n_{h-1} + n_{h-2} + 1 $ 
+- 与斐波那契对照，可得 $n_h = F_{h+3}-1$ 
+- 从斐波那契数列的通项可以看出 $h = O(\log{N})$
+
 <details>
-	<summary> code </summary>
+	<summary> 结构体定义 </summary>
 	<pre><code>
 struct Node{
 	int lson, rson, val, h;
 }t[maxn];
   </code></pre>
 </details>
+
 
 ## Rotation Operations
 
@@ -136,7 +143,7 @@ int RLrotate(int p){
 
 - Maintain
 
-  ​	如果需要调整， $|BF(p)|=2$ ，以下以左倾为例进行分析（右倾是对称的）。树结构如下
+  ​	如果需要调整， $|BF(D)|=2$ ，以下以左倾为例进行分析（右倾是对称的）。树结构如下
 
   ![TreeStruct](/img/ads/AVLMaintain.jpg)
 
@@ -174,9 +181,9 @@ int RLrotate(int p){
 
 - Insert
 
-  - 因为要递归找到叶子所以是 $O(\log{n})$
-
+  - 因为要递归找到叶子所以是 $O(\log{N})$
   - 只影响其祖先的BF值，故只用在递归的时候通过返回值提醒祖先节点进行检查。进一步观察可知，当某个节点通过Rotate完成调整后，该子树的 $BF$ 值相比插入前不变，故实际上只在离其最近的不平衡祖先进行调整
+  - 因为只在最近的不平衡祖先进行调整，而 Maintain 函数中最多进行一次 LR 或者 RL ，因此整个插入过程 Rotate 次数至多为 2
 
 
 <details>
@@ -201,7 +208,8 @@ int insert(int p, int v){
     - 只有左子树/右子树：用有的那个子节点替代自己（此时那个子节点一定是个叶节点）
     - 兼有左右子树：取前驱/后继替代自己，将其节点删掉
     - 从删除的叶节点向上调整即可
-- Find, Predecessor, Successor, Rank：同正常二叉树， $O(\log{n})$ 
+  - 值得注意的是，删除节点后的向上调整并不停止于第一个失衡的祖先，一个节点删除可能引发上方处于BF值同号临界的一系列祖先都失衡需要旋转，因此旋转次数 $O(\log{N})$ ，总复杂度 $O(\log{N})$
+- Find, Predecessor, Successor, Rank：同正常二叉树， $O(\log{N})$ 
 
 
 
@@ -222,26 +230,26 @@ int insert(int p, int v){
   - 以右旋为例，设当前节点 $x$， 父亲 $y$
     - $x$ 的右儿子给 $y$ ， $y$ 的左儿子给 $x$
     - 若 $y$ 有父亲 $z$ 则 $x$ 顶替 $y$ 的位置
-
-
-<details>
-	<summary> code </summary>
-	<pre><code>
-  void Rotate(int x) {
-    int y = fa[x], z = fa[y], chk = get(x);
-    ch[y][chk] = ch[x][chk ^ 1];
-    if (ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y;
-    ch[x][chk ^ 1] = y;
-    fa[y] = x;
-    fa[x] = z;
-    if (z) ch[z][y == ch[z][1]] = x;
-    maintain(y);
-    maintain(x);
-  }
-  </code></pre>
-</details>
-
+  
+  <details>
+  	<summary> code </summary>
+  	<pre><code>
+    void Rotate(int x) {
+      int y = fa[x], z = fa[y], chk = get(x);
+      ch[y][chk] = ch[x][chk ^ 1];
+      if (ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y;
+      ch[x][chk ^ 1] = y;
+      fa[y] = x;
+      fa[x] = z;
+      if (z) ch[z][y == ch[z][1]] = x;
+      maintain(y);
+      maintain(x);
+    }
+    </code></pre>
+  </details>
+  
   - 其中 `maintain` 只是维护子树信息，由具体使用决定，一般是 $O(1)$ ， 因而整个操作 $O(1)$ 
+
 
 - Splay
 
@@ -260,12 +268,10 @@ int insert(int p, int v){
 </details>
 
   - 复杂度单次可能 $O(N)$ ，但是均摊是 $O(\log N)$ 的，分析见下
-
 - Search
 
   - 一路往下找 + splay上去
   - $ O(\log{N})$ 
-
 - Delete
 
   - 找到点并splay上去，如果计数为1则删除节点，否则合并两棵子树（查询当前根节点的前驱，将其设为根，并将其右儿子设为另一棵树的根）
@@ -316,7 +322,7 @@ int insert(int p, int v){
 
 ### Splay操作的复杂度分析
 
-写完才发现oiwiki上有很详细的分析...挂个[链接]([Splay 树 - OI Wiki](https://oi-wiki.org/ds/splay/#时间复杂度))
+写完才发现oiwiki上有很详细的分析...挂个[链接](https://oi-wiki.org/ds/splay/#时间复杂度)
 
 - 势能函数$\phi(p) =\sum_{i\in subtree(p)} \log{S(i)}$，其中 $S(i)$ 指 $i$ 的子树大小。记 $\log{S(i)} = rank(i)$ ，则 $\phi(p)=\sum_{i\in subtree(p)} rank(i)$
 
@@ -411,7 +417,9 @@ $$
 
  如图为 M = 3 的情况
 
-![image-20241026101102756](E:\CODE\MyBlog\public\img\ads\B+Order3.jpg)
+可以看出非叶子节点最多存储 M-1 个键值，其中第 i 个对应其第 i+1 个子树中存储的最小值
+
+![Degree3Bplus](/img/ads/B+Order3.jpg)
 
 ## 操作
 
@@ -430,15 +438,16 @@ $$
  }
     </code></pre>
 </details>
-- Insert
 
+
+- Insert
   - 先递归到对应的区间，即叶节点，此时有几种情况
 
     - 如果那个区间包含的数不超过 M - 1 个：直接插入进去就行
     - 否则，需要对这个区间进行分裂，上层结构也需要有相应变化
 
-      - 当前叶节点分裂成两个，各自拥有 $\lceil M/2 \rceil$ 和 $\lfloor M/2 \rfloor$ 个数
-      - 递归处理父节点，直到找到一个儿子数量没到 $M-1$ 的祖宗节点为止。如果直到根节点都不满足要求，重新建一个根节点并将原根节点分裂
+      - 当前叶节点分裂成两个，各自拥有 $\lfloor (M+1)/2 \rfloor$ 个数
+      - 递归处理父节点，直到找到一个儿子数量没到 $M-1$ 的祖宗节点为止。如果直到根节点都不满足要求，重新建一0个根节点并将原根节点分裂
 
 <details>
 	<summary>Check：检测是否已经存在</summary>
@@ -576,6 +585,8 @@ int Insert(int cur, int val){
 }
 	</code></pre>
 </details>
+
+
 - Delete
   - 同样是递归到相应叶节点进行处理
     - 当删除掉当前值不会使叶节点包含值少于 $\lceil M/2 \rceil$ ，直接删除
@@ -585,14 +596,18 @@ int Insert(int cur, int val){
 
 # 红黑树<a id="RB"></a>
 
-**定义：**一棵红黑树需要满足如下条件：
+
+
+**定义：** 一棵红黑树需要满足如下条件：
 
 - 节点分为红黑两种颜色
 - 根节点为黑色
-
 - 空节点（NIL）为黑色
 - 红色节点的子节点一定为黑色
 - 从根节点往下到叶节点（NIL），每条路径上黑色节点数量相同
+  - 定义每个节点的黑高 (Black height)是从自己向下到NIL的路径上黑色节点的个数（**但是不包含自己**）
+    - 例如 BH(NIL) = 0， 单个节点的树 BH = 1（对应NIL，根节点本身不算在内）
+
 
 **性质：**
 
@@ -600,7 +615,8 @@ int Insert(int cur, int val){
 
 -  $N$ 个内部节点（不含NIL）的红黑树的高度最大为 $2\log_2(N+1)$
 
-  证明：综合以下两条
+  - 证明：综合以下两条
+  
   $$
   \begin{cases}
   N \ge 2^{BlackHeight} - 1\\
@@ -625,32 +641,73 @@ int Insert(int cur, int val){
       - case 2 : 基于橙色节点左旋转为case 3
       - case 3 : 红色节点染黑，其父亲染红，再将新的黑色节点右旋上去
 	    ![Insert](/img/ads/RBT-insert.jpg)
+	    
+	    - 综合上述情况，只有case1可能向上递归，其他情况不会。只有case2 和 case3 需要 Rotate ，因此最多旋转次数为从 case2 转到 case3 ，即最多两次
+	  
 	- 复杂度 $O(\log N)$
 
 
 - Delete
+	
+	~~赞美[修佬](https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec02/#删除)~~
+	
 	- 考虑分成两部分进行分类讨论：删除和删除后平衡维护
+	
 	- 删除
-		- case 0 : 如果整颗树只有一个节点直接删
+		- case 0 : 如果整颗树只有一个节点直接删，无需后续维护（可以理解为特化的 case 3 ? )
+  	
+		- case 1 : 如果该节点左右儿子都有就取前驱/后继（只取值不取颜色）代替自己并删除前驱/后继对应节点，前驱/后继可能是没有儿子的，这种情况即转为 case 3 ，也可能是只有一个儿子的，这种情况即转为 case 2
 		
-		- case 1 : 如果该节点左右儿子都有就去前驱/后继（只取值不取颜色）代替自己并删除前驱/后继对应节点
-		- case 2 : 如果该节点左右儿子只有一个，则那个节点一定是红的（因为黑高一致），则本节点一定是黑的。用子节点代替待删除节点并染黑即可
+		  
+	  
+		- case 2 : 如果该节点左右儿子只有一个，则那个节点一定是红的（因为黑高一致），则本节点一定是黑的。用子节点代替待删除节点并染黑即可，无需后续维护
+	  
 		- case 3 : 如果该节点没有（非空）子节点，若节点为红直接删掉，节点为黑删掉后还要维护一下
-      综合看下来最后都会转成一个叶子节点的删除，这样平衡维护就好考虑不少
-	- 平衡维护
+	  
+	  **结论** 每个 case 都能转化为删除叶节点的情况，但只有在最后转化为删除某黑色节点时才会导致黑高的性质不能满足，需要进行平衡维护。
+	  
+	- 平衡维护：也需要递归地调整。记当前导致失衡的子树的根节点是x，依据兄弟节点(w)、其子节点(lc & rc)以及父亲节点(fa)进行分类。以下以 x 为左子树为例，右子树则需对称处理。
+	
+	  - case 1 : x,w,lc,rc全黑
+	
+	    - case 1.1 fa 是红色的：将 w 染红， fa 染黑，相当于从 w 子树中抽一个黑色出来共享给 x
+	    - case 1.2 fa 是黑色的：同样将 w 染红，然而在 fa 的子树内无法找到可以用来从红转黑共享给 x 的黑色节点，因而将矛盾转移到 fa 以上的部分。如果 fa 就是根节点，则可以直接退出（因为整棵树黑高平等减一）。
+	
+	  - case 2 : x,w黑，rc红：将 w 染为和 fa 相同的颜色，将 rc 和 fa 染黑，并对 fa 进行一次左旋。思路是给 x 上方补一个黑节点，为了和其他子树保持一致顶上留一个与原 fa 相同的节点。因为 rc 的高度-1，将 rc 本身变黑以弥补。
+	
+	    ![case2](/img/ads/RBT-DeleteBalanceCase2.jpg)
+	
+	  - case 3 : x,w,rc黑，lc红：刚刚那个思路中更改 rc 颜色用于补偿的步骤无法实施。将 w 染红， lc 染黑，右旋 w 使得 b 成为新的根。可以发现在 w 和 lc 对调染色时， lc 的整体黑高比 rc 高了 1，其左右两子树的黑高倒是与 rc 一致，因此将 lc 转到根节点后 lc 子树内黑高与原先一致，但右子节点变红了，则状况转为 case 2 。
+	
+	    ![case3](/img/ads/RBT-DeleteBalanceCase3.jpg)
+	
+	  - case 4 : fa,x,lc,rc黑，w红：将 fa 左旋，使 w 成为新的根节点。但此时左右两子树黑高差1，因此将 fa 染红， w 染黑（此时至少保证了向 lc 方向的路径与向 rc 方向的路径黑高一致），然而 fa 子树内黑高仍然不相等，因此递归到子树中去，可能转化为 case 1.1,case 2,case 3。
+	
+	  ​      ~~懒得画了，借一下oiwiki的图~~
+	
+	  ![case4](/img/ads/RBT-DeleteBalanceCase4.jpg)
+	
+	  - 综合以上四种情况：case1.2需要向上递归，case4需要向下递归，剩余情况无需递归。case2，case3，case4中存在Rotate操作，则最多旋转次数为由 case4 转到 case3 再到 case2 ，共计3次
+	
+	- 删除部分最坏即寻找前驱后继，复杂度为树高；平衡维护部分向上递归 (case1.2) 与向下递归 (case4) 不兼容，因此最坏复杂度即树高， $O(\log{N})$
 
+- 查找前驱后继等操作同正常 BST
 
+## 比较：AVL与RBT的旋转操作次数
 
+|        | AVL          | RBT     |
+| ------ | ------------ | ------- |
+| Insert | $\le 2$      | $\le 2$ |
+| Delete | $O(\log{N})$ | $\le 3$ |
 
-
-
+分析见[AVL](#AVL)和[RBT](#RB)的相应部分。
 
 # Inverted File Index
 
 **定义：**
 
 - **Index:** a mechanism for locating a given term in a text.
-- **Inverted file: ** contains a list of pointers (e.g. the number of a page) to all occurrences of that term in the text.
+- **Inverted file: **  contains a list of pointers (e.g. the number of a page) to all occurrences of that term in the text.
 
 
 
