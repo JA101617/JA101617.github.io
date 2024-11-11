@@ -24,6 +24,7 @@ lang: 'zh-CN'
 ## 算法
 
 - [Backtracking](#backtracking)
+- [Divide and Conquer](#DivideConquer)
 - [DP](#DP)
 
 
@@ -57,6 +58,29 @@ $$
 $$
 
 需要$\Phi(op)$的复杂度不高于 $\displaystyle\sum_{i=1}^n \hat{c_i}$，方便起见可以让$\Phi(op_0)=0$
+
+## 作业题
+
+<details>
+	<summary> T1：概念辨析 </summary>
+	<pre>
+	When doing amortized analysis, which one of the following statements is FALSE?
+	A.Aggregate analysis shows that for all n, a sequence of n operations takes worst-case time T(n) in total.  Then the amortized cost per operation is therefore T(n)/n
+	B.For potential method, a good potential function should always assume its maximum at the start of the sequence
+	C.For accounting method, when an operation's amortized cost exceeds its actual cost, we save the difference as credit to pay for later operations whose amortized cost is less than their actual cost
+	D.The difference between aggregate analysis and accounting method is that the later one assumes that the amortized costs of the operations may differ from each other
+	Answer : B
+	</pre>
+</details>
+<details>
+	<summary> T2：势能函数设计 </summary>
+	<img src="/img/ads/AmortizedT2-5.jpg" alt="image-20241111204947435" />
+    <pre>Answer : D</pre>
+    <img src="https://zhoutimemachine.github.io/note/courses/imgs/ads/ads_hw_1.2.png" alt="1.2"/>
+</details>
+
+
+
 
 # AVL Trees<a id="AVL"></a>
 
@@ -220,7 +244,26 @@ int insert(int p, int v){
   - 值得注意的是，删除节点后的向上调整并不停止于第一个失衡的祖先，一个节点删除可能引发上方处于BF值同号临界的一系列祖先都失衡需要旋转，因此旋转次数 $O(\log{N})$ ，总复杂度 $O(\log{N})$
 - Find, Predecessor, Successor, Rank：同正常二叉树， $O(\log{N})$ 
 
+## 作业题
 
+<details>
+	<summary> T1：最少结点数计算 </summary>
+	<pre>
+	If the depth of an AVL tree is 6 (the depth of an empty tree is defined to be -1), then the minimum possible number of nodes in this tree is:33
+	</pre>
+</details>
+
+<details>
+	<summary> T2：AVL的插入 </summary>
+	<pre>
+	Insert 2, 1, 4, 5, 9, 3, 6, 7 into an initially empty AVL tree.  Which one of the following statements is FALSE?
+	A.4 is the root
+	B.3 and 7 are siblings
+	C.2 and 6 are siblings
+	D.9 is the parent of 7
+	Answer : B
+	</pre>
+</details>
 
 # Splay<a id="Splay"></a>
 
@@ -340,6 +383,8 @@ int insert(int p, int v){
 - zig : 
 
   <img src="/img/ads/ads-SplayZig.png" alt="ads-SplayZig" style="zoom:67%;" />
+  
+  
   $$
   \begin{aligned}
   \hat{c_i} =& 1 + \Phi(T_2) - \Phi(T_1)\\
@@ -351,6 +396,7 @@ int insert(int p, int v){
 - zig-zag: 
 
 <img src="/img/ads/ads-SplayZigZag.jpg" alt="ads-SplayZigZag" style="zoom:67%;" />
+
 
 $$
 \begin{aligned}
@@ -410,6 +456,13 @@ $$
 
 ​		值得注意的是$R_0(x)$不一定为0
 
+## 作业题
+
+<details>
+	<summary> T1：access(splay)操作 </summary>
+	<img src="/img/ads/Splay-T1.jpg" alt="RBT-T1" />
+    <pre>Tips:与父亲同向则先转父亲，否则先转自己（然后都要转一次自己）</pre>
+</details>
 
 
 
@@ -603,9 +656,49 @@ int Insert(int cur, int val){
       - 若兄弟节点包含多于 $\lceil M/2 \rceil$ 个值，可以从兄弟节点借一个，并更新父节点中的分隔值
       - 否则与兄弟节点合并并删除父节点中的分隔值，递归处理父节点
 
+## 作业题
+
+<details>
+	<summary> T1：节点数计算 </summary>
+	<pre>
+	A 2-3 tree with 3 nonleaf nodes must have 18 keys at most.(T)
+	Tips:叶节点指的是直接连向数值的节点而非数值本体
+	</pre>
+</details>
+
+<details>
+	<summary> T2：插入与分裂操作 </summary>
+	<img src="/img/ads/BPT-T2.jpg" alt="BPT-T2" />
+    <pre>
+    结构大致是(懒得画图，自行意会一下)
+    [6]
+    [2,4][8]
+    [0,1][2,3][4,5][6,7][8,9]
+    </pre>
+</details>
+
+<details>
+	<summary> T3：删除操作 </summary>
+	<img src="/img/ads/BPT-T3.jpg" alt="BPT-T3" />
+    <pre>
+    结构是
+    [4,6]
+    [1,2,3][4,5][6,7,8]
+    目前还没有写过删除的代码所以实现细节不明
+    </pre>
+</details>
+
+<details>
+	<summary> T4：概念辨析 </summary>
+	<img src="/img/ads/BPT-T4.jpg" alt="BPT-T4" />
+    <pre>
+    注意只有根节点这种特例！！
+    </pre>
+</details>
+
+
+
 # 红黑树<a id="RB"></a>
-
-
 
 **定义：** 一棵红黑树需要满足如下条件：
 
@@ -675,22 +768,22 @@ int Insert(int cur, int val){
 	  
 	  **结论** 每个 case 都能转化为删除叶节点的情况，但只有在最后转化为删除某黑色节点时才会导致黑高的性质不能满足，需要进行平衡维护。
 	  
-	- 平衡维护：也需要递归地调整。记当前导致失衡的子树的根节点是x，依据兄弟节点(w)、其子节点(lc & rc)以及父亲节点(fa)进行分类。以下以 x 为左子树为例，右子树则需对称处理。
+	- 平衡维护：也需要递归地调整。记当前导致失衡的子树的根节点是x（颜色不定） ，依据兄弟节点(w)、其子节点(lc & rc)以及父亲节点(fa)进行分类。以下以 x 为左子树为例，右子树则需对称处理。
 	
-	  - case 1 : x,w,lc,rc全黑
+	  - case 1 : w,lc,rc全黑
 	
 	    - case 1.1 fa 是红色的：将 w 染红， fa 染黑，相当于从 w 子树中抽一个黑色出来共享给 x
 	    - case 1.2 fa 是黑色的：同样将 w 染红，然而在 fa 的子树内无法找到可以用来从红转黑共享给 x 的黑色节点，因而将矛盾转移到 fa 以上的部分。如果 fa 就是根节点，则可以直接退出（因为整棵树黑高平等减一）。
 	
-	  - case 2 : x,w黑，rc红：将 w 染为和 fa 相同的颜色，将 rc 和 fa 染黑，并对 fa 进行一次左旋。思路是给 x 上方补一个黑节点，为了和其他子树保持一致顶上留一个与原 fa 相同的节点。因为 rc 的高度-1，将 rc 本身变黑以弥补。
+	  - case 2 : w黑，rc红：将 w 染为和 fa 相同的颜色，将 rc 和 fa 染黑，并对 fa 进行一次左旋。思路是给 x 上方补一个黑节点，为了和其他子树保持一致顶上留一个与原 fa 相同的节点。因为 rc 的高度-1，将 rc 本身变黑以弥补。
 	
 	    ![case2](/img/ads/RBT-DeleteBalanceCase2.jpg)
 	
-	  - case 3 : x,w,rc黑，lc红：刚刚那个思路中更改 rc 颜色用于补偿的步骤无法实施。将 w 染红， lc 染黑，右旋 w 使得 b 成为新的根。可以发现在 w 和 lc 对调染色时， lc 的整体黑高比 rc 高了 1，其左右两子树的黑高倒是与 rc 一致，因此将 lc 转到根节点后 lc 子树内黑高与原先一致，但右子节点变红了，则状况转为 case 2 。
+	  - case 3 : w,rc黑，lc红：刚刚那个思路中更改 rc 颜色用于补偿的步骤无法实施。将 w 染红， lc 染黑，右旋 w 使得 b 成为新的根。可以发现在 w 和 lc 对调染色时， lc 的整体黑高比 rc 高了 1，其左右两子树的黑高倒是与 rc 一致，因此将 lc 转到根节点后 lc 子树内黑高与原先一致，但右子节点变红了，则状况转为 case 2 。
 	
 	    ![case3](/img/ads/RBT-DeleteBalanceCase3.jpg)
 	
-	  - case 4 : fa,x,lc,rc黑，w红：将 fa 左旋，使 w 成为新的根节点。但此时左右两子树黑高差1，因此将 fa 染红， w 染黑（此时至少保证了向 lc 方向的路径与向 rc 方向的路径黑高一致），然而 fa 子树内黑高仍然不相等，因此递归到子树中去，可能转化为 case 1.1,case 2,case 3。
+	  - case 4 : fa,lc,rc黑，w红：将 fa 左旋，使 w 成为新的根节点。但此时左右两子树黑高差1，因此将 fa 染红， w 染黑（此时至少保证了向 lc 方向的路径与向 rc 方向的路径黑高一致），然而 fa 子树内黑高仍然不相等，因此递归到子树中去，可能转化为 case 1.1,case 2,case 3。
 	
 	  ​      ~~懒得画了，借一下oiwiki的图~~
 	
@@ -711,6 +804,22 @@ int Insert(int cur, int val){
 
 分析见[AVL](#AVL)和[RBT](#RB)的相应部分。
 
+## 作业题
+
+<details>
+	<summary> T1：插入节点 </summary>
+	<img src="/img/ads/RBT-T1.jpg" alt="RBT-T1" />
+    <pre>Tips:得到结果19是红色的</pre>
+</details>
+
+<details>
+	<summary> T2：删除节点（但是强度很低） </summary>
+	<img src="/img/ads/RBT-T2.jpg" alt="RBT-T2" />
+    <pre>Tips:谁顶上去谁变黑</pre>
+</details>
+
+
+
 # Inverted File Index
 
 **定义：**
@@ -718,12 +827,23 @@ int Insert(int cur, int val){
 - **Index:** a mechanism for locating a given term in a text.
 - **Inverted file: **  contains a list of pointers (e.g. the number of a page) to all occurrences of that term in the text.
 
+## Word Stemming
 
+- 将一个单词化为它的词根
+
+## Stop Words
+
+- 可以理解为“虚词”，过于普遍的单词没必要 index （比如 a, the , it ）
+
+寻找单词
+
+- Sol1 : Search trees(b tree,b+ tree, trie)
+- Sol2 : Hashing
 
 ## Distributed Indexing
 
-- **Term-partitioned Index**  存储困难，检索容易
-- **Document-partiitioned index** 存储容易，检索困难
+- **Term-partitioned Index**  依据单词字典序存储，存储困难，检索容易，容灾能力差
+- **Document-partiitioned index** 依据文章划分存储，存储容易，检索困难，容灾能力好
 
 ## Dynamic Indexing
 
@@ -733,7 +853,50 @@ int Insert(int cur, int val){
 
 ## Thresholding
 
-- Query:对词组按出现频率排序
+- Document：只取出权重前 x 的文档
+- Query：对词组按出现频率排序，按照频率由高到低的词组搜索到的文档贡献不同的权重
+
+## Evaluate
+
+对于一次搜索
+
+|               | Relevant | Irrelevant |
+| ------------- | -------- | ---------- |
+| Retrieved     | $R_R$    | $I_R$      |
+| Not Retrieved | $R_N$    | $I_N$      |
+
+则有两个评估指标
+
+- **Precision精确度** $P=R_R/(R_R+I_R)$
+- **Recall召回率** $R=R_R/(R_R+R_N)$
+
+## 作业题
+
+<details>
+	<summary> T1：Distributed Indexing </summary>
+	<img src="/img/ads/IFI-T1.jpg" alt="IFI-T1" />
+    <pre>
+    区分两种存储方式
+    </pre>
+</details>
+
+<details>
+	<summary> T2：Evaluation </summary>
+	<img src="/img/ads/IFI-T2.jpg" alt="IFI-T2" />
+    <pre>
+    问的是召回率
+    </pre>
+</details>
+
+<details>
+	<summary> T3：accessing terms </summary>
+	<img src="/img/ads/IFI-T3.jpg" alt="IFI-T3" />
+    <pre>
+    哈希表不利于搜索序列和模糊搜索
+    </pre>
+</details>
+
+
 
 # 左偏堆<a id="Leftist"></a>
 
@@ -746,25 +909,78 @@ int Insert(int cur, int val){
   - 右路径长度为 r 的左偏堆至少拥有 $2^r-1$ 个节点。（此时是满二叉树）[tips : 数学归纳法]
 
 <details>
-	<summary> code </summary>
+	<summary>结构体定义</summary>
 	<pre><code>
-struct TreeNode{
-	ElementType Element;
-	PriorityQueue Left,Right;
-	int Npl;
-};
+    struct TreeNode{
+        ElementType Element;
+        PriorityQueue Left,Right;
+        int Npl;
+    };
   </code></pre>
 </details>
 
+
 - 复杂度
   - Merge : O(logN)
-  - DeleteMin : O(logN)
+  
+  <details>
+  	<summary>code</summary>
+  	<pre><code>
+      PriorityQueue Merge( PriorityQueue H1, PriorityQueue H2 )
+      {
+      	if(H1 == NULL) return H2;
+      	if(H2 == NULL) return H1;
+      	if(H1->Element > H2->Element) swap(H1,H2);
+      	if(H1->Left == NULL) H1->Left = H2;
+      	else{
+      		H1->Right = Merge(H1->Right,H2);
+      		if(H1->Left->Npl < H1->Right->Npl) SwapChildren(H1);
+      		H1->Npl = H1->Right->Npl + 1;
+      	}
+      	return H1;
+      }
+    </code></pre>
+  </details>
+  
+  - DeleteMin : 将根节点左右儿子合并就行，O(logN)
 
-## 斜堆<a id="Skew"></a>
+## 作业题
+
+<details>
+	<summary> T1：Build heap </summary>
+	<img src="/img/ads/LH-T1.jpg" alt="LH-T1" />
+    <pre>
+    由这道题可以理解为什么左偏树和斜堆的BuildHeap复杂度是（斜堆是均摊）O(n)
+    </pre>
+</details>
+
+
+
+# 斜堆<a id="Skew"></a>
 
 神必算法
 
 - 每Merge必调换左右儿子
+- **只有在合并的末尾，即叶子节点才无需交换左右儿子** ，这是与下面这份代码实现不同的
+
+<details>
+	<summary>早年的代码一份</summary>
+	<pre><code>
+    newnode(int v){//返回节点编号 	
+    	int x=++cnt; 	
+    	val[x]=v,ls[x]=rs[x]=0; 	
+    	return x; 
+    } 
+    int merge(int a,int b){//以a,b为根的树合并,返回根节点 	
+    	if(!a||!b) return a+b;
+        if(val[a] > val[b]) swap(a,b); 	
+        rs[a]=merge(rs[a],b); 	
+        swap(ls[a],rs[a]);
+        return a; 
+    }
+  </code></pre>
+</details>
+
 
 - 复杂度：均摊分析
   - $D_i = the\ \ root\ \ of\ \ the\ \ resulting\ \ tree$ 
@@ -782,7 +998,12 @@ T_{worst}=l_1+h_1+l_2+h_2\\
 T_{amortized} = T_{worst}+\phi_{i+1}-\phi_i\le 2(l_1+l_2) \Rightarrow O(\log N)  
 $$
 
+## 作业题
 
+直接把结论列出来好了
+
+- 按顺序插入 $1-2^k-1$ 得到的总是完全满二叉树
+- 斜堆的 right path 长度是任意的，只是轻节点数受到限制
 
 # 二项队列<a id="Binomial"></a>
 
@@ -796,24 +1017,114 @@ $$
 
 ### 操作
 
-
-- Merge：单次复杂度 $O(\log n)$ ， 均摊 $O(1)$
-	- 二项树的合并，显然 $O(1)$
-
 <details>
-	<summary> code </summary>
+	<summary> 结构体定义 </summary>
 	<pre><code>
-      T2->Next = T1->Lson;
-      T1->Lson = T2;
-	</code></pre>
+      typedef struct BinNode *Position;
+      typedef struct Collection *BinQueue;
+      typedef struct BinNode *BinTree;
+      struct BinNode
+      {
+      	ElementType Element;
+      	Position LeftChild;
+      	Position NextSibling;
+      };
+      struct Collection
+      {
+      	int CurrentSize;
+      	BinTree TheTrees[MaxTrees];
+      };
+    </code></pre>
 </details>
 
 
+- Merge：单次复杂度 $O(\log n)$ ， 均摊 $O(1)$
+	- 二项树的合并，显然 $O(1)$，两个堆的合并类似于两个二进制数逐位做加法
+
+<details>
+	<summary> 两棵树的合并 </summary>
+	<pre><code>
+      BinTree CombineTrees( BinTree T1, BinTree T2 )
+      {
+      	if(T1->Element > T2->Element) return CombineTrees(T2,T1);
+      	T2->NextSibling = T1->LeftChild;
+      	T1->LeftChild = T2;
+      	return T1;
+      }
+	</code></pre>
+</details>
+
+<details>
+	<summary> 两个二项堆的合并 </summary>
+	<pre><code>
+      BinQueue Merge( BinQueue H1, BinQueue H2 )
+      {
+      	BinTree T1,T2,Carry = NULL;
+      	int i,j;
+      	if( H1->CurrentSize + H2->CurrentSize > Capacity ) ErrorMessage();
+      	H1->CurrentSize += H2->CurrentSize;
+      	for( i = 0; j = 1; j <= H1->CurrentSize; ++i, j *= 2){
+      		T1 = H1->TheTrees[i];
+      		T2 = H2->TheTrees[i];
+      		switch(4*!!Carry + 2*!!T2 + !!T1){
+      			case 0:case 1:break;
+      			case 2: H1->TheTrees[i] = T2;
+      					H2->TheTrees[i] = NULL;break;
+      			case 4: H1->TheTrees[i] = Carry;
+      					Carry = NULL;break;
+      			case 3: Carry = CombineTrees( T1, T2 );
+      					H1->TheTrees[i] = H2->TheTrees[i] = NULL;break;
+      			case 5: Carry = CombineTrees( T1, Carry );
+      					H1->TheTrees[i] = NULL;break;
+      			case 6: Carry = CombineTrees( T2, Carry );
+      					H2->TheTrees[i] = NULL; break;
+      			case 7: H1->TheTrees[i] = Carry; 
+      					Carry = CombineTrees( T1, T2 ); 
+      					H2->TheTrees[i] = NULL; break;
+      		}
+      	}
+      	return H1;
+      }
+	</code></pre>
+</details>
+
+- Find-Min : 在根节点队列中遍历寻找 $O(\log{n})$ 但是如果专门记录更新可以做到 $O(1)$
 - Insert：即将一棵 $B_0$ 树合并到队列中，单次最好 $O(1)$ 最坏 $O(\log n)$ ， 均摊 $O(1)$
-
 - Build：将节点逐个插入，由均摊分析得总复杂度 $O(n)$
+- DeleteMin：将最小根节点取出，将其对应二项树拆成所有子树再Merge回去， $O(\log n)$
 
-- POP：将最小根节点取出，将其对应二项树拆成所有子树再Merge回去， $O(\log n)$
+<details>
+	<summary> DeleteMin </summary>
+	<pre><code>
+    ElementType  DeleteMin( BinQueue H )
+	{	
+		BinQueue DeletedQueue; 
+		Position DeletedTree, OldRoot;
+		ElementType MinItem = Infinity;
+		int i, j, MinTree;
+		if ( IsEmpty( H ) )  {  PrintErrorMessage();  return –Infinity; }
+		for ( i = 0; i < MaxTrees; i++) {
+	    	if( H->TheTrees[i] && H->TheTrees[i]->Element < MinItem ) { 
+				MinItem = H->TheTrees[i]->Element;  MinTree = i;    		} 
+		} /* end for-i-loop */
+		DeletedTree = H->TheTrees[ MinTree ];  
+		H->TheTrees[ MinTree ] = NULL;
+		OldRoot = DeletedTree; 
+		DeletedTree = DeletedTree->LeftChild;   
+		free(OldRoot);
+		DeletedQueue = Initialize();    
+		DeletedQueue->CurrentSize = ( 1<<MinTree ) – 1;  
+		for ( j = MinTree – 1; j >= 0; j – – ) {  
+            DeletedQueue->TheTrees[j] = DeletedTree;
+            DeletedTree = DeletedTree->NextSibling;
+            DeletedQueue->TheTrees[j]->NextSibling = NULL;
+		}
+		H->CurrentSize  – = DeletedQueue->CurrentSize + 1;
+		H = Merge( H, DeletedQueue );
+		return MinItem;
+	}
+	</code></pre>
+</details>
 
 - Decrease Key：在二叉树上进行上调，显然 $O(\log n)$
 
@@ -837,16 +1148,15 @@ $$
 
 # 总结：复杂度
 
-| Heaps        | Leftist      | Skew                  | Binomial              | Fibonacci             | Binary       | Link list |
-| ------------ | ------------ | --------------------- | --------------------- | --------------------- | ------------ | --------- |
-| Make heap    | $O(1)$       | $O(1)$                | $O(1)$                | $O(1)$                | $O(1)$       | $O(1)$    |
-| Build heap   | $O(N)$       | amortized$O(N)$       | $O(N)$                | $O(N)$                | $O(N)$       | $O(N)$    |
-| Find-Min     | $O(1)$       | $O(1)$                | $O(\log{N})$          | $O(1)$                | $O(1)$       | $O(N)$    |
-| Merge(Union) | $O(\log{N})$ | amortized$O(\log{N})$ | $O(\log{N})$          | $O(1)$                | $O(N)$       | $O(1)$    |
-| Insert       | $O(\log{N})$ | amortized$O(\log{N})$ | amortized$O(\log{N})$ | $O(1)$                | $O(\log{N})$ | $O(1)$    |
-| Delete(?)    | $O(N)$       | $O(N)$                | $O(\log{N})$          | $O(\log{N})$          | $O(\log{N})$ | $O(N)$    |
-| Delete-Min   | $O(\log{N})$ | amortized$O(\log{N})$ | $O(\log{N})$          | amortized$O(\log{N})$ | $O(\log{N})$ | $O(N)$    |
-| Decrease-Key | $O(\log{N})$ | amortized$O(\log{N})$ | $O(\log{N})$          | amortized$O(1)$       | $O(\log{N})$ | $O(1)$    |
+| Heaps        | Leftist           | Skew                  | Binomial                        | Fibonacci             | Binary            | Link list |
+| ------------ | ----------------- | --------------------- | ------------------------------- | --------------------- | ----------------- | --------- |
+| Make heap    | $O(1)$            | $O(1)$                | $O(1)$                          | $O(1)$                | $O(1)$            | $O(1)$    |
+| Build heap   | $\Theta (N)$      | amortized$\Theta(N)$  | $\Theta(N)$                     | $\Theta(N)$           | $\Theta(N)$       | $O(N)$    |
+| Find-Min     | $\Theta(1)$       | $\Theta(1)$           | $\Theta(\log{N})$或$\Theta( 1)$ | $\Theta(1)$           | $\Theta(1)$       | $O(N)$    |
+| Merge(Union) | $\Theta(\log{N})$ | amortized$O(\log{N})$ | $\Theta(\log{N})$               | $\Theta(1)$           | $\Theta(N)$       | $O(1)$    |
+| Insert       | $\Theta(\log{N})$ | amortized$O(\log{N})$ | amortized$O(1)$                 | $\Theta(1)$           | $\Theta(\log{N})$ | $O(1)$    |
+| Delete-Min   | $\Theta(\log{N})$ | amortized$O(\log{N})$ | $\Theta(\log{N})$               | amortized$O(\log{N})$ | $\Theta(\log{N})$ | $O(N)$    |
+| Decrease-Key | $\Theta(\log{N})$ | amortized$O(\log{N})$ | $\Theta(\log{N})$               | amortized$\Theta(1)$  | $\Theta(\log{N})$ | $O(1)$    |
 
 **注** ： 
 
@@ -854,7 +1164,8 @@ $$
 2. Delete指在只知道数值的情况下删除数值对应节点
 3. Decrease-Key指将一已知节点的值修改并调整数据结构的过程
 4. Link list指无序的链表，仅用作对照
-5. Delete打问号是因为本表格中Delete的复杂度正确性未验证~~纯本人yy~~，剩余内容参考了[Wikipedia](https://en.wikipedia.org/wiki/Priority_queue#Summary_of_running_times)
+5. 内容参考了[Wikipedia](https://en.wikipedia.org/wiki/Priority_queue#Summary_of_running_times)
+6. 二项堆的Find-Min操作的两种复杂度取决于有没有用变量实时更新记录Min值，老师PPT中貌似默认不维护
 
 |        | BST    | RBTree       | AVL          | Splay                 |
 | ------ | ------ | ------------ | ------------ | --------------------- |
@@ -864,17 +1175,109 @@ $$
 
 # Backtracking<a id="backtracking"></a>
 
-- 考虑对称性可以少算不少
+<details>
+	<summary> 回溯模板 </summary>
+	<pre><code>
+	bool Backtracking ( int i ){
+    	Found = false;
+    	if ( i > N )return true; /* solved with (x1, ..., xN) */
+    	for ( each xi in Si ) { 
+    		/* check if satisfies the restriction R */
+    		OK = Check((x1, ..., xi) , R ); 
+    		/* pruning */
+    		if ( OK ) {
+    			Count xi in;
+    			Found = Backtracking( i+1 );
+    			if ( !Found )Undo( i ); 
+    			/* recover to (x1, ..., xi-1) */
+    		}
+    		if ( Found ) break; 
+    	}
+    	return Found;
+    }
+	</code></pre>
+</details>
 
-template（略）
+- 考虑对称性可以少算不少
 
 - min-max搜索
 
-  以棋类游戏（三子棋为例）评估一个情况的优劣为其所有后继中估值最低的那种，从而得到最优解。左右旋不会影响整颗树的红黑平衡吗，为什么旋转的代码里面没有关于颜色的内容围棋这类，只需模糊搜索评估的优劣比人强就行。
+  以棋类游戏（三子棋为例）评估一个情况的优劣为其所有后继中估值最低的那种，从而得到最优解。围棋这类，只需模糊搜索评估的优劣比人强就行。
 
   - 找到比另一分支更小的结果可以直接停掉
-  
+  - 定义某局面的"goodness"为如下等式
+
+$$
+f(P) = W_{computer}-W_{human}
+$$
+
+​				其中W表示在P局面下获胜的结局数。
+
+​				computer的目标是使其最大化，人类反之，因而搜索呈现一层取min一层取max的				状态。
+
 - $\alpha-\beta$ pruning
+
+  - $\alpha$ pruning ： 在求 max 的层向下搜索（则本层是取min），如果计算出比当前解更小的解就无需再搜索
+
+  ![alpha](/img/ads/alphapruning.jpg)
+
+  - $\beta$ pruning ： 在求 min 的层向下搜索（则本层取max），若计算出比当前已知解更大的解就无需再搜索
+
+  ![beta](/img/ads/betapruning.jpg)
+
+# Divide and Conquer<a id="DivideConquer"></a>
+
+重点是主定理
+
+## 主定理
+
+**一些数学推导基础**
+
+- $a^{\log_b{N}} = a^{\frac{\log_a{N}}{\log_a{b}}}=N^{\log_b{a}}$
+- 对 $T(N) = aT(N/b)+f(N)$ 的推导
+
+$$
+\begin{aligned}
+T(N) &= aT(N/b)+f(N)\\
+	&=a(aT(N/b^2)+f(N/b))+f(N)\\
+	&=...\\
+	&=a^kT(N/b^k)+\sum_{i=0}^{k-1} a^if(N/b^i) ,其中 k=\log_b{N}\\
+	&=N^{log_b{a}}+\sum_{i=0}^{k-1} a^if(N/b^i)
+\end{aligned}
+$$
+
+若后面那坨东西复杂度不高于 $N^{log_b{a}}$ ，则总复杂度就是 $\Theta(N^{log_b{a}})$ 
+
+一个值得关注的临界是 $f(N) = N^{log_b{a}}$  ，这意味着 $a^if(N/b^i)$ 与 $f(N)$ 等同，后面的级数和大致由 $f(N)log_b{N}$ 划定界限。
+
+### 形式1
+
+$T(N) = aT(N/b) + f(N)$
+
+- 若$\exist \epsilon > 0$ 使得 $f(N) = O(N^{log_b^{a}-\epsilon})$ ，则 $T(N) = \Theta(N^{log_b^a})$
+-  若 $f(N) = \Theta(N^{log_b^a})$ ，则 $T(N) = \Theta(N^{log_b^a}\log{N})$
+- 若$\exist \epsilon > 0$ 使得 $f(N) = \Omega(N^{log_b^{a}-\epsilon})$ ，且存在常数 $c<1$ 使得 $af(N/b)<cf(N)$ 则 $T(N) = \Theta(f(N))$
+
+### 形式2
+
+$T(N) = aT(N/b) + f(N)$
+
+- 若$\exist \kappa<1$ 使得 $af(N/b) = \kappa f(N)$ ，则 $T(N) = \Theta(f(N))$
+- 若 $af(N/b) = f(N)$ ，则 $T(N) = \Theta(f(N)\log_b{N})$
+- 若$\exist K > 1$ 使得 $af(N/b) = K f(N)$ ，则 $T(N) = \Theta(N^{log_b{a}}) $
+
+### 形式3
+
+$T(N) = aT(N/b) + \Theta(N^k\log^p{N})$ $(a\ge 1,b>1,p\ge 0)$的解
+$$
+T(N) = 
+\begin{cases} 
+      O(N^{\log_b a}) & \text{if } a > b^k \\
+      O(N^k \log^{p+1} N) & \text{if } a = b^k \\
+      O(N^k \log^p N) & \text{if } a < b^k 
+   \end{cases}
+$$
+
 
 # DP<a id="DP"></a>
 
