@@ -26,6 +26,7 @@ lang: 'zh-CN'
 - [Backtracking](#backtracking)
 - [Divide and Conquer](#DivideConquer)
 - [DP](#DP)
+- [Greedy](#Greedy)
 
 
 **注**：下文代码使用C++，以结构体数组实现
@@ -1323,4 +1324,60 @@ $$
 f_{i,j} = \min_{k\in[i+1,j-1]} f_{i,k-1} + f_{k+1,j} + w_{i,j}
 $$
 **样例：Floyd**
+
+# Greedy<a id="Greedy"></a>
+
+- 当且仅当局部最优解和全局最优解重合时有效，否则正确性无法保证
+- 但是一般乱搞离最优解不会太远
+
+**例题**
+
+给定一系列活动 $S={a_1,...,a_n}$ ，每个活动占据时间 $[s_i,f_i)$ ，要求合理安排使得安排活动数量最大化
+
+my idea:
+
+1. 离散化，枚举每个活动 $f_s = \min_{j<s}{f_j} +1$ ，前缀 min 可以维护，总复杂度 $O(n)$
+
+2. 按结束时间第一关键字（升序）开始时间第二关键字（降序）排列，能塞就塞
+
+- 证明
+
+  >Consider any nonempty subproblem $S_k$ ,and let $a_m$ be an activity in $S_k$ with the earliest finish time.  Then $a_m$ is included in some maximum-size subset of mutually compatible activities of $S_k$.
+
+​		若 $A_k$ 是一个最优解集合
+
+​		若 $a_m\in A_k$ 无需证明
+
+​		否则将 $A_k$ 中的最早结束的活动替换为 $a_m$ 仍然合法
+
+## 哈夫曼编码树
+
+依据出现频率编码，形成的二叉树只在叶节点对应字符的编码
+
+<details>
+	<summary> code </summary>
+	<pre><code>
+void Huffman ( PriorityQueue  heap[ ],  int  C ){   
+	consider the C characters as C single node binary trees,and initialize them into a min heap;
+	for ( i = 1; i < C; i++ ) { 
+		create a new node;
+		/* be greedy here */
+		delete root from min heap and attach it to left_child of node;
+		delete root from min heap and attach it to right_child of node;
+		weight of node = sum of weights of its children;
+		/* weight of a tree = sum of the frequencies of its leaves */
+		insert node into min heap;
+	}
+}
+	</code></pre>
+</details>
+
+
+- 证明
+
+- [ ] 待理解补全
+
+
+
+
 
