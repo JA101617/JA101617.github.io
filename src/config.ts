@@ -6,6 +6,36 @@ import type {
 } from './types/config'
 import { LinkPreset } from './types/config'
 
+//try password for blog
+
+import { SITE } from "@config";
+import { defineCollection, z } from "astro:content";
+
+const blog = defineCollection({
+  type: "content",
+  schema: ({ image }) =>
+    z.object({
+      author: z.string().default(SITE.author),
+      published_at: z.date(),
+      modified_at: z.date().optional().nullable(),
+      title: z.string(),
+      featured: z.boolean().optional(),
+      draft: z.boolean().optional(),
+      tags: z.array(z.string()).default(["others"]),
+      ogImage: image()
+        .refine(img => img.width >= 1200 && img.height >= 630, {
+          message: "OpenGraph image must be at least 1200 X 630 pixels!",
+        })
+        .or(z.string())
+        .optional(),
+      description: z.string(),
+      canonicalURL: z.string().optional(),
+      password: z.string().optional(),
+    }),
+});
+
+export const collections = { blog };
+
 export const siteConfig: SiteConfig = {
   title: 'JA\'s Personal Blog',
   subtitle: 'Welcome(^_^)',
