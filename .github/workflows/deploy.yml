@@ -33,8 +33,11 @@ jobs:
           pnpm install
           pnpm run build
 
-      - name: Remove symlinks
-        run: find dist -type l -delete
+      - name: Remove unnecessary files
+        run: |
+          find dist -type l -delete
+          find dist -name "*.map" -delete
+          find dist -name "*.log" -delete
 
       - name: Verify dist folder
         run: |
@@ -67,4 +70,4 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v3
