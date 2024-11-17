@@ -38,11 +38,16 @@ jobs:
           pnpm install
           pnpm run build
 
-      # 检查构建内容
+      # 移除符号链接（如果有）
+      - name: Remove symlinks
+        run: find dist -type l -delete
+
+      # 检查 dist 内容
       - name: Verify dist folder
         run: |
+          ls -la dist
           du -sh dist
-          find dist
+          find dist -type f | wc -l
 
       # 上传 dist 文件夹作为工件
       - name: Upload dist folder as artifact
