@@ -1,0 +1,2367 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JA&apos;s Personal Blog</title><description>Welcome(^_^)</description><link>https://ja101617.github.io/</link><language>zh_CN</language><item><title>ADS学习笔记</title><link>https://ja101617.github.io/posts/note-ads/</link><guid isPermaLink="true">https://ja101617.github.io/posts/note-ads/</guid><description>ADS课程中的课堂笔记及课后的少量补充</description><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;导航&lt;/h1&gt;
+&lt;h2&gt;数据结构&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#AVL&quot;&gt;AVL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#Splay&quot;&gt;Splay&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#B+&quot;&gt;B+ Tree&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#RB&quot;&gt;RB Tree&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#Leftist&quot;&gt;Leftist Heap&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#Skew&quot;&gt;Skew Heap&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#Binomial&quot;&gt;Binomial Heap&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;算法&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#backtracking&quot;&gt;Backtracking&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#DivideConquer&quot;&gt;Divide and Conquer&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#DP&quot;&gt;DP&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注&lt;/strong&gt;：下文代码使用C++，以结构体数组实现&lt;/p&gt;
+&lt;h1&gt;Amortized Analysis均摊分析&lt;/h1&gt;
+&lt;h2&gt;Aggregate Analysis&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;$n$ 个操作总最差用时 $T(n)$， 则 amortized cost 为 $\dfrac{ T(n) } { n }$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Accounting method&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;类似存款存入不会比取出少，设计每种操作的均摊成本$\hat{c_i}$ ，当某次操作的 $\hat{c_i} &amp;gt; c_i$ 差额被称为 credit ，后面如果存在 $\hat{c_i} &amp;lt; c_i$ 的情况，差额可以用 credit 补上，则&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+T_{amortized} = \dfrac{\sum \hat{c_i} }{n} \ge \dfrac{\sum c_i}{n}
+$$&lt;/p&gt;
+&lt;h2&gt;Potential method&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;定义势能函数 $\Phi(D_i)$ ，则前文的 credit 就演化为 $\hat{c_i}-c_i = Credit_i = \Phi(op_i)-\Phi( op_{ i-1 } )$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\sum_{ i=1 }^n  \hat{c_i} &amp;amp;= \sum_{i=1}^n (c_i+\Phi(op_i)-\Phi( op_{i-1} ) )\
+&amp;amp;= \Phi(op_n)-\Phi(op_0)+\sum_{i=1}^n c_i
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;需要$\Phi(op)$的复杂度不高于 $\displaystyle\sum_{i=1}^n \hat{c_i}$，方便起见可以让$\Phi(op_0)=0$&lt;/p&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：概念辨析 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;
+When doing amortized analysis, which one of the following statements is FALSE?
+A.Aggregate analysis shows that for all n, a sequence of n operations takes worst-case time T(n) in total.  Then the amortized cost per operation is therefore T(n)/n
+B.For potential method, a good potential function should always assume its maximum at the start of the sequence
+C.For accounting method, when an operation&apos;s amortized cost exceeds its actual cost, we save the difference as credit to pay for later operations whose amortized cost is less than their actual cost
+D.The difference between aggregate analysis and accounting method is that the later one assumes that the amortized costs of the operations may differ from each other
+Answer : B
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;
+&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T2：势能函数设计 &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/AmortizedT2-5.jpg&quot; alt=&quot;image-20241111204947435&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;Answer : D&amp;lt;/pre&amp;gt;
+&amp;lt;img src=&quot;https://zhoutimemachine.github.io/note/courses/imgs/ads/ads_hw_1.2.png&quot; alt=&quot;1.2&quot;/&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;AVL Trees&amp;lt;a id=&quot;AVL&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;空树是平衡的&lt;/li&gt;
+&lt;li&gt;非空树是平衡的当且仅当左右子树是平衡的且其高度差不超过1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;注&lt;/strong&gt;：定义空树高度为-1&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Balance Factor：&lt;/strong&gt; $BF(node) = h_L-h_R$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;没有绝对值，可以为负，对于平衡的树，BF取值为$\pm 1$或 $0$&lt;/li&gt;
+&lt;li&gt;故当某节点的BF值不为上述值则需要调整&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;树高&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;记 $n_h$ 为树高 h 的情况下节点数最小值，那么 $n_h = n_{h-1} + n_{h-2} + 1 $&lt;/li&gt;
+&lt;li&gt;与斐波那契对照，可得 $n_h = F_{h+3}-1$&lt;/li&gt;
+&lt;li&gt;从斐波那契数列的通项可以看出 $h = O(\log{N})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; 结构体定义 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+struct Node{
+int lson, rson, val, h;
+}t[maxn];
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h2&gt;Rotation Operations&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Left-Rotate&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int Lrotate(int p){
+int rs = t[p].rson;
+t[p].rson = t[rs].lson;
+t[rs].lson = p;
+t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+t[rs].h = max(H(t[rs].lson),H(t[rs].rson))+1;
+return rs;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Right-Rotate&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int Rrotate(int p){
+int ls = t[p].lson;
+t[p].lson = t[ls].rson;
+t[ls].rson = p;
+t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+t[ls].h = max(H(t[ls].lson),H(t[ls].rson))+1;
+return ls;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/ads/ads-AVLRotate.png&quot; alt=&quot;ads-AVLRotate&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;LR-Rotate&lt;/strong&gt;：先以 $ls$ 为中心左旋再以 $p$ 为中心右旋&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int LRrotate(int p){
+t[p].lson = Lrotate(t[p].lson);
+return Rrotate(p);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;RL-Rotate&lt;/strong&gt;：先以 $rs$ 为中心右旋再以 $p$ 为中心左旋&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int RLrotate(int p){
+t[p].rson = Rrotate(t[p].rson);
+return Lrotate(p);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h2&gt;操作&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Maintain&lt;/p&gt;
+&lt;p&gt;​	如果需要调整， $|BF(D)|=2$ ，以下以左倾为例进行分析（右倾是对称的）。树结构如下&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/AVLMaintain.jpg&quot; alt=&quot;TreeStruct&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若 $BF(B)\ge0$ ，&lt;code&gt;Rrotate(D)&lt;/code&gt; 即可&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/AVLMaintainRrot.jpg&quot; alt=&quot;Rrot&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;反之 &lt;code&gt;LRrotate(D)&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/AVLMaintainLRrot.jpg&quot; alt=&quot;LRrot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int H(int p){
+return (p &amp;lt;= tot &amp;amp;&amp;amp; p != 0)? t[p].h : -1;
+}
+void Maintain(int p){
+int ls = t[p].lson, rs = t[p].rson;
+if(H(ls) - H(rs) == 2){
+if(H(t[ls].lson) &amp;gt;= H(t[ls].rson)) Rrotate(p);
+else LRrotate(p);
+}
+else if(H(ls) - H(rs) == -2){
+if(H(t[rs].rson) &amp;gt;= H(t[rs].lson)) Lrotate(p);
+else RLrotate(p);
+}
+t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;显然复杂度 $O(1)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Insert&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为要递归找到叶子所以是 $O(\log{N})$&lt;/li&gt;
+&lt;li&gt;只影响其祖先的BF值，故只用在递归的时候通过返回值提醒祖先节点进行检查。进一步观察可知，当某个节点通过Rotate完成调整后，该子树的 $BF$ 值相比插入前不变，故实际上只在离其最近的不平衡祖先进行调整&lt;/li&gt;
+&lt;li&gt;因为只在最近的不平衡祖先进行调整，而 Maintain 函数中最多进行一次 LR 或者 RL ，因此整个插入过程 Rotate 次数至多为 2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int insert(int p, int v){
+if(!p){
+t[++tot] = (Node){0, 0, v, 0};
+return tot;
+}
+if(v &amp;lt;= t[p].val) t[p].lson = insert(t[p].lson,v);
+else t[p].rson = insert(t[p].rson,v);
+Maintain(p);
+return p;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Delete
+&lt;ul&gt;
+&lt;li&gt;删除节点
+&lt;ul&gt;
+&lt;li&gt;叶节点：直接删掉&lt;/li&gt;
+&lt;li&gt;只有左子树/右子树：用有的那个子节点替代自己（此时那个子节点一定是个叶节点）&lt;/li&gt;
+&lt;li&gt;兼有左右子树：取前驱/后继替代自己，将其节点删掉&lt;/li&gt;
+&lt;li&gt;从删除的叶节点向上调整即可&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;值得注意的是，删除节点后的向上调整并不停止于第一个失衡的祖先，一个节点删除可能引发上方处于BF值同号临界的一系列祖先都失衡需要旋转，因此旋转次数 $O(\log{N})$ ，总复杂度 $O(\log{N})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Find, Predecessor, Successor, Rank：同正常二叉树， $O(\log{N})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：最少结点数计算 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;
+If the depth of an AVL tree is 6 (the depth of an empty tree is defined to be -1), then the minimum possible number of nodes in this tree is:33
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T2：AVL的插入 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;
+Insert 2, 1, 4, 5, 9, 3, 6, 7 into an initially empty AVL tree.  Which one of the following statements is FALSE?
+A.4 is the root
+B.3 and 7 are siblings
+C.2 and 6 are siblings
+D.9 is the parent of 7
+Answer : B
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;Splay&amp;lt;a id=&quot;Splay&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;h3&gt;一些名词&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;zig : 当前节点向父节点位置旋转&lt;/li&gt;
+&lt;li&gt;zig-zig : 自己&amp;amp;父节点&amp;amp;再上一级节点方向相同，对自己&amp;amp;父节点进行同向旋转&lt;/li&gt;
+&lt;li&gt;zig-zag : 自己&amp;amp;父节点，父节点&amp;amp;再上一级节点方向不同，对自己进行两次反向旋转&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;（配图见下）&lt;/p&gt;
+&lt;h2&gt;操作&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Rotate&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以右旋为例，设当前节点 $x$， 父亲 $y$
+&lt;ul&gt;
+&lt;li&gt;$x$ 的右儿子给 $y$ ， $y$ 的左儿子给 $x$&lt;/li&gt;
+&lt;li&gt;若 $y$ 有父亲 $z$ 则 $x$ 顶替 $y$ 的位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+void Rotate(int x) {
+int y = fa[x], z = fa[y], chk = get(x);
+ch[y][chk] = ch[x][chk ^ 1];
+if (ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y;
+ch[x][chk ^ 1] = y;
+fa[y] = x;
+fa[x] = z;
+if (z) ch[z][y == ch[z][1]] = x;
+maintain(y);
+maintain(x);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;其中 &lt;code&gt;maintain&lt;/code&gt; 只是维护子树信息，由具体使用决定，一般是 $O(1)$ ， 因而整个操作 $O(1)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Splay&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;核心操作，将一个节点一路转到根&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+bool get(int x) { return x == ch[fa[x]][1]; }
+void Splay(int x) {
+for (int f = fa[x]; f = fa[x], f; rotate(x))
+if (fa[f]) Rotate(get(x) == get(f) ? f : x);
+rt = x;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;复杂度单次可能 $O(N)$ ，但是均摊是 $O(\log N)$ 的，分析见下&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Find&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一路往下找 + splay上去&lt;/li&gt;
+&lt;li&gt;$ O(\log{N})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Delete&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找到点并splay上去，如果计数为1则删除节点，否则合并两棵子树（查询当前根节点的前驱，将其设为根，并将其右儿子设为另一棵树的根）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;  void Delete(int k) {
+Find(k);
+if (cnt[rt] &amp;gt; 1) {
+cnt[rt]--;
+Maintain(rt);
+return;
+}
+if (!ch[rt][0] &amp;amp;&amp;amp; !ch[rt][1]) {
+Clear(rt);
+rt = 0;
+return;
+}
+if (!ch[rt][0]) {
+int cur = rt;
+rt = ch[rt][1];
+fa[rt] = 0;
+Clear(cur);
+return;
+}
+if (!ch[rt][1]) {
+int cur = rt;
+rt = ch[rt][0];
+fa[rt] = 0;
+Clear(cur);
+return;
+}
+int cur = rt, x = Pre();
+fa[ch[cur][1]] = x;
+ch[x][1] = ch[cur][1];
+Clear(cur);
+Maintain(rt);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$O(\log N)$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Insert操作&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;一路往下找+splay上去&lt;/li&gt;
+&lt;li&gt;$O(\log{N})$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Splay操作的复杂度分析&lt;/h3&gt;
+&lt;p&gt;写完才发现oiwiki上有很详细的分析...挂个&lt;a href=&quot;https://oi-wiki.org/ds/splay/#%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6&quot;&gt;链接&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;势能函数$\Phi(p) =\sum_{i\in subtree(p)} \log{S(i)}$，其中 $S(i)$ 指 $i$ 的子树大小。记 $\log{S(i)} = rank(i)$ ，则 $\Phi(p)=\sum_{i\in subtree(p)} rank(i)$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;zig, zig-zig, zig-zag本体复杂度为1,2,2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;zig :&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/ads/ads-SplayZig.png&quot; alt=&quot;ads-SplayZig&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\hat{c_i} =&amp;amp; 1 + \Phi(T_2) - \Phi(T_1)\
+= &amp;amp;1 + R_2(x) - R_1(x) + (R_2(p) - R_1(p))\
+\leq &amp;amp;1 + R_2(x) - R_1(x)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;zig-zag:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/ads/ads-SplayZigZag.jpg&quot; alt=&quot;ads-SplayZigZag&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\hat{c_i} =&amp;amp; 2 + \Phi(T_2) - \Phi(T_1)\
+= &amp;amp;2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\&lt;/p&gt;
+&lt;p&gt;\end{aligned}
+$$
+因为$R_1(g) = R_2(x)$
+故
+$$
+\begin{aligned}
+\hat{c_i} = &amp;amp;2 - (R_1(x) + R_1(p) )+ R_2(p)  + R_2(g)\
+\leq &amp;amp;2 - 2R_1(x) + R_2(p) + R_2(g)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;又因为 $ R_2(p) = \log{(1+A+B)}$, $ R_2(g) = \log{(1+C+D)}$ ，$R_2(x) = \log(3+A+B+C+D)$&lt;/p&gt;
+&lt;p&gt;令 $a = 1+A+B$ , $b = 1 + C + D$  , $ c = 3 + A + B + C + D$ , 则 $a+b\leq c$ ，$\log{a}+\log{b} =\log{(ab)}\leq \log{\frac{c^2}{4}} = 2\log{c} - 2$ ， 即
+$$
+2+R_2(p)+R_2(g)\leq 2R_2(x)
+$$
+所以
+$$
+\hat{c_i} \leq 2(R_2(x)-R_1(x))
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;zig-zig :&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/ads/ads-SplayZigZig.png&quot; alt=&quot;ads-SplayZigzig&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\hat{c_i} =&amp;amp; 2 + \Phi(T_2) - \Phi(T_1)\
+= &amp;amp;2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\
+= &amp;amp;2 + R_2(p) + R_2(g) - R_1(p) - R_1(x)\
+\leq &amp;amp;2 + R_2(x) + R_2(g) - 2R_1(x)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;同理zig-zag的均值不等式可得$ R_1(x)+R_2(g)-2R_2(x)\leq -2$ ，即 $2R_2(x) - R_1(x) - R_2(g)\ge 2$&lt;/p&gt;
+&lt;p&gt;所以
+$$
+\begin{aligned}
+\hat{c_i} \leq &amp;amp;2 + R_2(x) + R_2(g) - 2R_1(x)\leq 3(R_2(x)-R_1(x))
+\end{aligned}
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;​		假设一次splay共计进行了 $n$ 步，因为单zig只会在转到根出现，则总复杂度
+$$
+T_n \leq 1+3(R_n(x)-R_0(x))
+$$
+​		而$R_n(x)$ 为 $O(\log{N})$的，所以splay操作也是$O(\log{N})$的&lt;/p&gt;
+&lt;p&gt;​		值得注意的是$R_0(x)$不一定为0&lt;/p&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：access(splay)操作 &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/Splay-T1.jpg&quot; alt=&quot;RBT-T1&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;Tips:与父亲同向则先转父亲，否则先转自己（然后都要转一次自己）&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;B+ Tree&amp;lt;a id=&quot;B+&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;是一种多叉树&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;定义&lt;/strong&gt; : A B+ tree of order M is a tree with following structural properties:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Root: a leaf / has [2~M] children&lt;/li&gt;
+&lt;li&gt;Nonleaf nodes (except root) : has [$\lceil M/2 \rceil$ , M] children&lt;/li&gt;
+&lt;li&gt;Leaf: same depth&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;如图为 M = 3 的情况&lt;/p&gt;
+&lt;p&gt;可以看出非叶子节点最多存储 M-1 个键值，其中第 i 个对应其第 i+1 个子树中存储的最小值&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/B+Order3.jpg&quot; alt=&quot;Degree3Bplus&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;操作&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Find
+&lt;ul&gt;
+&lt;li&gt;与当前节点的所有子节点左边界值进行比较以找到应该在的区间&lt;/li&gt;
+&lt;li&gt;如果不使用二分查找优化复杂度 $O((M/\log{M})\log{N})$ ，否则 $O(\log{N})$ 。 Insert 和 Delete 操作同理。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; code &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+Node Find(int key, Node cur){
+int i = 0;
+while( i &amp;lt; cur.cntSon )
+if(key &amp;gt;= cur.keys[i] ) ++i;
+if( i == cur.cntkeys ) return EmptyNode;
+return Find(key, cur.son[i]);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Insert
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;先递归到对应的区间，即叶节点，此时有几种情况&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;如果那个区间包含的数不超过 M - 1 个：直接插入进去就行&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;否则，需要对这个区间进行分裂，上层结构也需要有相应变化&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;当前叶节点分裂成两个，各自拥有 $\lfloor (M+1)/2 \rfloor$ 个数&lt;/li&gt;
+&lt;li&gt;递归处理父节点，直到找到一个儿子数量没到 $M-1$ 的祖宗节点为止。如果直到根节点都不满足要求，重新建一0个根节点并将原根节点分裂&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;Check：检测是否已经存在&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int Check(struct Node t, int v){
+for(int i = t.totv; i; --i)
+if(t.v[i - 1] == v) return 1;
+return 0;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;Set：更新节点属性&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+void Set(int id, int Totch, int Totv, int Leaf){
+T[id].totch = Totch;
+T[id].IsLeaf = Leaf;
+T[id].totv = Totv;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;UpdateRelation：更新节点亲子关系&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+void UpdateRelation(int ffa, int son0, int son1){
+T[ffa].ch[0] = son0;
+T[ffa].ch[1] = son1;
+T[son0].fa = ffa;
+T[son1].fa = ffa;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;InsData：在指定数组插入数据并保持数组有序&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+void InsData(int *fro, int *dest, int *len, int val){
+for(int i = 0; i &amp;lt; (*len); ++i){
+dest[i] = fro[i];
+}
+dest[(*len)] = val;
+for(int i = (*len); i &amp;amp;&amp;amp; dest[i - 1] &amp;gt; val; --i){
+dest[i] = dest[i - 1];
+dest[i - 1] = val;
+}
+(&lt;em&gt;len)++;
+}&lt;/em&gt;
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;Deal：沿着链向上处理分裂&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;void deal(int cur, int son0, int son1, int insert_val){
+if(!cur){
+Set(cur = root = ++cnt, 2, 1, 0);
+UpdateRelation(cur, son0, son1);
+T[cur].v[0] = insert_val;
+T[cur].fa = 0;
+return;
+}
+//处理掉父亲关系问题
+if(T[cur].totv &amp;lt; 2){
+InsData(T[cur].v, T[cur].v, &amp;amp;T[cur].totv, insert_val);
+int pos;
+for(pos = T[cur].totch; pos; --pos){
+if(T[cur].ch[pos - 1] == son0){
+T[cur].ch[pos] = son1;
+break;
+}
+T[cur].ch[pos] = T[cur].ch[pos - 1];
+}
+T[cur].totch++;
+T[son1].fa = cur;
+return;
+}
+// 分裂示意图
+//                                  /            (v2)
+//   cur(v1~v3)              cur(v1)          newnode(v3)
+//  /   |   \        =&amp;gt;      /    \            /      &lt;br /&gt;
+// A    son   B              A     son0        son1    B
+//
+InsData(T[cur].v, b, &amp;amp;T[cur].totv, insert_val);
+Set(++cnt, 2, 1, 0);
+T[cnt].v[0] = b[2];
+Set(cur, 2, 1, 0);
+T[cur].v[0] = b[0];
+if(T[cur].ch[0] == son0) {
+UpdateRelation(cnt, T[cur].ch[1], T[cur].ch[2]);
+UpdateRelation(cur, son0, son1);
+}
+else if(T[cur].ch[1] == son0) {
+UpdateRelation(cnt, son1, T[cur].ch[2]);
+UpdateRelation(cur, T[cur].ch[0], son0);
+}
+else UpdateRelation(cnt, son0, son1);
+deal(T[cur].fa, cur, cnt, b[1]);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;Insert：插入值&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+int Insert(int cur, int val){
+if(T[cur].IsLeaf){
+if(Check(T[cur], val)) return 0;
+if(T[cur].totv &amp;lt; 3){
+InsData(T[cur].v, T[cur].v, &amp;amp;T[cur].totv, val);
+}
+else{
+InsData(T[cur].v, b, &amp;amp;T[cur].totv, val);
+Set(++cnt, 0, 2, 1);
+Set(cur, 0, 2, 1);
+for(int i = 0; i &amp;lt; 2; ++i){
+T[cur].v[i] = b[i];
+T[cnt].v[i] = b[2+i];
+}
+if(T[cur].fa)
+deal(T[cur].fa, cur, cnt, b[2]);
+else{
+Set(root = ++cnt, 2, 1, 0);
+T[root].v[0] = b[2];
+T[root].fa = 0;
+UpdateRelation(root, cur, cnt - 1);
+}
+}
+return 1;
+}
+int to_node = 0;
+for(int i = 0; i &amp;lt; T[cur].totv; ++i)
+if(val &amp;gt;= T[cur].v[i]) ++to_node;
+return Insert(T[cur].ch[to_node], val);
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Delete
+&lt;ul&gt;
+&lt;li&gt;同样是递归到相应叶节点进行处理
+&lt;ul&gt;
+&lt;li&gt;当删除掉当前值不会使叶节点包含值少于 $\lceil M/2 \rceil$ ，直接删除&lt;/li&gt;
+&lt;li&gt;若删除后本节点不符合要求
+&lt;ul&gt;
+&lt;li&gt;若兄弟节点包含多于 $\lceil M/2 \rceil$ 个值，可以从兄弟节点借一个，并更新父节点中的分隔值&lt;/li&gt;
+&lt;li&gt;否则与兄弟节点合并并删除父节点中的分隔值，递归处理父节点&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：节点数计算 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;
+A 2-3 tree with 3 nonleaf nodes must have 18 keys at most.(T)
+Tips:叶节点指的是直接连向数值的节点而非数值本体
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T2：插入与分裂操作 &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/BPT-T2.jpg&quot; alt=&quot;BPT-T2&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+结构大致是(懒得画图，自行意会一下)
+[6]
+[2,4][8]
+[0,1][2,3][4,5][6,7][8,9]
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T3：删除操作 &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/BPT-T3.jpg&quot; alt=&quot;BPT-T3&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+结构是
+[4,6]
+[1,2,3][4,5][6,7,8]
+目前还没有写过删除的代码所以实现细节不明
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T4：概念辨析 &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/BPT-T4.jpg&quot; alt=&quot;BPT-T4&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+注意只有根节点这种特例！！
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;红黑树&amp;lt;a id=&quot;RB&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt; 一棵红黑树需要满足如下条件：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;节点分为红黑两种颜色&lt;/li&gt;
+&lt;li&gt;根节点为黑色&lt;/li&gt;
+&lt;li&gt;空节点（NIL）为黑色&lt;/li&gt;
+&lt;li&gt;红色节点的子节点一定为黑色&lt;/li&gt;
+&lt;li&gt;从根节点往下到叶节点（NIL），每条路径上黑色节点数量相同
+&lt;ul&gt;
+&lt;li&gt;定义每个节点的黑高 (Black height)是从自己向下到NIL的路径上黑色节点的个数（&lt;strong&gt;但是不包含自己&lt;/strong&gt;）
+&lt;ul&gt;
+&lt;li&gt;例如 BH(NIL) = 0， 单个节点的树 BH = 1（对应NIL，根节点本身不算在内）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;性质：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;可以得到的导出性质（用于判别红黑树）：红黑树的红色节点的两个子节点一定同为叶子或同不为叶子（其中叶子指NIL）。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$N$ 个内部节点（不含NIL）的红黑树的高度最大为 $2\log_2(N+1)$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;证明：综合以下两条&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{cases}
+N \ge 2^{BlackHeight} - 1\
+Height \le 2BlackHeight
+\end{cases}
+$$&lt;/p&gt;
+&lt;h2&gt;操作&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Rotate : 与 &lt;a href=&quot;#AVL&quot;&gt;AVL&lt;/a&gt; 的旋转操作基本一致&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Insert&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;思路为先以红色节点的形式像普通BST一样插在叶节点（因为会有两个NIL所有肯定满足性质4，且插入红色节点不影响黑高），然后再调整使得红色节点不相邻。记插入节点为 x
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;若 x.fa 是黑色就不用调整&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;若 x.fa 是红色，需要分类讨论并且向上递归处理。下图中橘色节点代表使红黑树失衡的子树&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;case 1：将两个红色节点染黑，“根节点”染红，并向上递归处理（引号是因为是当前考虑的子树的根而不一定是整颗树的）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;如果&quot;根节点&quot;没有父亲，则根节点再染黑，结束&lt;/li&gt;
+&lt;li&gt;如果”根节点“的父亲是黑，直接结束&lt;/li&gt;
+&lt;li&gt;如果根节点父亲是红的，向上递归，可能转成其他case&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 2 : 基于橙色节点左旋转为case 3&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 3 : 红色节点染黑，其父亲染红，再将新的黑色节点右旋上去
+&lt;img src=&quot;/img/ads/RBT-insert.jpg&quot; alt=&quot;Insert&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;综合上述情况，只有case1可能向上递归，其他情况不会。只有case2 和 case3 需要 Rotate ，因此最多旋转次数为从 case2 转到 case3 ，即最多两次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;复杂度 $O(\log N)$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Delete&lt;/p&gt;
+&lt;p&gt;&lt;s&gt;赞美&lt;a href=&quot;https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec02/#%E5%88%A0%E9%99%A4&quot;&gt;修佬&lt;/a&gt;&lt;/s&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;考虑分成两部分进行分类讨论：删除和删除后平衡维护&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;删除&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;case 0 : 如果整颗树只有一个节点直接删，无需后续维护（可以理解为特化的 case 3 ? )&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 1 : 如果该节点左右儿子都有就取前驱/后继（只取值不取颜色）代替自己并删除前驱/后继对应节点，前驱/后继可能是没有儿子的，这种情况即转为 case 3 ，也可能是只有一个儿子的，这种情况即转为 case 2&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 2 : 如果该节点左右儿子只有一个，则那个节点一定是红的（因为黑高一致），则本节点一定是黑的。用子节点代替待删除节点并染黑即可，无需后续维护&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 3 : 如果该节点没有（非空）子节点，若节点为红直接删掉，节点为黑删掉后还要维护一下&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;结论&lt;/strong&gt; 每个 case 都能转化为删除叶节点的情况，但只有在最后转化为删除某黑色节点时才会导致黑高的性质不能满足，需要进行平衡维护。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;平衡维护：也需要递归地调整。记当前导致失衡的子树的根节点是x（颜色不定） ，依据兄弟节点(w)、其子节点(lc &amp;amp; rc)以及父亲节点(fa)进行分类。以下以 x 为左子树为例，右子树则需对称处理。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;case 1 : w,lc,rc全黑&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;case 1.1 fa 是红色的：将 w 染红， fa 染黑，相当于从 w 子树中抽一个黑色出来共享给 x&lt;/li&gt;
+&lt;li&gt;case 1.2 fa 是黑色的：同样将 w 染红，然而在 fa 的子树内无法找到可以用来从红转黑共享给 x 的黑色节点，因而将矛盾转移到 fa 以上的部分。如果 fa 就是根节点，则可以直接退出（因为整棵树黑高平等减一）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 2 : w黑，rc红：将 w 染为和 fa 相同的颜色，将 rc 和 fa 染黑，并对 fa 进行一次左旋。思路是给 x 上方补一个黑节点，为了和其他子树保持一致顶上留一个与原 fa 相同的节点。因为 rc 的高度-1，将 rc 本身变黑以弥补。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/RBT-DeleteBalanceCase2.jpg&quot; alt=&quot;case2&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 3 : w,rc黑，lc红：刚刚那个思路中更改 rc 颜色用于补偿的步骤无法实施。将 w 染红， lc 染黑，右旋 w 使得 b 成为新的根。可以发现在 w 和 lc 对调染色时， lc 的整体黑高比 rc 高了 1，其左右两子树的黑高倒是与 rc 一致，因此将 lc 转到根节点后 lc 子树内黑高与原先一致，但右子节点变红了，则状况转为 case 2 。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/RBT-DeleteBalanceCase3.jpg&quot; alt=&quot;case3&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;case 4 : fa,lc,rc黑，w红：将 fa 左旋，使 w 成为新的根节点。但此时左右两子树黑高差1，因此将 fa 染红， w 染黑（此时至少保证了向 lc 方向的路径与向 rc 方向的路径黑高一致），然而 fa 子树内黑高仍然不相等，因此递归到子树中去，可能转化为 case 1.1,case 2,case 3。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;​      &lt;s&gt;懒得画了，借一下oiwiki的图&lt;/s&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/RBT-DeleteBalanceCase4.jpg&quot; alt=&quot;case4&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;综合以上四种情况：case1.2需要向上递归，case4需要向下递归，剩余情况无需递归。case2，case3，case4中存在Rotate操作，则最多旋转次数为由 case4 转到 case3 再到 case2 ，共计3次&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;删除部分最坏即寻找前驱后继，复杂度为树高；平衡维护部分向上递归 (case1.2) 与向下递归 (case4) 不兼容，因此最坏复杂度即树高， $O(\log{N})$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;查找前驱后继等操作同正常 BST&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;比较：AVL与RBT的旋转操作次数&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;AVL&lt;/th&gt;
+&lt;th&gt;RBT&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Insert&lt;/td&gt;
+&lt;td&gt;$\le 2$&lt;/td&gt;
+&lt;td&gt;$\le 2$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Delete&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$\le 3$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;分析见&lt;a href=&quot;#AVL&quot;&gt;AVL&lt;/a&gt;和&lt;a href=&quot;#RB&quot;&gt;RBT&lt;/a&gt;的相应部分。&lt;/p&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：插入节点 &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/RBT-T1.jpg&quot; alt=&quot;RBT-T1&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;Tips:得到结果19是红色的&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T2：删除节点（但是强度很低） &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/RBT-T2.jpg&quot; alt=&quot;RBT-T2&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;Tips:谁顶上去谁变黑&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;Inverted File Index&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;定义：&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Index:&lt;/strong&gt; a mechanism for locating a given term in a text.&lt;/li&gt;
+&lt;li&gt;**Inverted file: **  contains a list of pointers (e.g. the number of a page) to all occurrences of that term in the text.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Word Stemming&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;将一个单词化为它的词根&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Stop Words&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;可以理解为“虚词”，过于普遍的单词没必要 index （比如 a, the , it ）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;寻找单词&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sol1 : Search trees(b tree,b+ tree, trie)&lt;/li&gt;
+&lt;li&gt;Sol2 : Hashing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Distributed Indexing&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Term-partitioned Index&lt;/strong&gt;  依据单词字典序存储，存储困难，检索容易，容灾能力差&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Document-partiitioned index&lt;/strong&gt; 依据文章划分存储，存储容易，检索困难，容灾能力好&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Dynamic Indexing&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;文档加入正常插入&lt;/li&gt;
+&lt;li&gt;文档删除：攒够一定量删除请求（存在auxiliary index）统一处理（写满了/定期），处理时需要在main index和auxiliary index同步检索
+&lt;ul&gt;
+&lt;li&gt;树型结构太大就改用懒删除&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Thresholding&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Document：只取出权重前 x 的文档&lt;/li&gt;
+&lt;li&gt;Query：对词组按出现频率排序，按照频率由高到低的词组搜索到的文档贡献不同的权重&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Evaluate&lt;/h2&gt;
+&lt;p&gt;对于一次搜索&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;Relevant&lt;/th&gt;
+&lt;th&gt;Irrelevant&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Retrieved&lt;/td&gt;
+&lt;td&gt;$R_R$&lt;/td&gt;
+&lt;td&gt;$I_R$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Not Retrieved&lt;/td&gt;
+&lt;td&gt;$R_N$&lt;/td&gt;
+&lt;td&gt;$I_N$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;则有两个评估指标&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Precision精确度&lt;/strong&gt; $P=R_R/(R_R+I_R)$&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Recall召回率&lt;/strong&gt; $R=R_R/(R_R+R_N)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：Distributed Indexing &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/IFI-T1.jpg&quot; alt=&quot;IFI-T1&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+区分两种存储方式
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T2：Evaluation &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/IFI-T2.jpg&quot; alt=&quot;IFI-T2&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+问的是召回率
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T3：accessing terms &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/IFI-T3.jpg&quot; alt=&quot;IFI-T3&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+哈希表不利于搜索序列和模糊搜索
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;左偏堆&amp;lt;a id=&quot;Leftist&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;思路：使右子树相对稀疏&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Npl&lt;/strong&gt; : null path length，一个节点到其子树内&lt;strong&gt;没有两个孩子的节点&lt;/strong&gt;的最短距离。特别的，Npl(NULL) = -1 。
+&lt;ul&gt;
+&lt;li&gt;$Npl(X) = \displaystyle\min_{\forall C \in son(X)} {Npl(C) + 1}$&lt;/li&gt;
+&lt;li&gt;左偏堆要求对于所有节点的左右儿子有 $Npl(ls) \ge Npl(rs)$
+&lt;ul&gt;
+&lt;li&gt;如果不满足可以交换左右儿子实现&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;性质
+&lt;ul&gt;
+&lt;li&gt;右路径长度为 r 的左偏堆至少拥有 $2^r-1$ 个节点。（此时是满二叉树）[tips : 数学归纳法]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;结构体定义&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+struct TreeNode{
+ElementType Element;
+PriorityQueue Left,Right;
+int Npl;
+};
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;复杂度&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Merge : O(logN)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;code&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+PriorityQueue Merge( PriorityQueue H1, PriorityQueue H2 )
+{
+if(H1 == NULL) return H2;
+if(H2 == NULL) return H1;
+if(H1-&amp;gt;Element &amp;gt; H2-&amp;gt;Element) swap(H1,H2);
+if(H1-&amp;gt;Left == NULL) H1-&amp;gt;Left = H2;
+else{
+H1-&amp;gt;Right = Merge(H1-&amp;gt;Right,H2);
+if(H1-&amp;gt;Left-&amp;gt;Npl &amp;lt; H1-&amp;gt;Right-&amp;gt;Npl) SwapChildren(H1);
+H1-&amp;gt;Npl = H1-&amp;gt;Right-&amp;gt;Npl + 1;
+}
+return H1;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DeleteMin : 将根节点左右儿子合并就行，O(logN)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; T1：Build heap &amp;lt;/summary&amp;gt;
+&amp;lt;img src=&quot;/img/ads/LH-T1.jpg&quot; alt=&quot;LH-T1&quot; /&amp;gt;
+&amp;lt;pre&amp;gt;
+由这道题可以理解为什么左偏树和斜堆的BuildHeap复杂度是（斜堆是均摊）O(n)
+&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;h1&gt;斜堆&amp;lt;a id=&quot;Skew&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;神必算法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每Merge必调换左右儿子&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;只有在合并的末尾，即叶子节点才无需交换左右儿子&lt;/strong&gt; ，这是与下面这份代码实现不同的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt;早年的代码一份&amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+newnode(int v){//返回节点编号 	
+int x=++cnt; 	
+val[x]=v,ls[x]=rs[x]=0; 	
+return x;
+}
+int merge(int a,int b){//以a,b为根的树合并,返回根节点 	
+if(!a||!b) return a+b;
+if(val[a] &amp;gt; val[b]) swap(a,b); 	
+rs[a]=merge(rs[a],b); 	
+swap(ls[a],rs[a]);
+return a;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;复杂度：均摊分析
+&lt;ul&gt;
+&lt;li&gt;$D_i = the\ \ root\ \ of\ \ the\ \ resulting\ \ tree$&lt;/li&gt;
+&lt;li&gt;$\Phi (D_i) = number\ \  of\ \ heavy\ \ nodes$
+&lt;ul&gt;
+&lt;li&gt;heavy nodes :  右子树大于左子树的节点&lt;/li&gt;
+&lt;li&gt;除了在归并路线上的节点，其他节点的轻重性质不变化&lt;/li&gt;
+&lt;li&gt;定义最开始的右路径（即归并路线）上轻节点 $l_i$ ，重节点 $h_i$ 。
+&lt;ul&gt;
+&lt;li&gt;则 $l_i$ 越多 $l_i$ 越少（ $l_i$ 多则堆趋于左倾堆，则右路径长度就短，至多到 $O(\log N)$ 级别）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;极端情况变化：轻全变重&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+T_{worst}=l_1+h_1+l_2+h_2\
+\phi_i = h_1+h_2+h\
+\phi_{i+1} \le l_1+l_2+h\
+T_{amortized} = T_{worst}+\phi_{i+1}-\phi_i\le 2(l_1+l_2) \Rightarrow O(\log N)&lt;br /&gt;
+$$&lt;/p&gt;
+&lt;h2&gt;作业题&lt;/h2&gt;
+&lt;p&gt;直接把结论列出来好了&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;按顺序插入 $1-2^k-1$ 得到的总是完全满二叉树&lt;/li&gt;
+&lt;li&gt;斜堆的 right path 长度是任意的，只是轻节点数受到限制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;二项队列&amp;lt;a id=&quot;Binomial&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;是一些堆（二项树）的集合（森林）&lt;/li&gt;
+&lt;li&gt;k阶二项树（ $B_k$ ）由两个k-1阶二项树将两个根相连形成，特别的，单点是0阶。
+&lt;ul&gt;
+&lt;li&gt;$B_k$ 共有 $2^k$ 个节点，深度为 $i$ 的一层（根为0）有 $(^k_i)$ 个&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/BinomialQueuesExample.jpg&quot; alt=&quot;BinomialQueuesExample&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以长子兄弟的形式存储，同一节点的所有儿子按子树大小降序排列&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;操作&lt;/h3&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; 结构体定义 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+typedef struct BinNode *Position;
+typedef struct Collection *BinQueue;
+typedef struct BinNode *BinTree;
+struct BinNode
+{
+ElementType Element;
+Position LeftChild;
+Position NextSibling;
+};
+struct Collection
+{
+int CurrentSize;
+BinTree TheTrees[MaxTrees];
+};
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Merge：单次复杂度 $O(\log n)$ ， 均摊 $O(1)$
+&lt;ul&gt;
+&lt;li&gt;二项树的合并，显然 $O(1)$，两个堆的合并类似于两个二进制数逐位做加法&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; 两棵树的合并 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+BinTree CombineTrees( BinTree T1, BinTree T2 )
+{
+if(T1-&amp;gt;Element &amp;gt; T2-&amp;gt;Element) return CombineTrees(T2,T1);
+T2-&amp;gt;NextSibling = T1-&amp;gt;LeftChild;
+T1-&amp;gt;LeftChild = T2;
+return T1;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; 两个二项堆的合并 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+BinQueue Merge( BinQueue H1, BinQueue H2 )
+{
+BinTree T1,T2,Carry = NULL;
+int i,j;
+if( H1-&amp;gt;CurrentSize + H2-&amp;gt;CurrentSize &amp;gt; Capacity ) ErrorMessage();
+H1-&amp;gt;CurrentSize += H2-&amp;gt;CurrentSize;
+for( i = 0; j = 1; j &amp;lt;= H1-&amp;gt;CurrentSize; ++i, j &lt;em&gt;= 2){
+T1 = H1-&amp;gt;TheTrees[i];
+T2 = H2-&amp;gt;TheTrees[i];
+switch(4&lt;/em&gt;!!Carry + 2*!!T2 + !!T1){
+case 0:case 1:break;
+case 2: H1-&amp;gt;TheTrees[i] = T2;
+H2-&amp;gt;TheTrees[i] = NULL;break;
+case 4: H1-&amp;gt;TheTrees[i] = Carry;
+Carry = NULL;break;
+case 3: Carry = CombineTrees( T1, T2 );
+H1-&amp;gt;TheTrees[i] = H2-&amp;gt;TheTrees[i] = NULL;break;
+case 5: Carry = CombineTrees( T1, Carry );
+H1-&amp;gt;TheTrees[i] = NULL;break;
+case 6: Carry = CombineTrees( T2, Carry );
+H2-&amp;gt;TheTrees[i] = NULL; break;
+case 7: H1-&amp;gt;TheTrees[i] = Carry;
+Carry = CombineTrees( T1, T2 );
+H2-&amp;gt;TheTrees[i] = NULL; break;
+}
+}
+return H1;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Find-Min : 在根节点队列中遍历寻找 $O(\log{n})$ 但是如果专门记录更新可以做到 $O(1)$&lt;/li&gt;
+&lt;li&gt;Insert：即将一棵 $B_0$ 树合并到队列中，单次最好 $O(1)$ 最坏 $O(\log n)$ ， 均摊 $O(1)$&lt;/li&gt;
+&lt;li&gt;Build：将节点逐个插入，由均摊分析得总复杂度 $O(n)$&lt;/li&gt;
+&lt;li&gt;DeleteMin：将最小根节点取出，将其对应二项树拆成所有子树再Merge回去， $O(\log n)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; DeleteMin &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+ElementType  DeleteMin( BinQueue H )
+{	
+BinQueue DeletedQueue;
+Position DeletedTree, OldRoot;
+ElementType MinItem = Infinity;
+int i, j, MinTree;
+if ( IsEmpty( H ) )  {  PrintErrorMessage();  return –Infinity; }
+for ( i = 0; i &amp;lt; MaxTrees; i++) {
+if( H-&amp;gt;TheTrees[i] &amp;amp;&amp;amp; H-&amp;gt;TheTrees[i]-&amp;gt;Element &amp;lt; MinItem ) {
+MinItem = H-&amp;gt;TheTrees[i]-&amp;gt;Element;  MinTree = i;    		}
+} /* end for-i-loop */
+DeletedTree = H-&amp;gt;TheTrees[ MinTree ];&lt;br /&gt;
+H-&amp;gt;TheTrees[ MinTree ] = NULL;
+OldRoot = DeletedTree;
+DeletedTree = DeletedTree-&amp;gt;LeftChild;&lt;br /&gt;
+free(OldRoot);
+DeletedQueue = Initialize();&lt;br /&gt;
+DeletedQueue-&amp;gt;CurrentSize = ( 1&amp;lt;&amp;lt;MinTree ) – 1;&lt;br /&gt;
+for ( j = MinTree – 1; j &amp;gt;= 0; j – – ) {&lt;br /&gt;
+DeletedQueue-&amp;gt;TheTrees[j] = DeletedTree;
+DeletedTree = DeletedTree-&amp;gt;NextSibling;
+DeletedQueue-&amp;gt;TheTrees[j]-&amp;gt;NextSibling = NULL;
+}
+H-&amp;gt;CurrentSize  – = DeletedQueue-&amp;gt;CurrentSize + 1;
+H = Merge( H, DeletedQueue );
+return MinItem;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Decrease Key：在二叉树上进行上调，显然 $O(\log n)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;均摊分析&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;建树&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$\Phi = number\ \ of\ \ trees$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;假设进行插入时现有单独的树$B_0,B_1,...,B_k, B_{k+t},....(t\ge 2)$，则插入时会与 $B_0$ 到 $B_k$ 合并得到一棵 $B_{k+1}$ ，其他不变，则 $\Phi_i - \Phi_{i-1} = -k$ （正在插入的那个点也是一棵树）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\hat{c_i} = c_i + \Phi_i - \Phi_{i-1} = 1+(k+1) -k = 2 $&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;为什么$c_i = 1 + (k+1)$ ？&lt;/p&gt;
+&lt;p&gt;因为要有 $k+1$ 次合并和 $O(1)$ 的创建节点&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Banking Method : 每个点初始一块钱，合并操作花掉两棵子树之一（被合并成为儿子那个点）的一块钱，则整个树至少还有一块钱（在根节点上），则整个系统钱不会为负，因而总复杂度是 $O(N)$ 的&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;插入：由建树的过程可以得到每个点的插入平均下来是 $O(1)$ 的&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;总结：复杂度&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Heaps&lt;/th&gt;
+&lt;th&gt;Leftist&lt;/th&gt;
+&lt;th&gt;Skew&lt;/th&gt;
+&lt;th&gt;Binomial&lt;/th&gt;
+&lt;th&gt;Fibonacci&lt;/th&gt;
+&lt;th&gt;Binary&lt;/th&gt;
+&lt;th&gt;Link list&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Make heap&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Build heap&lt;/td&gt;
+&lt;td&gt;$\Theta (N)$&lt;/td&gt;
+&lt;td&gt;amortized$\Theta(N)$&lt;/td&gt;
+&lt;td&gt;$\Theta(N)$&lt;/td&gt;
+&lt;td&gt;$\Theta(N)$&lt;/td&gt;
+&lt;td&gt;$\Theta(N)$&lt;/td&gt;
+&lt;td&gt;$O(N)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Find-Min&lt;/td&gt;
+&lt;td&gt;$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$或$\Theta( 1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$O(N)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Merge(Union)&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(N)$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Insert&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Delete-Min&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;$O(N)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Decrease-Key&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$\Theta(1)$&lt;/td&gt;
+&lt;td&gt;$\Theta(\log{N})$&lt;/td&gt;
+&lt;td&gt;$O(1)$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;注&lt;/strong&gt; ：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Make heap指初始化一个空的堆， Build heap则是依据已有数据构建堆&lt;/li&gt;
+&lt;li&gt;Delete指在只知道数值的情况下删除数值对应节点&lt;/li&gt;
+&lt;li&gt;Decrease-Key指将一已知节点的值修改并调整数据结构的过程&lt;/li&gt;
+&lt;li&gt;Link list指无序的链表，仅用作对照&lt;/li&gt;
+&lt;li&gt;内容参考了&lt;a href=&quot;https://en.wikipedia.org/wiki/Priority_queue#Summary_of_running_times&quot;&gt;Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;二项堆的Find-Min操作的两种复杂度取决于有没有用变量实时更新记录Min值，老师PPT中貌似默认不维护&lt;/li&gt;
+&lt;/ol&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;BST&lt;/th&gt;
+&lt;th&gt;RBTree&lt;/th&gt;
+&lt;th&gt;AVL&lt;/th&gt;
+&lt;th&gt;Splay&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Insert&lt;/td&gt;
+&lt;td&gt;$O(N)$&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Delete&lt;/td&gt;
+&lt;td&gt;$O(N)$&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Find&lt;/td&gt;
+&lt;td&gt;$O(N)$&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;$O(\log{N})$&lt;/td&gt;
+&lt;td&gt;amortized$O(\log{N})$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1&gt;Backtracking&amp;lt;a id=&quot;backtracking&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;&amp;lt;details&amp;gt;
+&amp;lt;summary&amp;gt; 回溯模板 &amp;lt;/summary&amp;gt;
+&amp;lt;pre&amp;gt;&amp;lt;code&amp;gt;
+bool Backtracking ( int i ){
+Found = false;
+if ( i &amp;gt; N )return true; /* solved with (x1, ..., xN) &lt;em&gt;/
+for ( each xi in Si ) {
+/&lt;/em&gt; check if satisfies the restriction R &lt;em&gt;/
+OK = Check((x1, ..., xi) , R );
+/&lt;/em&gt; pruning &lt;em&gt;/
+if ( OK ) {
+Count xi in;
+Found = Backtracking( i+1 );
+if ( !Found )Undo( i );
+/&lt;/em&gt; recover to (x1, ..., xi-1) */
+}
+if ( Found ) break;
+}
+return Found;
+}
+&amp;lt;/code&amp;gt;&amp;lt;/pre&amp;gt;
+&amp;lt;/details&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;考虑对称性可以少算不少&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;min-max搜索&lt;/p&gt;
+&lt;p&gt;以棋类游戏（三子棋为例）评估一个情况的优劣为其所有后继中估值最低的那种，从而得到最优解。围棋这类，只需模糊搜索评估的优劣比人强就行。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;找到比另一分支更小的结果可以直接停掉&lt;/li&gt;
+&lt;li&gt;定义某局面的&quot;goodness&quot;为如下等式&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+f(P) = W_{computer}-W_{human}
+$$&lt;/p&gt;
+&lt;p&gt;​				其中W表示在P局面下获胜的结局数。&lt;/p&gt;
+&lt;p&gt;​				computer的目标是使其最大化，人类反之，因而搜索呈现一层取min一层取max的				状态。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$\alpha-\beta$ pruning&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\alpha$ pruning ： 在求 max 的层向下搜索（则本层是取min），如果计算出比当前解更小的解就无需再搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/alphapruning.jpg&quot; alt=&quot;alpha&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\beta$ pruning ： 在求 min 的层向下搜索（则本层取max），若计算出比当前已知解更大的解就无需再搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/ads/betapruning.jpg&quot; alt=&quot;beta&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Divide and Conquer&amp;lt;a id=&quot;DivideConquer&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;重点是主定理&lt;/p&gt;
+&lt;h2&gt;主定理&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;一些数学推导基础&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$a^{\log_b{N}} = a^{\frac{\log_a{N}}{\log_a{b}}}=N^{\log_b{a}}$&lt;/li&gt;
+&lt;li&gt;对 $T(N) = aT(N/b)+f(N)$ 的推导&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{aligned}
+T(N) &amp;amp;= aT(N/b)+f(N)\
+&amp;amp;=a(aT(N/b^2)+f(N/b))+f(N)\
+&amp;amp;=...\
+&amp;amp;=a^kT(N/b^k)+\sum_{i=0}^{k-1} a^if(N/b^i) ,其中 k=\log_b{N}\
+&amp;amp;=N^{log_b{a}}+\sum_{i=0}^{k-1} a^if(N/b^i)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;若后面那坨东西复杂度不高于 $N^{log_b{a}}$ ，则总复杂度就是 $\Theta(N^{log_b{a}})$&lt;/p&gt;
+&lt;p&gt;一个值得关注的临界是 $f(N) = N^{log_b{a}}$  ，这意味着 $a^if(N/b^i)$ 与 $f(N)$ 等同，后面的级数和大致由 $f(N)log_b{N}$ 划定界限。&lt;/p&gt;
+&lt;h3&gt;形式1&lt;/h3&gt;
+&lt;p&gt;$T(N) = aT(N/b) + f(N)$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若$\exist \epsilon &amp;gt; 0$ 使得 $f(N) = O(N^{log_b^{a}-\epsilon})$ ，则 $T(N) = \Theta(N^{log_b^a})$&lt;/li&gt;
+&lt;li&gt;若 $f(N) = \Theta(N^{log_b^a})$ ，则 $T(N) = \Theta(N^{log_b^a}\log{N})$&lt;/li&gt;
+&lt;li&gt;若$\exist \epsilon &amp;gt; 0$ 使得 $f(N) = \Omega(N^{log_b^{a}-\epsilon})$ ，且存在常数 $c&amp;lt;1$ 使得 $af(N/b)&amp;lt;cf(N)$ 则 $T(N) = \Theta(f(N))$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;形式2&lt;/h3&gt;
+&lt;p&gt;$T(N) = aT(N/b) + f(N)$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若$\exist \kappa&amp;lt;1$ 使得 $af(N/b) = \kappa f(N)$ ，则 $T(N) = \Theta(f(N))$&lt;/li&gt;
+&lt;li&gt;若 $af(N/b) = f(N)$ ，则 $T(N) = \Theta(f(N)\log_b{N})$&lt;/li&gt;
+&lt;li&gt;若$\exist K &amp;gt; 1$ 使得 $af(N/b) = K f(N)$ ，则 $T(N) = \Theta(N^{log_b{a}}) $&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;形式3&lt;/h3&gt;
+&lt;p&gt;$T(N) = aT(N/b) + \Theta(N^k\log^p{N})$ $(a\ge 1,b&amp;gt;1,p\ge 0)$的解
+$$
+T(N) =
+\begin{cases}
+O(N^{\log_b a}) &amp;amp; \text{if } a &amp;gt; b^k \
+O(N^k \log^{p+1} N) &amp;amp; \text{if } a = b^k \
+O(N^k \log^p N) &amp;amp; \text{if } a &amp;lt; b^k
+\end{cases}
+$$&lt;/p&gt;
+&lt;h1&gt;DP&amp;lt;a id=&quot;DP&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;范例：矩阵乘法次序决定&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;f[l][r]&lt;/code&gt; 为完成 l 到 r 的乘法的最小次数，则
+$$
+f[l][r] = \min_{k\in[l,r-1]} f[l][k]+f[k+1][r]+Row[l]*Col[k]*Col[r]
+$$
+&lt;strong&gt;卡特兰数&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;矩阵乘法的方案数
+$$
+b_n=\sum_{i=1}^{n-1} b_ib_{n-i}
+$$
+通项公式
+$$
+h_n=\frac{1}{n+1}(_n^{2n})
+$$
+对应实例&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;出栈次序&lt;/li&gt;
+&lt;li&gt;括号匹配&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;DP 问题的特点&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Optimal Substructure&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;样例：BST建立&lt;/strong&gt;&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;break&lt;/th&gt;
+&lt;th&gt;case&lt;/th&gt;
+&lt;th&gt;char&lt;/th&gt;
+&lt;th&gt;do&lt;/th&gt;
+&lt;th&gt;return&lt;/th&gt;
+&lt;th&gt;switch&lt;/th&gt;
+&lt;th&gt;void&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0.22&lt;/td&gt;
+&lt;td&gt;0.18&lt;/td&gt;
+&lt;td&gt;0.20&lt;/td&gt;
+&lt;td&gt;0.05&lt;/td&gt;
+&lt;td&gt;0.25&lt;/td&gt;
+&lt;td&gt;0.02&lt;/td&gt;
+&lt;td&gt;0.08&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;建立BST使得 $\sum prob_i\times (h_i+1)$ 最小&lt;/p&gt;
+&lt;p&gt;记 $f_{i,j}$ 为 i 到 j 区间二叉树建好后的代价
+$$
+f_{i,j} = \min_{k\in[i+1,j-1]} f_{i,k-1} + f_{k+1,j} + w_{i,j}
+$$
+&lt;strong&gt;样例：Floyd&lt;/strong&gt;&lt;/p&gt;
+</content:encoded></item><item><title>计组笔记</title><link>https://ja101617.github.io/posts/note-computer-organization/</link><guid isPermaLink="true">https://ja101617.github.io/posts/note-computer-organization/</guid><description>计算机组成课堂笔记</description><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;目录&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;#Chapter1&quot;&gt;Chapter1: Computer Abstraction and Technology&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#Chapter2&quot;&gt;&lt;strong&gt;Chapter2: Instructions: Language of the Computer&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#Chapter3&quot;&gt;&lt;strong&gt;Chapter3: Arithmetic for Computers&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;#Chapter4&quot;&gt;Chapter4: The Processor: Datapath and Control&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Chapter5: Large and Fast: Exploiting Memory Hierarchy&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Chapter 6: Parallel processor from client to Cloud (选讲，非考试内容)&lt;/li&gt;
+&lt;li&gt;Appendix: Storage, Networks, and Other Peripherals (了解概念)&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;#%E9%99%84%E5%BD%95&quot;&gt;附录&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Chapter 1&amp;lt;a id=&quot;Chapter1&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$Performance = \dfrac{1}{Execution Time}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;算法：影响IC，可能影响CPI&lt;/li&gt;
+&lt;li&gt;编程语言：影响IC和CPI&lt;/li&gt;
+&lt;li&gt;编译器：影响IC和CPI&lt;/li&gt;
+&lt;li&gt;ISA：影响IC，CPI和$T_c$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Execution Time&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Elapsed time: Total response time,determines system performance
+&lt;ul&gt;
+&lt;li&gt;Processing , IO, OS overhead, idle time...&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;CPU time: Time spent processing a given job
+&lt;ul&gt;
+&lt;li&gt;different programs are affected differently by CPU &amp;amp; system performance&lt;/li&gt;
+&lt;li&gt;Comprises user CPU time &amp;amp; system CPU time&lt;/li&gt;
+&lt;li&gt;$CPU\ \ Time = \frac{CPU\ \ Clock\ \ Cycles}{Clock\ \ Rate} = CPU\ \ Clock\ \ Cycles \times Clock\ \ Cycle\ \ Time $
+&lt;ul&gt;
+&lt;li&gt;提速：Clock Cycles和Clock Rate的trade off&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{aligned}
+CPU\ \ Time =&amp;amp; \frac{CPU\ \ Clock\ \ Cycles}{Clock\ \ Rate}\
+=&amp;amp; CPU\ \ Clock\ \ Cycles \times Clock\ \ Cycle\ \ Time\
+=&amp;amp;Instruction\ \ Count \times CPI\times Clock\ \ Cycle\ \ Time\
+=&amp;amp;\dfrac{Instruction\ \ Count \times CPI}{Clock\ \ Rate}\
+=&amp;amp; \dfrac{Instructions}{Program} \times \dfrac{Clock\ \ cycles}{Instructions}\times\dfrac{Seconds}{Clock cycle}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;平均CPI由CPU硬件、指令类型等决定&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+Average CPI = \sum(CPI_i\times \dfrac{Instruction\ \ Count_i}{Instruction\ \ Count})
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Instruction Count由程序、指令集（ISA）和编译器决定&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;CMOS IC technology中&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+Power = Capacitive\ \ load\times Voltage^2\times Frequency
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Pitfall&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Amdahl&apos;s Law&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+T_{imporved} = \dfrac{T_affected}{improvement\ \ factor}+T_{unaffected}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MIPS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{aligned}
+MIPS =&amp;amp;\dfrac{IC}{Execution\ \ time \times 10^6}\
+=&amp;amp; \dfrac{IC}{\dfrac{IC\times CPI}{Clock\ \ rate} \times 10^6}\
+=&amp;amp;\dfrac{Clock\ \ rate}{CPI \times 10^6}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/EightIdea.jpg&quot; alt=&quot;image-20240925113511973&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Chapter 2&amp;lt;a id=&quot;Chapter2&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;h2&gt;2 key principles&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Instruction are represented as numbers.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Programs can be stored in memory to be read or written just like numbers.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Operations&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;指令的Format决定了指令的结构&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;RISC-V指令集&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RISC-VInstructionFormat.jpg&quot; alt=&quot;RISC-V Instruction Format&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;R型：操作全寄存器&lt;/li&gt;
+&lt;li&gt;I型：两个寄存器，一个立即数&lt;/li&gt;
+&lt;li&gt;S型：两个寄存器，一个立即数（被腰斩了）&lt;/li&gt;
+&lt;li&gt;SB型：分支结构，与S型大体相似
+&lt;ul&gt;
+&lt;li&gt;SB指令的imm[4:1,11]的安排是为了与S对齐 &lt;s&gt;没有imm[0]，很神奇吧&lt;/s&gt;，imm[12]是符号位拓展，默认第零位是0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;MIPS指令集&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/MIPSInstructionFormat.jpg&quot; alt=&quot;MIPS Instruction Format&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Arithmetic&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;One operation per instruction&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;3 variables(2 src+1 dest)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;add dest src1 src2 (dest = src1 + src2)&lt;/li&gt;
+&lt;li&gt;sub dest src1 src2 (dest = src1-src2)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;操作数得是寄存器&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Risc-V有32个64位的寄存器（x0~x31)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;32b $\rightarrow$ word，64b $\rightarrow$ doublewords&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;功能表见&lt;a href=&quot;#%E9%99%84%E5%BD%95operands&quot;&gt;附录&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Memory&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;只有读写两种操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;按byte操作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;RISC-V是Little Endian（更低位的byte放在更小的地址）（Big Endian反之）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;RISC-V不要求Memory Alignment&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对齐：存储为0到3,4到7等，起始地址是4的倍数不会跨byte&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;示例：&lt;code&gt;A[12]=h+A[8]&lt;/code&gt;，h在x21，A基址x22&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;指令如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ld x9, 64(x22)
+add x9, x21,x9
+sd 72(x22), x9
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt; ld&lt;/code&gt;是load double word,&lt;code&gt;64(x22)&lt;/code&gt;指A[8]，即数字部分是相对基址的偏移量（以字节为单位）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;示例：&lt;code&gt;h=h+55&lt;/code&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;addi x9 x9 55
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Byte/Halfword/Word Operations&lt;/p&gt;
+&lt;p&gt;寄存器都是64位不变的，因而&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在 &lt;code&gt;lb,lh,lw&lt;/code&gt; 指令时用符号位扩展&lt;/li&gt;
+&lt;li&gt;在 &lt;code&gt;lbu,lhu,lwu&lt;/code&gt; 指令时用0扩展&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Logical Operations&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/BitwiseOperation.jpg&quot; alt=&quot;BitwiseOperation&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;按位取反是不需要的（与全一取异或）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Shift Operations : I format&lt;/li&gt;
+&lt;li&gt;AND Operations &amp;amp; OR Operations &amp;amp; XOR Operations: R format&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Conditional Operations &amp;amp; Loop&amp;lt;a id=&quot;条件与循环&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;beq : 相等则执行；bne : 不等则执行&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;beq x21,x22,L1&lt;/code&gt;,其中L1指代一个指令，值为那条指令与本指令的相对位置。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;slt : 以 &lt;code&gt;slt x5, x19, x20&lt;/code&gt; 为例，若 $x_{19}&amp;lt;x_{20}$ 则 $x_5$ 为1&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;blt : 若 $rs_1&amp;lt;rs_2$ 则跳转；bge : 若 $rs_1\ge rs_2$ 则跳转&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;以及相应的unsigned形式bltu,bgeu&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;SB指令的立即数处理&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/BranchAddressing.jpg&quot; alt=&quot;branch addressing&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;​			会省略掉最低位的零，因而需要以half word对齐（实际设计是word对齐）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;循环的写法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;g ~ k对应x20 ~ x24,  base A[i] 存在 x25&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;    do{
+    	g = g + A[i];
+    	i = i + j;
+    }while(i!=h);
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;    LOOP:	slli x10,x22,3  #按字节数A[i]相对于A的偏移量
+    		add x10,x10,x25 #x10存储A[i]的地址
+    		ld x19 ,0(x10)  #x19存储A[i]的值
+    		add x20 x20 x19 
+    		add x22,x22,x23
+    		bne x22,x21,LOOP
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;    while(A[i] == k) i+=1;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;    LOOP: slli x10,x22,3
+    	  add x10,x10,x25
+    	  ld x9,0(x10)
+    	  bne x9,x24,EXIT
+    	  addi x22,x22,1
+    	  beq x0,x0,LOOP
+    EXIT:....
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Q：LOOP的值为多少？
+A：相对调用语句 &lt;code&gt; beq x0,x0,LOOP&lt;/code&gt; 的偏移量，即 -5*4=-20&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;使用jalr实现Switch&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;switch ( k )  {
+	case  0 :    f  =  i+  j ;  break ;    /*  k  =  0  */
+	case  1 :    f  =  g +  h ;  break ;   /*  k  =  1  */
+	case  2 :    f  =  g  -h ;  break ;   /*  k  =  2  */
+	case  3 :    f  =  i-j ;  break ;    /*  k  =  3  */
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;使用 &lt;strong&gt;jump address table&lt;/strong&gt; 解决&lt;/p&gt;
+&lt;p&gt;假设 f ~ k 对应 x20 ~ x25， x6 存储 jump address table 的基址，则对应汇编代码如下&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;blt x25, x0, Exit      # test if  k  &amp;lt;  0 
+bge x25, x5, Exit      # if  k  &amp;gt;=  4,  go to Exit
+slli x7, x25, 3        # temp reg x7  =  8  *  k  (0&amp;lt;=k&amp;lt;=3) 
+add x7, x7, x6         # x7  =  address of JumpTable[k]
+ld x7, 0(x7)           # temp reg x7 getsJumpTable[k]
+jalr x1, 0(x7)         # jump based on register x7(entrance)
+Exit:...
+...
+L0:add $s0, $s3, $s4   # k  =  0  so  f  gets  i+j
+   jalr x0, 0(x1)      # end of this case so go to Exit 
+L1:add $s0, $s1, $s2   # k  =  1  so  f  gets  g+h
+   jalr x0, 0(x1)      # end of this case so go to Exit 
+L2:sub $s0, $s1, $s2   # k  =  2  so  f  gets  g-h
+   jalr x0, 0(x1)      # end of this case so go to Exit 
+L3:sub $s0, $s3, $s4   # k  =  3  so  f  gets  i-j
+   jalr x0, 0(x1)      # end of  switch statement
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;代码理解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;为什么 &lt;code&gt;slli x7, x25, 3&lt;/code&gt; ？&lt;/p&gt;
+&lt;p&gt;A：每条指令都是4B的，下面每个case带2条指令，因此乘以8&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;每个case的最后一句的 &lt;code&gt;jalr x0, 0(x1)&lt;/code&gt; 是什么作用？&lt;/p&gt;
+&lt;p&gt;A：跳转回 x1 指令（即Exit），下一条指令没有必要存下来&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;代码中出现的 &lt;code&gt;$s0,$s3,$s4&lt;/code&gt; 都是什么东西？&lt;/p&gt;
+&lt;p&gt;A：这是寄存器的别名&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;ld x7 0(x7)&lt;/code&gt; 是为什么？&lt;/p&gt;
+&lt;p&gt;A：类似于C语言中解引用的过程，可以这么理解。如L0这种label存储的是指令单位置（是一个指向指令的指针），而x6存储的是L0的地址（也就是x6是一个二级指针），因此通过 &lt;code&gt;x7=x6+8*k&lt;/code&gt; 得到的是存储Lk的地址的寄存器的地址，则此处 ld 指令过后就得到了 Lk的地址&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Basic Blocks&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;要求：
+&lt;ul&gt;
+&lt;li&gt;没有分支&lt;/li&gt;
+&lt;li&gt;不会有跳转到中间的情况 (&quot;No branch targets/branch labels, except at beginning&quot;)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;编译器会对 basic blocks 进行加速&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Supporting Procedures&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;函数调用的6个步骤&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Place Parameters in a place where the procedure can access them&lt;/li&gt;
+&lt;li&gt;Transfer control to the procedure：jump to&lt;/li&gt;
+&lt;li&gt;Acquire the storage resources needed for the procedure&lt;/li&gt;
+&lt;li&gt;Perform the desired task Place the result value in a place where the calling program can access it&lt;/li&gt;
+&lt;li&gt;Return control to the point of origin&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Procedure Call Instructions&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;jal jalr : 无条件跳转  (作caller使用)
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Jump-and-link : &lt;code&gt;jal x1,ProcedureAddress&lt;/code&gt; [UJ型]&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;将紧随其后的下一条指令存入 x1 （如果是 x0 就与 goto 指令等价）&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;并跳转至&lt;code&gt;ProcedureAddress&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;UJ 指令的立即数处理&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/JumpAddress.jpg&quot; alt=&quot;UJcode&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可以做到约 1MB 的跳转范围&lt;/li&gt;
+&lt;li&gt;因为省略最低位同样需要 half word 对齐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Jump-and-link-register : &lt;code&gt;jalr x0,0(x1)&lt;/code&gt; [I型] (作callee使用)&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;跳转到 &lt;code&gt;0(x1)&lt;/code&gt; 的位置&lt;/li&gt;
+&lt;li&gt;下一条指令存入 x0 （丢掉不要）&lt;/li&gt;
+&lt;li&gt;因为寄存器的引入可以实现更大的跳转范围&lt;/li&gt;
+&lt;li&gt;可以用作switch功能（实例见&lt;a href=&quot;#%E6%9D%A1%E4%BB%B6%E4%B8%8E%E5%BE%AA%E7%8E%AF&quot;&gt;Conditional Operations&lt;/a&gt;部分）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;参数的功用&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;a0 ~ a7(x10 ~ x17) : 传参&lt;/li&gt;
+&lt;li&gt;ra/x1 : 传返回地址&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;堆栈&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;栈：高地址到低地址&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;堆：低地址到高地址&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;包括3个参数： push, pop, 堆栈指针(sp)&lt;/p&gt;
+&lt;p&gt;sp存在两种用法：指向最后一个和指向空的，本课程使用指向最后一个的用法。&lt;/p&gt;
+&lt;p&gt;以栈为例：&lt;/p&gt;
+&lt;p&gt;push:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;addi sp, sp, -8
+sd ..., 0(sp)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;pop:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;ld ..., 0(sp)
+addi sp, sp, 8
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;为了减少入栈出栈，对寄存器进行分类&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;t0 ~ t2(x5 ~ x7) 是临时寄存器，函数调用不保存值&lt;/li&gt;
+&lt;li&gt;a0 ~a7 用于传参&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;样例：阶乘求解&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;int fact ( int n ){
+    if ( n  &amp;lt;  1 )   return  ( 1 ) ;
+    else return   ( n  *  fact ( n  -1 ) ) ;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;pre&gt;&lt;code&gt;fact:   addi sp, sp, -16   # adjust stack for 2 items
+        sd ra, 8(sp)       # save the return address：x1
+        sd a0, 0($sp)      # save the argument  n:x10(a0)
+        addi t0, a0, -1    # x5 = n  - 1
+        bge t0, zero, L1   # if  n  &amp;gt;=  1, go to L1(else)
+        addi a0, zero, 1   # return 1 if n &amp;lt;1
+        addi sp, sp, 16    # Recover sp(Why not recover x1 and x10 ?)
+        jalr zero, 0(ra)   # return to caller
+L1:     addi a0,  a0, -1   # n  &amp;gt;=  1: argument gets ( n  -1 )
+        jal ra, fact	   # call fact with ( n  -1)
+        add t1, a0, zero   # move result of fact(n -1) to x6(t1)
+        ld a0, 0(sp)	   # return from jal: restore argument n
+        ld ra, 8(sp)	   # restore the return address
+        add sp, sp, 16     # adjust stack pointer to pop 2 items
+        mul a0, a0, t1	   # return  n*fact ( n  -1 )
+        jalr zero, 0(ra)   # return to the  caller
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;​	代码理解：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;ra是干什么的？&lt;/p&gt;
+&lt;p&gt;书上说法是”保存函数调用返回地址“，这里可以举例子帮助理解。&lt;/p&gt;
+&lt;p&gt;在这段代码中，修改ra的地方除了ld只有jal，前者没啥分析价值，只看&lt;code&gt;jal ra, fact&lt;/code&gt;那句。此处会将jal的后一条指令存入ra，也就是说如果运行了这句话，跳转到fact标签运行，一通操作完之后（肯定入栈和弹栈数量持平），运行&lt;code&gt;jalr zero,0(ra)&lt;/code&gt;就会跳回到jal的下一句，即从&lt;code&gt;add t1, a0, zero&lt;/code&gt;开始跑。&lt;/p&gt;
+&lt;p&gt;如果放到c里面理解（其实高级语言没有对应的东西），相当于在调用函数之前标记了一下函数后面那句话说是在这里断开开始递归的所以要从这里接着跑。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;怎么理解a0的双重身份？&lt;/p&gt;
+&lt;p&gt;a0在传入参数的时候代表 $n$ ，计算完成的时候才作为 $n!$ 存在。例如考虑L1的部分。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;addi a0,  a0, -1&lt;/code&gt; 是 n&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;jal ra, fact&lt;/code&gt;和&lt;code&gt; add t1, a0, zero&lt;/code&gt; 处因为递归调用的完成是存储的 $(n-1)!$ 于是很快就用 t1这个临时变量存起来了&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ld a0, 0(sp)&lt;/code&gt; 恢复 a0 为 $n$&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;mul a0, a0, t1&lt;/code&gt; &lt;code&gt;jalr zero, 0(ra)&lt;/code&gt; 的位置 a0 终于成为计算结果 $n!$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;addi sp, sp, 16    # Recover sp(Why not recover x1 and x10 ?)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;已经到最底层了，a0不需要往下传，下次使用就是作为 $0!$ 所以不用改； ra没有变化也不用改&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Memory Layout&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/MemoryLayout.jpg&quot; alt=&quot;MemoryLayout&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Dynamic data : 堆栈，配有 sp&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/StackAllocation.jpg&quot; alt=&quot;stack allocation&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;fp(frame pointer) ：指向当前函数压进去的第一个参数的位置（当前进程的起始位置）&lt;/li&gt;
+&lt;li&gt;save saved registers : 超过现有32个的寄存器使用（类似于c的malloc）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;static data : 静态变量（如数组，字符串）、x3 (global pointer)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;text : 代码&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Character Data&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Byte-encoded character sets
+&lt;ul&gt;
+&lt;li&gt;ASCII : 128 个字符，其中 33 个是控制字符&lt;/li&gt;
+&lt;li&gt;Latin-1 : 在ASCII基础上加了96个可显示字符&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Unicode : 32b
+&lt;ul&gt;
+&lt;li&gt;UTF-8 , UTF 16:可变长度的编码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;RISC-V Addressing for 32b Immediate and Address&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;U type指令有20位立即数，效果如下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Utype-lui.jpg&quot; alt=&quot;lui operation&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;​	则如果要 load 一个 32b 的数可以这样做&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/ld32b.jpg&quot; alt=&quot;load 32b&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;​	Q：为什么是 977 而非 976？&lt;/p&gt;
+&lt;p&gt;​	A： 2304的符号位是1，赋值的时候符号位扩展需要补一个1消除掉（也就是值+低一位的值）&lt;/p&gt;
+&lt;h2&gt;Synchronization&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Load reserved: &lt;code&gt;lr.d rd,(rs1)&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;从 rs1 读到 rd&lt;/li&gt;
+&lt;li&gt;内存预留&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Store conditional: &lt;code&gt;sc.d rd,(rs1),rs2&lt;/code&gt;
+&lt;ul&gt;
+&lt;li&gt;从 rs2 存到 rs1里面的地址&lt;/li&gt;
+&lt;li&gt;如果该地址未被占用就返回0，反之返回非零值（且不修改）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Other RISC-V Instructions&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;RV64I &amp;amp; RV32I : 64/32b寄存器
+&lt;ul&gt;
+&lt;li&gt;RV64I中的 addw, subw, addiw, sllw,....是专门处理32b的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;RV32I和RV64I加上后缀表示更多的功能
+&lt;ul&gt;
+&lt;li&gt;M：支持整数乘除法&lt;/li&gt;
+&lt;li&gt;A：支持原子操作&lt;/li&gt;
+&lt;li&gt;F：支持单精度浮点数&lt;/li&gt;
+&lt;li&gt;D：支持双精度浮点数&lt;/li&gt;
+&lt;li&gt;C：支持压缩指令（有16b指令）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Chapter 3&amp;lt;a id=&quot;Chapter3&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;默认64bit为double word，一个word为32bit&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;补码可以直接加减，不可直接相乘！&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;（？）如(1001)2平方不会得到49，但是如果补全成(11111001)2的平方可以&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;浮点数：Single precicion ~ Quadruple precision&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;ALU&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;加减法溢出条件&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/overflowCondition.jpg&quot; alt=&quot;image-20240925114525853&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/ALUstruct.jpg&quot; alt=&quot;image-20240925115021116&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;注：上图的set传到less是为了执行slt操作&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/ALUFunctionTable&amp;amp;logo.jpg&quot; alt=&quot;image-20240925115107894&quot; /&gt;&lt;/p&gt;
+&lt;h3&gt;超前进位加法器&lt;/h3&gt;
+&lt;h4&gt;一位版本&lt;/h4&gt;
+&lt;p&gt;$G_i = A_i &amp;amp; B_i$(generate)&lt;/p&gt;
+&lt;p&gt;$P_i = A_i|B_i$ (propogation)&lt;/p&gt;
+&lt;p&gt;则$S_i = P_i \bigoplus C_i$, $C_{i+1}=G_i+P_iC_i$&lt;/p&gt;
+&lt;h4&gt;四位版本&lt;/h4&gt;
+&lt;p&gt;对每个 $C_i$ 进行展开，得到结果如下&lt;/p&gt;
+&lt;p&gt;$$
+\begin{aligned}
+C_1 &amp;amp;= G_0 + P_0C_0\
+C_2 &amp;amp;= G_1 + P_1C_1 = G_1 + P_1G_0 + P_1P_0C_0\
+C_3 &amp;amp;= G_2 + P_2C_2 = G_2 + P_2G_1 + P_2P_1G_0 + P_2P_1P_0C_0\
+C_4 &amp;amp;= G_3 + P_3C_3 = G_3 + P_3G_2 + P_3P_2G_1 + P_3P_2P_1G_0 + P_3P_2P_1P_0C_0
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/CarryLookaheadAdder4b.jpg&quot; alt=&quot;CarryLookaheadAdder4b&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$C_1$ 到 $C_4$ 同步可得&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;十六位版本&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;fan-in限制不能继续展开了&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;乘法&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;符号问题：一般转成绝对值运算再回去&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;实操：龟速乘做法$\rightarrow$ “山不就我我来就山” 运算结果右移，被乘数不动&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$\Rightarrow$ 乘数和结果右移同步，可以利用低位存储乘数&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Multiplier_example.jpg&quot; alt=&quot;image-20240925121430846&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[了解] Booth&apos;s Algorithm&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;​		Idea: 1111010-&amp;gt; 10000000 + 10 -1000&lt;/p&gt;
+&lt;h3&gt;除法&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;长除法的减法版本
+&lt;ul&gt;
+&lt;li&gt;允许有试减环节，不判断先减再说&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;具体操作（V1）：除数存在寄存器左边，逐渐右移试减；被除数（余数）放在寄存器右边不用动&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/DivisionV1.jpg&quot; alt=&quot;DivisionV1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/DivisionV1Process.jpg&quot; alt=&quot;DivisionV1Process&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;V2（优化了存储空间）：除数不用开二倍长度，Remainder寄存器将被除数放在右侧，逐步左移，Divisior对齐Remainder最左侧进行减法操作。减法结果从右侧存入Remainder充当V1的Quotient&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/DivisionV2.jpg&quot; alt=&quot;DivisionV2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/DivisionV2Process.jpg&quot; alt=&quot;DivisionV2Process&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;因为第一次减法结果必定为0，所以先左移再做减法。随之导致最后多移一次，故加上了ShiftRight接口&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Q：负数除法，余数和商的符号问题？&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;A:Remainder和Dividend保持一致&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;除法无法并行实现：依赖前一次的结果&lt;/li&gt;
+&lt;li&gt;[可以了解]Faster dividers（e.g. SRT division)&lt;/li&gt;
+&lt;li&gt;Risc-V中的除法指令
+&lt;ul&gt;
+&lt;li&gt;div,rem:有符号除法&lt;/li&gt;
+&lt;li&gt;divu,remu:无符号除法&lt;/li&gt;
+&lt;li&gt;处理器不会对除0和溢出的情况进行报错，需要自行处理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;浮点数&lt;/h3&gt;
+&lt;p&gt;仿照科学计数法，可以将浮点数记为 $(-1)^s\times F \times 2^E$ 。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;上溢：正指数太大&lt;/li&gt;
+&lt;li&gt;下溢：负指数太小&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;表示形式&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;RISC-V&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;float : 1位符号位+8位指数+23位尾数&lt;/li&gt;
+&lt;li&gt;double : 1位符号位+11位指数+52位尾数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;IEEE 754浮点数标准：将尾数的1隐含掉（类似科学计数法没有前导零，尾数的第一位必然为1），但0是例外，其表示为 $0....0_2$ 。例如一个浮点数尾数部分表示为 $f_1f_2...f_n$ ，则其值实际为 $1+0.f_1f_2f_3...f_n$   。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对异常值有特殊的表示&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/FloatNumberSpecialExpression.jpg&quot; alt=&quot;image-20241006135825563&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;整个浮点数不是补码表示法而是符号-数值形式，但指数部分使用补码表示&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;移码表示法&lt;/strong&gt; ：对指数部分加上一个偏移量以方便比较大小（类似从有符号整数到无符号整数范围的位移），IEEE 754规定 float 偏移量127， double 偏移量1023。则一个浮点数实际值为 $(-1)^S\times (1+$有效位数$) \times 2^{exponent-bias}$ 。&lt;/li&gt;
+&lt;li&gt;所以float绝对值最小的是 $\pm 1.0\times 2^{-126}$，最大的Fraction:111111，约为2.0，绝对值最大的就是$\pm 2.0\times 2^{127}$ 。双精度分别为 $\pm 1.0\times 2^{-1022}$ 和 $\pm 2.0 \times 2^{1023}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;加减&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;对齐：指数小往指数大对齐&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/FloatCalcProcess.jpg&quot; alt=&quot;FloatCalcProcess&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/FloatCalcStruct.jpg&quot; alt=&quot;FloatCalcStruct&quot; /&gt;&lt;/p&gt;
+&lt;h4&gt;乘除&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;指数相加（但是要把bias补回来）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/FloatMulProcess.jpg&quot; alt=&quot;FloatMulProcess&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/FloatMulStruct.jpg&quot; alt=&quot;FloatMulStruct&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;（除法类似）&lt;/p&gt;
+&lt;h4&gt;Accurate Arithmetic&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;三个extra bits（不一定系统有）
+&lt;ul&gt;
+&lt;li&gt;guard:&lt;/li&gt;
+&lt;li&gt;round:&lt;/li&gt;
+&lt;li&gt;sticky:&lt;/li&gt;
+&lt;li&gt;[ ] TODO：理解三个extra bits的作用并了解其在浮点数运算具体操作&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Chapter 4&amp;lt;a id=&quot;Chapter4&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;h2&gt;Implementation Overview&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;1st: identical&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;从内存中取出指令&lt;/li&gt;
+&lt;li&gt;解码，（读寄存器）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;2nd：依据指令类型，进行内存访问/计算/分支&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ALU计算&lt;/li&gt;
+&lt;li&gt;访问内存，读写&lt;/li&gt;
+&lt;li&gt;修改PC&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/implementationOverview.jpg&quot; alt=&quot;implementation&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;PC：寄存器，电脑运行指令的指针&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Instruction Memory：存储指令，用来读取&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Registers：寄存器读出/写入&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Data Memory：更大的内存&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;ALUs&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;右下：用于寄存器加减等操作&lt;/li&gt;
+&lt;li&gt;左上：正常运行， &lt;code&gt;pc=pc+4&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;右上：非正常运行（如jal），偏移值来自指令&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;多处数据汇流：需要mux&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;下：ALU操作数可能是与立即数或者寄存器；寄存器出来的值（还没懂，待研究！！！）&lt;/li&gt;
+&lt;li&gt;中：指令可能只是算数运算，结果从ALU产生，也可能是如 &lt;code&gt;ld t1, 0(t2)&lt;/code&gt; 之类从 Data Memory产出&lt;/li&gt;
+&lt;li&gt;上：是否跳转决定PC的改变量&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;图上是数据流向的示意图datapath，但读还是写之类需要另外一套控制系统，如下图蓝色部分&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/CPUwithControl.jpg&quot; alt=&quot;Control Part&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Datapath&lt;/h2&gt;
+&lt;h3&gt;部件&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;组合逻辑：ALU、Adder、Multiplexer&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;时序逻辑：Registers、Register files、存储器&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Registers&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;写使能 Write Enable ： 置为1且有效时钟边沿到来时修改数据输出为输入值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Register files：32个Register&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;32位输出端口 busA busB &amp;amp; 32位输入端口 busW&lt;/li&gt;
+&lt;li&gt;5位输入端口 RW RA RB&lt;/li&gt;
+&lt;li&gt;Clk &amp;amp; Write Enable&lt;/li&gt;
+&lt;li&gt;读操作：RA 作为地址选择的数据输出到 busA ; RB $\Rightarrow$ busB，&lt;strong&gt;不受 clk 限制&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;写操作：当 Write Enable 为1时 RW 作为地址选择的寄存器写入 busW 的数据，&lt;strong&gt;受 clk 限制&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;存储器：对应示意图中 Data Memory 的部分&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;输入输出端口 DataIn &amp;amp; DataOut&lt;/li&gt;
+&lt;li&gt;地址线 Address&lt;/li&gt;
+&lt;li&gt;Clk &amp;amp; Write Enable&lt;/li&gt;
+&lt;li&gt;读操作： Address 处数据输出到 DataOut&lt;/li&gt;
+&lt;li&gt;写操作：当Write Enable为1且时钟边缘有效时向 Address 处写 DataIn&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Summary：三个部件在读功能时不受 clk 限制，相当于组合逻辑部件，但写操作都要在 clk 有效边缘&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Q ：非阻塞和阻塞赋值？&lt;/p&gt;
+&lt;p&gt;A ：非阻塞等式右边的值统一评估完一起赋值；阻塞赋值是逐条进行，以这组代码为例&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;always @ (posedge clk)begin
+	c&amp;lt;=1;
+	b&amp;lt;=c;
+	a&amp;lt;=b;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;上文是非阻塞赋值，因而c = 1需要两个时钟才能给到a&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;always @ (posedge clk)begin
+	c=1;
+	b=c;
+	a=b;
+end
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;这是阻塞赋值，运行是逐行的，因此在一个周期内就能完成 &lt;code&gt;a=b=c=1&lt;/code&gt; 的任务&lt;/p&gt;
+&lt;h2&gt;各类操作对应的 Data path 和 Control 情况&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;完整结构图&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image-20241106110625223&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Control信号的作用&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image-20241106105855273&quot; /&gt;&lt;/p&gt;
+&lt;h3&gt;R型&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Instruction 流向 Reg1 和 Reg2 和 Wreg ， Reg1 与 Reg2 进入 ALU ，ALU result 直接从 Mux 流向 Reg 的 Write Data&lt;/li&gt;
+&lt;li&gt;RegWrite 1， ALUSrc 0, ALU operation 取决于具体指令， MemWrite 和 MemRead 0，MemtoReg 00， PCSrc 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Datapath_R.jpg&quot; alt=&quot;image-20241106101336099&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;I 型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Instruction 流向 Reg1 和 WReg 及 Imm Gen ， Imm Gen 和  Reg1 进入 ALU ，结果输入 Memory address ， 再从 MUX 流回 Reg Write Data.&lt;/li&gt;
+&lt;li&gt;RegWrite 1, ALUSrc 1, ALU operation加, MemWrite 0, MemRead 1, MemtoReg 01, PCSrc 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Datapath_I.jpg&quot; alt=&quot;image-20241106103552151&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;S 型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Instruction 流向 Reg1,  Reg2 和 Imm Gen， Imm Gen 和 Reg1 进入 ALU，结果输入 Memory address， Reg2 流向 Memory Write Data&lt;/li&gt;
+&lt;li&gt;RegWrite 0, ALUSrc 1, ALU operation加, MemWrite 1, MemRead 0, MemtoReg 无所谓 , PCSrc 0&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Datapath_S.jpg&quot; alt=&quot;image-20241106104113840&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;SB 型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Instruction 流向 Reg1, Reg2 和 Imm Gen，Reg1 和 Reg2 流入 ALU ， ALU 的zero 流向顶上的 MUX， Imm Gen 流向 PC 的一个加法器&lt;/li&gt;
+&lt;li&gt;RegWrite 0, ALUSrc 0, ALU operation减, MemWrite 0, MemRead 0, MemtoReg 无所谓, PCSrc 由 ALU 的 zero 给出&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Datapath_SB.jpg&quot; alt=&quot;image-20241106104843079&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;J 型&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Instruction 流向 Imm Gen 和 WReg , Imm Gen 流向 Shift left1 从而进入PC的加法器， PC+4 汇入 Data Memory 右边的 MUX 再到 Reg Write Data&lt;/li&gt;
+&lt;li&gt;RegWrite 1, ALUSrc 无所谓, ALU operation 无所谓, MemWrite 0, MemRead 0, MemtoReg 10 , PCSrc 1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/Datapath_J.jpg&quot; alt=&quot;image-20241106105651232&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;汇总：Control信号&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;main control&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/CPUmainController.jpg&quot; alt=&quot;image-20241106110151820&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;ALU control&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/CPUALUControl.jpg&quot; alt=&quot;image-20241106110500572&quot; /&gt;&lt;/p&gt;
+&lt;h1&gt;Pipeline&lt;/h1&gt;
+&lt;h2&gt;理论基础&lt;/h2&gt;
+&lt;h3&gt;Five stages&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;IF : Instruction fetch from memory&lt;/li&gt;
+&lt;li&gt;ID : Instruction decode &amp;amp; register read （同时进行）&lt;/li&gt;
+&lt;li&gt;EX : Execute operation or calculate address&lt;/li&gt;
+&lt;li&gt;MEM : Access memory operand&lt;/li&gt;
+&lt;li&gt;WB : Write  result back to register&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;不是所有指令都五步齐全，但是那一步还是要走&lt;/p&gt;
+&lt;p&gt;流水线处理 $\Rightarrow$ CPI=1&lt;/p&gt;
+&lt;h3&gt;存在问题&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;数据竞争&lt;/strong&gt;：相邻两指令用到同寄存器，存在依赖关系&lt;/p&gt;
+&lt;p&gt;$\Rightarrow$ 插入 stall&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;[ ] 需要对一段有依赖关系的代码算总时钟周期，能把依赖关系消除掉&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$\Rightarrow$ 旁路(bypass)过来（算完了马上取出来用，不走流程）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;控制竞争&lt;/strong&gt;：比如前一条指令是跳转，那么后一条指令执行什么取决于前一条的结果&lt;/p&gt;
+&lt;p&gt;$\Rightarrow$ Branch Prediction&lt;/p&gt;
+&lt;p&gt;预测是否跳转（基于普遍历史经验预测），预测错误再插入stall&lt;/p&gt;
+&lt;h2&gt;实现&lt;/h2&gt;
+&lt;h3&gt;Datapath&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;每层之间加寄存器，把结果存下来以为下一条指令做缓冲&lt;/li&gt;
+&lt;li&gt;以ld指令为例：直接使用上述设计最后写回的地址出问题了 $\Rightarrow$ Write address（后面要用到的一切信号） 跟着逐级移动（不能直接跳层否则流程出问题）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Control&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;IF/ID解码指令，同单周期&lt;/li&gt;
+&lt;li&gt;后面边传边用边丢&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3&gt;Hazard&lt;/h3&gt;
+&lt;h4&gt;Data Hazards&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;Detect&lt;/li&gt;
+&lt;li&gt;Solve&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;附 录&amp;lt;a id=&quot;附录&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
+&lt;h2&gt;RISC-V operands&amp;lt;a id=&quot;附录operands&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RegTable.jpg&quot; alt=&quot;RISC-V operands&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;RISC-V assembly language&amp;lt;a id=&quot;附录assembly language&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RISC-VAssemblyLanguage1.jpg&quot; alt=&quot;RISC-VAssemblyLanguage1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RISC-VAssemblyLanguage2.jpg&quot; alt=&quot;RISC-VAssemblyLanguage2&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;RISC-V instruction structure&amp;lt;a id=&quot;附录instruction structure&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/InstructionStructure.jpg&quot; alt=&quot;InstructionStructure&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;RISC-V instruction encoding&amp;lt;a id=&quot;附录instruction encoding&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RISC-Vinstructionencoding1.jpg&quot; alt=&quot;RISC-Vinstructionencoding1&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RISC-Vinstructionencoding2.jpg&quot; alt=&quot;RISC-Vinstructionencoding2&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/CO/RISC-Vinstructionencoding3.jpg&quot; alt=&quot;RISC-Vinstructionencoding3&quot; /&gt;&lt;/p&gt;
+</content:encoded></item></channel></rss>
