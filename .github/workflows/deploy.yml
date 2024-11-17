@@ -33,13 +33,7 @@ jobs:
           pnpm install
           pnpm run build
 
-      - name: Remove unnecessary files
-        run: |
-          find dist -type l -delete
-          find dist -name "*.map" -delete
-          find dist -name "*.log" -delete
-
-      - name: Verify dist folder
+      - name: Verify dist content before upload
         run: |
           ls -la dist
           du -sh dist
@@ -56,7 +50,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Download artifact for deployment
         uses: actions/download-artifact@v4
