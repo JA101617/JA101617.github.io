@@ -14,33 +14,37 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      # 检出代码
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 设置 Node.js 环境
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
+      # 安装 pnpm
+      - name: Install pnpm
+        run: npm install -g pnpm
 
+      # 清理旧的构建
       - name: Clean previous build
         run: rm -rf dist
 
+      # 安装依赖并构建
       - name: Install dependencies and build
         run: |
           pnpm install
           pnpm run build
 
-      - name: Verify artifact size
-        run: du -sh dist
+      # 检查构建内容
+      - name: Verify dist folder
+        run: |
+          du -sh dist
+          find dist
 
-      - name: Check for symlinks
-        run: find dist -type l || echo "No symlinks found"
-
+      # 上传 dist 文件夹作为工件
       - name: Upload dist folder as artifact
         uses: actions/upload-artifact@v4
         with:
@@ -54,6 +58,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      # 下载工件并部署
       - name: Download artifact for deployment
         uses: actions/download-artifact@v4
         with:
