@@ -2,8 +2,8 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ] # 推送到 main 分支时触发部署
-  workflow_dispatch: # 手动触发部署
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,29 +11,13 @@ permissions:
   id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      # 检出仓库的内容
-      - name: Checkout repository
+      - name: Checkout your repository
         uses: actions/checkout@v4
 
-      # 设置 Node.js 环境
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18 # 可根据需要调整版本
-
-      # 安装依赖
-      - name: Install dependencies
-        run: npm install
-
-      # 构建项目
-      - name: Build project
-        run: npm run build
-
-      # 部署到 GitHub Pages
-      - name: Deploy to GitHub Pages
+      - name: Deploy the dist folder to GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          folder: dist # 将 `dist` 文件夹部署到 GitHub Pages
+          folder: dist
