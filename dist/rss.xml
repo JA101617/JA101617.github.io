@@ -1,4 +1,875 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JA&apos;s Personal Blog</title><description>Welcome(^_^)</description><link>https://ja101617.github.io/</link><language>zh_CN</language><item><title>ADS学习笔记</title><link>https://ja101617.github.io/posts/note-ads/</link><guid isPermaLink="true">https://ja101617.github.io/posts/note-ads/</guid><description>ADS课程中的课堂笔记及课后的少量补充</description><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;导航&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JA&apos;s Personal Blog</title><description>Welcome(^_^)</description><link>https://ja101617.github.io/</link><language>zh_CN</language><item><title>百高峰的天线！</title><link>https://ja101617.github.io/posts/%E6%99%AE%E7%89%A9ii/</link><guid isPermaLink="true">https://ja101617.github.io/posts/%E6%99%AE%E7%89%A9ii/</guid><description>普物半期考试补天失败产物，强烈不推荐看</description><pubDate>Sun, 17 Nov 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;普物公式整理&lt;/h1&gt;
+&lt;p&gt;前面没空做了&lt;/p&gt;
+&lt;h3&gt;定理&lt;/h3&gt;
+&lt;h2&gt;Chapter28 电势能、电势&lt;/h2&gt;
+&lt;h3&gt;定义&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;$\Delta U_{a\rightarrow b}=-\int_{a}^b \vec{F}\cdot d\vec{l}$ ，若定义 $U_{\infin} = 0$ 则 $U_p = \int_p^{\infin} \vec{F}\cdot d\vec{l} $
+&lt;ul&gt;
+&lt;li&gt;单位 : J&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;力矩 $\vec{\tau} = \vec{p}\times\vec{E}$
+&lt;ul&gt;
+&lt;li&gt;由此定义的 $U = -\vec{p}\cdot \vec{E}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;$V=\frac{U}{q_0}$ 若定义 $V_{\infin} = 0$ 则 $V_p =  \int_p^{\infin} \vec{E}\cdot d\vec{l} $
+&lt;ul&gt;
+&lt;li&gt;单位 : V = J/C&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;从 $E$ 到 $V$ :  $V_p =  \int_p^{\infin} \vec{E}\cdot d\vec{l} $&lt;/p&gt;
+&lt;p&gt;从 $V$ 到 $E$ : $E=-\nabla V$&lt;/p&gt;
+&lt;h3&gt;定理&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;静电场环路定理&lt;/strong&gt;
+$$
+\oint \vec{E}\cdot\vec{dl} = 0\
+\nabla \times \vec{E} = 0
+$$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​		注：对于变化的电场，有（参见Chapter34)
+$$
+\oint \vec{E}\cdot\vec{dl} = -\frac{d\Phi_B}{dt}\
+\nabla \times \vec{E} = -\frac{\partial\vec{B}}{\partial t}
+$$&lt;/p&gt;
+&lt;h3&gt;模型&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;点电荷&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$U(r) = \frac{q_1q_2}{4\pi\epsilon_0r}$&lt;/li&gt;
+&lt;li&gt;$ V(r) = \frac{q}{4\pi\epsilon_0r}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;电偶极矩&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch28-dipole.jpg&quot; alt=&quot;image-20241115134647840&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+V(r) = \frac{q}{4\pi\epsilon_0}(\frac{1}{r_1}-\frac{1}{r_2}) \approx \frac{p\cdot \hat{r}}{4\pi\epsilon_0r^2}
+$$
+如果使用 $r-\theta$ 的坐标系
+$$
+V(r,\theta) = \frac{2aq\cos{\theta}}{4\pi\epsilon_0r^2} \Rightarrow \vec{E} = \frac{p}{4\pi\epsilon_0r^3}((2\cos{\theta})\hat{r}+(\sin{\theta})\hat{\theta})
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;电四偶极矩&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch28-quadrupole.jpg&quot; alt=&quot;image-20241115134806513&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+\begin{aligned}
+V(r) &amp;amp;= \frac{1}{4\pi\epsilon_0}\frac{Q}{r^3(1-d^2/r^2)}\
+Q &amp;amp;= 2qd^2(Electric\ quadrupole\ moment)
+\end{aligned}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;带电球壳&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+(Gauss&apos;\ Law\Rightarrow)E=\begin{cases}
+\frac{q}{4\pi\epsilon_0r^2},r&amp;gt;R\
+0,r\le R
+\end{cases}
+\Rightarrow V(r)=
+\begin{cases}
+\frac{q}{4\pi\epsilon_0r},r&amp;gt;R\
+\frac{q}{4\pi\epsilon_0R},r\le R
+\end{cases}
+$$&lt;/p&gt;
+&lt;p&gt;​			 电势能：微元
+$$
+U&amp;amp;=\sum_{1\le i&amp;lt;j\le n} \frac{q_iq_j}{4\pi\epsilon_0r_{ij}}
+=\frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n\frac{q_iq_j}{4\pi\epsilon_0r_{ij}}\
+&amp;amp;=\frac{1}{2}\sum_{i=1}^n q_iV_i
+=\frac{1}{2}\int Vdq
+=\frac{1}{2}\frac{q}{4\pi\epsilon_0R}q\
+&amp;amp;= \frac{q^2}{8\pi\epsilon_0R}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;带电圆环&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch28-ring.jpg&quot; alt=&quot;image-20241115141829333&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+V=\int dV = \frac{1}{4\pi\epsilon_0}\oint \frac{\lambda ds}{r} =  \frac{q}{4\pi\epsilon_0} \frac{1}{\sqrt{z^2+R^2}}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;带电圆盘&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch28-disk.jpg&quot; alt=&quot;image-20241115142128963&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+\begin{aligned}
+V&amp;amp;=\int_0^R \frac{dq}{4\pi\epsilon_0} \frac{1}{\sqrt{z^2+w^2}} \
+&amp;amp;=\int_0^R \frac{2\pi wdw\sigma}{4\pi\epsilon_0} \frac{1}{\sqrt{z^2+w^2}}\
+&amp;amp;=\frac{\sigma}{2\epsilon_0}(\sqrt{z^2+R^2}-z)\
+\
+&amp;amp;if(z&amp;gt;&amp;gt;R)\ V = \frac{q}{4\pi\epsilon_0z}\
+\
+\
+E &amp;amp;= -\nabla V = -\frac{\partial V}{\partial z} = - \frac{\sigma}{2\epsilon_0}(1-\frac{1}{\sqrt{1+R^2/z^2}})
+\end{aligned}
+$$&lt;/p&gt;
+&lt;h3&gt;其他&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;尖端放电&lt;/p&gt;
+&lt;p&gt;在电势相同的情况下，尖端附近电场更强，容易放电&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;镜像法处理感应电荷分布&lt;/p&gt;
+&lt;p&gt;感应电荷可以等效成一个导体内的镜像电荷，从而达到在导体表面产生电场与源电荷电场相抵消的效果&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Chapter29(30) 电容(capacitance)和电介质(dielectrics)&lt;/h2&gt;
+&lt;h3&gt;定义&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;电容 $C=\frac{q}{\Delta V}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;电容的串并联&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;串联： $C=C_1+C_2$&lt;/li&gt;
+&lt;li&gt;并联： $\frac{1}{C} = \frac{1}{C_1}+\frac{1}{C_2}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;电场能量密度（单位体积电场中的能量） $u_E = \frac{1}{2}\epsilon_0E^2$&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;推导&lt;/strong&gt;（以平行板为例）：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;给电容器充电 $U=\frac{1}{C}\int_0^Q qdq = \frac{1}{2}\frac{Q^2}{C}$ 同时也 $U = \frac{1}{2}CV^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$U = \frac{1}{2}\frac{Q^2}{A\epsilon_0/d}$ 且 $E=\frac{\sigma}{\epsilon_0} = \frac{Q}{\epsilon_0A}$ $\Rightarrow U = \frac{1}{2}E^2\epsilon_0Ad$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$u_E=\frac{W}{volume} = \frac{U}{Ad} = \frac{1}{2}\epsilon_0E^2$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;[ ] 例题：验证该 $u_E$ 适用于圆筒形电容器（tip: 即将用 $U=\int u_E dv$ 得到的结果与预期进行比较）&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;介电常数 $\kappa_e$ ： $C=\kappa_eC_0$ 介电常数表现了电容器中使用该种介质与真空相比的电容差距（总是大于1）&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;微观理解&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于无极分子电介质，初始 $p=qd=0$ ，在 $\vec{E_0}$ 作用下 $p\neq 0$ 从而在两端产生正负电荷。产生束缚电荷，反向的电场。“电子位移极化”&lt;/li&gt;
+&lt;li&gt;对于有极分子电介质，初始 $p$ 方向混乱，求和为 0，在 $\vec{E_0}$ 作用下方向统一从而在两端产生正负电荷。“取向极化”（当然也存在电子位移极化，然而相比之下效应太小，仅在电场高频变化的时候比较明显）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;极化强度矢量 $\vec{P}=\frac{\sum \vec{p_i}}{\Delta V}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;介质表面的$\sigma$&lt;/strong&gt; : $\sigma = \vec{P}\cdot\vec{n}$ （$\vec{n}$ 是法向量）&lt;/li&gt;
+&lt;li&gt;计算思路 $P\Rightarrow \sigma_e&apos; \Rightarrow E&apos; \Rightarrow E$ （$E&apos;$是在理解过程中认定介质产生的束缚电荷的电场，名为退极化场depolarization field，$E$ 是最后表现出来的电场）&lt;/li&gt;
+&lt;li&gt;可用的一个式子 $\oiint \vec{P}\cdot\vec{dA} = -\sum q_{in}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;极化率 $\chi_e$ : 对于一般的&lt;em&gt;具有各向同性&lt;/em&gt;的材料，有 $P=\chi_e\epsilon_0E$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\kappa_e= 1+\chi_e$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;电位移矢量（电感应强度）$\vec{D} = \epsilon_0E+P$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;定理&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;介质中的高斯定律&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+\oiint D\cdot dA = \sum q_{in}
+$$&lt;/p&gt;
+&lt;p&gt;​	note:此处的 $q_{in}$ 指的是内部的自由电荷（也即束缚电荷不算在内）&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;环路定律不成立
+$$
+\oint \vec{D}\cdot\vec{dl} \neq 0
+$$
+因为 $\kappa_e$ 在不同路径不一样&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3&gt;模型&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;平行板电容器
+$$
+C=\frac{q}{\Delta V} = \frac{\sigma A}{\frac{\sigma d}{\kappa_e\epsilon_0}}=\kappa_e\dfrac{\epsilon_0A}{d}
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;圆筒形电容器&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch29-Cylindrical.jpg&quot; alt=&quot;image-20241115151357731&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+C=\frac{q}{\Delta V} = \frac{\kappa_eQ}{\int_a^b \frac{Q}{2\pi\epsilon_0rL}dr}=\kappa_e\dfrac{2\pi\epsilon_0L}{\ln{\frac{b}{a}}}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;球形电容器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch29-Spherical.jpg&quot; alt=&quot;image-20241115151719937&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+C=\frac{q}{\Delta V} = \kappa_e\frac{q}{\int_a^b \frac{q}{4\pi\epsilon_0r^2}dr}=\kappa_e\dfrac{4\pi\epsilon_0ab}{b-a}
+$$
+​		令 $b\rightarrow \infin$ ，单独一个球也是电容器， $C=4\kappa_e\pi\epsilon_0a$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;球体介质在电场中的退极化场&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch29-Sphericaldielectrics.jpg&quot; alt=&quot;image-20241115202518185&quot; style=&quot;zoom:33%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;取表面的微元（蓝色部分）
+$$
+\begin{aligned}
+\sigma_e&apos;&amp;amp;=P\cos{\theta}\
+dE&apos;&amp;amp;=\frac{dq&apos;}{4\pi\epsilon_0R^2}=\frac{\sigma_e&apos;dA}{4\pi\epsilon_0R^2}=\frac{P\cos{\theta}dA}{4\pi\epsilon_0R^2}\
+dA&amp;amp;=Rd\theta R\sin{\theta}d\varphi\
+dE&apos;_z &amp;amp;= -dE&apos;\cos{\theta} = \frac{P\cos{\theta}\sin{\theta}d\theta d\varphi}{4\pi\epsilon_0}\
+E&apos;_z&amp;amp;=\oiint dE&apos;_z = -\frac{P}{3\epsilon_0}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;h1&gt;Chapter31 恒定电流&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;电流强度 $i =\frac{dq}{dt}$&lt;/li&gt;
+&lt;li&gt;电流密度矢量 $j$  $di = \vec{j}\cdot\vec{dA}$
+&lt;ul&gt;
+&lt;li&gt;$\oiint_A  \vec{j}\cdot\vec{dA} =-\frac{dq}{dt}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;恒定电流的电流场有 $\oiint_A  \vec{j}\cdot\vec{dA} =0$&lt;/li&gt;
+&lt;li&gt;电阻率和电导率
+&lt;ul&gt;
+&lt;li&gt;$R=\rho \frac{L}{A}$&lt;/li&gt;
+&lt;li&gt;$\rho$ 电阻率， $\sigma=\frac{1}{\rho}$ 电导率&lt;/li&gt;
+&lt;li&gt;对于金属在一定范围内有 $\rho(T) = \rho_0+\alpha T$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;电功率 $P = \frac{W}{\Delta t}$&lt;/li&gt;
+&lt;li&gt;电动势 $\epsilon = \int_{-}^{+} \vec{K}\cdot\vec{dl}$
+&lt;ul&gt;
+&lt;li&gt;把单位正电荷从负极由电源内部移到正极的非静电力做功&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;定理&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;欧姆定律 $R=\frac{dV}{dI}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;微分形式： $\vec{j} = \sigma\vec{E}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\Delta i &amp;amp;=\frac{\Delta V}{R}\Rightarrow
+j\Delta A =\frac{E\Delta l}{\rho \frac{\Delta l}{\Delta A}}\
+j &amp;amp;= \frac{E}{\rho} = \sigma E
+\end{aligned}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;微观解释&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch31-ExplainOhm.jpg&quot; alt=&quot;image-20241115211310228&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;焦耳定律 $P = i^2R = \frac{V^2}{R}$&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;电极的接地电阻&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch31-LandResist.jpg&quot; alt=&quot;image-20241115205955291&quot; style=&quot;zoom: 80%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;p&gt;​		视为多层球壳作电阻
+$$
+R=\int\rho\frac{dl}{A} =\int_a^\infin \rho \frac{dr}{2\pi r^2} = \frac{\rho}{2\pi a}
+$$&lt;/p&gt;
+&lt;h1&gt;Chapter 32(33) 稳恒磁场&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;磁感应强度 $\vec{B} = \frac{\mu_0}{4\pi}\oint\frac{i_1\vec{ds_1}\times \hat{r_{12}}}{r_{12}^2}$
+&lt;ul&gt;
+&lt;li&gt;单位 $1T =1N/(m\cdot A)$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;磁力 $\vec{dF} = i_2\vec{ds_2}\times \vec{B}$&lt;/li&gt;
+&lt;li&gt;磁偶极矩 $\vec{\mu_m} = iA\vec{n}$
+&lt;ul&gt;
+&lt;li&gt;如果多匝线圈要乘以相应的线圈匝数&lt;/li&gt;
+&lt;li&gt;方向为 $A$ 的法向方向（$\vec{n}$）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;力矩 $\vec{\tau} = iA(\vec{n}\times\vec{B}) = \vec{\mu_m}\times\vec{B}$
+&lt;ul&gt;
+&lt;li&gt;由此定义的 $U = - \vec{\mu_m}\cdot\vec{B}$ （貌似都是 - X偶极矩 点乘 X场）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;洛伦兹力 $\vec{f} = q\vec{v}\times\vec{B}$
+&lt;ul&gt;
+&lt;li&gt;$\vec{F} = i\vec{ds}\times\vec{B}$ 对应的微观描述&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;定理&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Biot-Savart Law&lt;/p&gt;
+&lt;p&gt;其实就是 $\vec{B} = \frac{\mu_0}{4\pi}\oint\frac{i_1\vec{ds_1}\times \hat{r_{12}}}{r_{12}^2}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;高斯定律
+$$
+\oiint \vec{B}\cdot\vec{dA} = 0\
+\nabla\cdot \vec{B} = 0
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁场安培环路定律&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+\oint \vec{B}\cdot\vec{dl} = \mu_0\sum_{in\ loop} i
+$$
+notes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;i 的符号： 符合右手定则为正，反之为负&lt;/li&gt;
+&lt;li&gt;如果多次穿入穿出则要多次计算&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;长直导线&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-straitline.jpg&quot; alt=&quot;image-20241115221254689&quot; style=&quot;zoom:33%;&quot; /&amp;gt;
+$$
+B=\frac{\mu_0 i}{4\pi r_0}(\cos{\theta_1} -\cos{\theta_2})
+$$
+无穷长导线则有（可用安培环路）
+$$
+B=\frac{\mu_0 i}{2\pi r_0}
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​		补充：导线内部：
+$$
+B=\frac{\mu_0 ir}{2\pi R^2}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;环形导线&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-circularloop.jpg&quot; alt=&quot;image-20241115221433906&quot; style=&quot;zoom:50%;&quot; /&amp;gt;
+$$
+B =\frac{\mu_0}{2}\frac{iR^2}{(R^2+r_0^2)^{3/2}} = \frac{\mu_0}{2\pi}\frac{\mu}{(R^2+r_0^2)^{3/2}}
+$$
+​		若在导线正中则有
+$$
+B=\frac{\mu_0 i}{2R}
+$$
+​		若距离很远则有
+$$
+B=\frac{\mu_0 iR^2}{2r_0^3}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;大平板&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-flatstrip.jpg&quot; alt=&quot;image-20241115221950055&quot; style=&quot;zoom: 67%;&quot; /&amp;gt;
+$$
+B_x=\frac{\mu_0 i}{\pi a} \arctan{\frac{a}{2R}}
+$$
+​		若离平板很近则有
+$$
+B=\frac{\mu_0 i}{2\pi R}
+$$
+​		若离平板很远则有
+$$
+B=\frac{\mu_0 i}{2a}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;螺旋管&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-solenoid.jpg&quot; alt=&quot;image-20241115223949605&quot; style=&quot;zoom:50%;&quot; /&amp;gt;
+$$
+B=\frac{1}{2}\mu_0ni(\cos{\beta_1}-\cos{\beta_2})
+$$
+​		如果螺线管无限长
+$$
+B=\mu_0ni
+$$
+​		这个也可以用安培环路计算&lt;/p&gt;
+&lt;p&gt;​		&lt;img src=&quot;/img/phyII/Ch32-ampereLoopLaw_solenoid.jpg&quot; alt=&quot;image-20241115234430675&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;​		如果在螺线管一端
+$$
+B=\frac{1}{2}\mu_0ni
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;多层螺线管&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-multiple_solenoid.jpg&quot; alt=&quot;image-20241115224915821&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;各层加起来的总匝数：N&lt;/li&gt;
+&lt;li&gt;$ni =\frac{Ni}{L}\Rightarrow jdr = \frac{Ni}{2l(R_2-R_1)}dr$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+B=\mu_0jl\ln{\frac{R_2+\sqrt{R_2^2+l^2}}{R_2+\sqrt{R_2^2+l^2}}}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;无限大电流板&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-infinCurrentSheet.jpg&quot; alt=&quot;image-20241115232401861&quot; style=&quot;zoom:67%;&quot; /&amp;gt;
+$$
+\oint \vec{V}\cdot\vec{dl} = 2Bw = \mu_0nwi\
+B=\frac{1}{2}\mu_0ni
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;螺绕环(Toroid)&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-Toroid.jpg&quot; alt=&quot;image-20241115234606553&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+\oint \vec{B}\cdot\vec{dl} = \mu_0Ni\
+B = \mu_0ni
+$$&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch32-summary.jpg&quot; alt=&quot;image-20241115235151968&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;质谱仪&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;瓷瓶&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;动量仪&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;回旋加速器&lt;/p&gt;
+&lt;p&gt;加速到一定程度后相对论效应明显，需要特别设置磁场&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;霍尔效应&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch32-HallEffect.jpg&quot; alt=&quot;image-20241116000706302&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+V_{AA&apos;} = \frac{1}{nq}\frac{iB}{d} = \kappa\frac{iB}{d}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Hall Resistance $R_H=\frac{V_{AA&apos;}}{i} = \frac{B}{nqd}$&lt;/li&gt;
+&lt;li&gt;载流子密度 $n =\frac{iB}{qd}\frac{1}{V_{AA&apos;}}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Chapter 34&amp;amp;35(36) 法拉第电磁感应定律 &amp;amp; 电感(Inductance) 和材料磁性性质&lt;/h1&gt;
+&lt;h2&gt;定义&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;磁通量 $\Phi_B = \iint \vec{B}\cdot\vec{dA}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁通匝链数 $\Psi = N\Phi_B$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;动生电动势 $\epsilon =\int_-^+(\vec{v}\times\vec{B})\cdot\vec{dl}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;绕一端旋转的棒 $\epsilon = -\frac{1}{2}B\omega R^2$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;互感系数 $M = \frac{\Psi}{i}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单位 : 1H=1Wb/1A&lt;/li&gt;
+&lt;li&gt;互感系数和两线圈自感系数的关系：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+No\ flux\ leakage : M=\sqrt{L_1L_2}\
+Direct\ in\ series : L = L_1+L_2+2M\
+Opposite\ in\ series : L = L_1+L_2-2M
+$$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;自感系数：线圈自己由于电流变化产生感应电动势对自己的影响的衡量 $L = \frac{\Psi}{i}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\epsilon_L =-\frac{d\Psi}{dt} = -L\frac{di}{dt}$
+&lt;ul&gt;
+&lt;li&gt;即使在电阻为0的回路中自感也会限制电流最大值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁导率permeability constant $\kappa_m$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;线圈插入磁性材料，$L=\kappa_m L_0$&lt;/li&gt;
+&lt;li&gt;顺磁逆磁 $\kappa_m \approx 1$ ，铁磁材料 $\kappa_m \approx 10^3 -10^4$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁化强度矢量 $\vec{M} =\frac{\sum\vec{\mu_m}}{\Delta V}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$\mu_m$ 磁偶极矩&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;则有 $\oint_l \vec{M}\cdot\vec{dl} = \sum_{inl}i&apos;$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$i&apos;$ : induced current 束缚电流&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁场强度 $\vec{H} = \frac{\vec{B}}{\mu_0}-\vec{M}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;单位：奥斯特 1Os = 1A/m&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;磁化率susceptibility magnetization coefficient  $\chi_m$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$\kappa_m = 1+\chi_m$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;定理&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;法拉第电磁感应定律&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+\epsilon = -\frac{d\Phi_B}{dt}
+$$&lt;/p&gt;
+&lt;p&gt;$$
+\Rightarrow\begin{cases}\oint \vec{E}\cdot\vec{dl} = -\frac{d\Phi_B}{dt}\
+\nabla \times \vec{E} = -\frac{\partial\vec{B}}{\partial t}\end{cases}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;楞次定律&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The induced current will appear in such a direction that it opposes the change in flux that produced it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;磁性材料加入后的安培环路定律和高斯定律&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+\oint_l \vec{H}\cdot\vec{dl} = \sum_{inl} i_0\
+\oiint \vec{B}\cdot\vec{dA} = 0
+$$&lt;/p&gt;
+&lt;h2&gt;模型&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;螺线圈的自感系数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-Lsolenoid.jpg&quot; alt=&quot;image-20241116232428039&quot; /&gt;
+$$
+L=\frac{\Psi}{i} = \frac{nl \mu_0ni A}{i} = \mu_0n^2lA\
+L_v = \frac{L}{lA} = \mu_0n^2\
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;长方形螺绕环的自感系数&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-LToroidofRectangular.jpg&quot; alt=&quot;image-20241116232632692&quot; /&gt;
+$$
+\oint B\cdot dl =\mu_0Ni\Rightarrow B =\frac{\mu_0iN}{2\pi r}\
+\Phi_B =\iint B\cdot dA = \frac{\mu_0iNh}{2\pi}\ln{\frac{b}{a}}\
+L = \frac{\mu_0iN^2h}{2\pi}\ln{\frac{b}{a}}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;同轴电缆&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-coaxial_cable.jpg&quot; alt=&quot;image-20241116233306227&quot; /&gt;
+$$
+B=\frac{\mu_0i}{2\pi r}\
+\Phi_B = \int_{R_1}^{R_2} Bldr = \frac{\mu_0il}{2\pi r}\ln{\frac{R_2}{R_1}}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;RC电路与RL电路&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-RLcircuits.jpg&quot; alt=&quot;image-20241117002757947&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-RLcircuitsEpsilonOn.jpg&quot; alt=&quot;image-20241117002818933&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-RLcircuitsEpsilonOFF.jpg&quot; alt=&quot;image-20241117002829796&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-RLcircuitsEpsilonOFF2.jpg&quot; alt=&quot;image-20241117002841696&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;LC振荡电路&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;可以与弹簧振子做一个类比&lt;/li&gt;
+&lt;/ul&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;简谐运动&lt;/th&gt;
+&lt;th&gt;电磁震荡&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;弹簧 $U_s=\frac{1}{2}kx^2$&lt;/td&gt;
+&lt;td&gt;电容 $U_E = \frac{1}{2}\frac{q^2}{C}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;木块 $K = \frac{1}{2} mv^2$&lt;/td&gt;
+&lt;td&gt;电感 $U_B = \frac{1}{2}Li^2$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$v=\frac{dx}{dt}$&lt;/td&gt;
+&lt;td&gt;$i=\frac{dq}{dt}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$\omega = \sqrt{\frac{k}{m}}$&lt;/td&gt;
+&lt;td&gt;$\omega = \sqrt{\frac{1}{LC}}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;ul&gt;
+&lt;li&gt;也可以直接推导&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\frac{dU}{dt} &amp;amp;= d(\frac{1}{2}Li^2+\frac{1}{2}\frac{q^2}{C}) = Li\frac{di}{dt} +\frac{q}{C}\frac{dq}{dt} = Li\frac{d^2q}{dt^2} +\frac{q}{C}i = 0\
+&amp;amp;\Rightarrow \frac{d^2q}{dt^2}+\frac{1}{LC}q = 0\
+&amp;amp;\Rightarrow q=q_m\cos{(\omega t+\varphi)},\omega = \sqrt{\frac{1}{LC}}\
+&amp;amp;t = 0,q=q_m,\varphi = 0
+\end{aligned}
+$$&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;RLC电路&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+L\frac{di}{dt}+iR+\frac{q}{C} =
+\begin{cases}
+\epsilon, K\rightarrow a\
+0, K\rightarrow b
+\end{cases}
+$$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;当$\lambda^2=\frac{b^2}{4ac} = \frac{R^2}{4L\frac{1}{C}}&amp;gt;1$ 时&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;$q= e^{-\frac{R}{2L}t}(Ae^{\sqrt{\frac{R^2}{4L^2}-\frac{1}{LC}t}}+Be^{-\sqrt{\frac{R^2}{4L^2}-\frac{1}{LC}t}})+C\epsilon$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;称为过阻尼，图像如下&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch36-RLCOverDamped.jpg&quot; alt=&quot;image-20241118102019527&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当 $\lambda = \frac{R}{2}\sqrt{\frac{C}{L}} = 1$ 时&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$q= e^{-\frac{R}{2L}t}(A+Bt)+C\epsilon$&lt;/li&gt;
+&lt;li&gt;称为临界阻尼，图像如下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch36-RLCCriticalDamped.jpg&quot; alt=&quot;image-20241118102205093&quot; /&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;当 $\lambda = \frac{R}{2}\sqrt{\frac{C}{L}}$&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;$q=q_me^{-\frac{R}{2L}t}\cos{(\omega t + \varphi)}+C\epsilon$
+&lt;ul&gt;
+&lt;li&gt;$\omega=\sqrt{\omega_0^2-(\frac{R}{2L})^2}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;称为阻尼振荡，图像如下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch36-RLCDampedOscillation.jpg&quot; alt=&quot;image-20241118102911727&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;若 $\epsilon =\epsilon_m\cos{\omega&apos;&apos;t}$，则随着 $\omega&apos;&apos;$ 变化振幅变化如下&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch36-RLCDampedOscillation_Resonance.jpg&quot; alt=&quot;image-20241118102812284&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;涡流&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch34-OddyCurrent.jpg&quot; alt=&quot;image-20241116213521262&quot; style=&quot;zoom:67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;电磁炮&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​		弹丸中感生电动势导致涡流，与线圈的磁场相互作用导致发射&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;磁悬浮&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch34-MagneticLevitationTrains.jpg&quot; alt=&quot;image-20241116213722044&quot; style=&quot;zoom: 67%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;发电机&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;$$
+\Phi_B = BA\cos{\omega t}\
+\epsilon = BA\omega \sin{\omega t}
+$$&lt;/p&gt;
+&lt;p&gt;&amp;lt;img src=&quot;/img/phyII/Ch35-Generator.jpg&quot; alt=&quot;image-20241116215315244&quot; style=&quot;zoom:50%;&quot; /&amp;gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;电子加速器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch34-Betatron.jpg&quot; alt=&quot;image-20241116222744286&quot; /&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;B 和 v都在变化，最终呈现效果是 R 没变&lt;/li&gt;
+&lt;li&gt;因为会反向增加所以产出不持续&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch34-Summary.jpg&quot; alt=&quot;image-20241116223458502&quot; /&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;变压器&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;​		利用 $M_{12} = M_{21}$ 得到 $V_2=\frac{N_2}{N_1}V_1$&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch35-Transformer.jpg&quot; alt=&quot;image-20241116223859645&quot; /&gt;&lt;/p&gt;
+&lt;h2&gt;一些杂七杂八我并看不懂的东西&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;轨道磁矩 $\vec{\mu_l} = -\frac{e}{2m}\vec{L}$
+&lt;ul&gt;
+&lt;li&gt;其中 $\vec{L}=\sqrt{L(L+1)}\frac{h}{2\pi}$&lt;/li&gt;
+&lt;li&gt;$\hbar = \frac{h}{2\pi}$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;自旋磁矩
+&lt;ul&gt;
+&lt;li&gt;费米子 $s=\frac{2k+1}{2}  \hbar$&lt;/li&gt;
+&lt;li&gt;玻色子 $s=k\hbar$&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;铁磁材料的磁滞回线
+&lt;ul&gt;
+&lt;li&gt;铁磁材料内存在若干分块（磁畴），分块内部磁偶极矩方向相同&lt;/li&gt;
+&lt;li&gt;施加磁场能让磁偶极矩方向相同，即使退磁后也不能完全恢复到随机化，因而 $B\neq 0$ （称为剩磁）
+&lt;ul&gt;
+&lt;li&gt;剩磁小则为软铁磁体，反之为硬铁磁体&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;总结对比：电与磁&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;&lt;/th&gt;
+&lt;th&gt;电&lt;/th&gt;
+&lt;th&gt;磁&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;非常重要的常数&lt;/td&gt;
+&lt;td&gt;$\epsilon_0\approx 8.86\times 10^{-12}F/m$&lt;/td&gt;
+&lt;td&gt;$\mu_0 = 4\pi \times 10^{-7} H/m$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;初始安培环路定理&lt;/td&gt;
+&lt;td&gt;$\oiint \vec{E}\cdot \vec{dA} = \sum q_{in}$&lt;/td&gt;
+&lt;td&gt;$\oint_l \vec{B}\cdot\vec{dl} = \sum_{inl} i_0$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;初始高斯定律&lt;/td&gt;
+&lt;td&gt;$\oint_l \vec{E}\cdot\vec{dl} = 0$&lt;/td&gt;
+&lt;td&gt;$\oiint \vec{B}\cdot\vec{dA} = 0$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;由于介质引入的新物理量&lt;/td&gt;
+&lt;td&gt;电感应强度 $\vec{D} = \epsilon_0 \vec{E}+\vec{P}$&lt;/td&gt;
+&lt;td&gt;磁场强度 $\vec{H} = \frac{\vec{B}}{\mu_0}-\vec{M}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;/td&gt;
+&lt;td&gt;电容 $C=\frac{Q}{V}$&lt;/td&gt;
+&lt;td&gt;电感 $L =\frac{\Psi}{i}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;引入介质的安培环路定律&lt;/td&gt;
+&lt;td&gt;\&lt;/td&gt;
+&lt;td&gt;$\oint_l \vec{H}\cdot\vec{dl} = \sum_{inl} i_0$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;引入介质的高斯定律&lt;/td&gt;
+&lt;td&gt;$\oiint \vec{D}\cdot \vec{dA} = \sum q_{in}$&lt;/td&gt;
+&lt;td&gt;\&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$\chi$&lt;/td&gt;
+&lt;td&gt;极化率 $\chi_e$&lt;/td&gt;
+&lt;td&gt;磁化率 $\chi_m$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$\chi$ 的引入&lt;/td&gt;
+&lt;td&gt;对于一般的&lt;em&gt;具有各向同性&lt;/em&gt;的材料，有 $P=\chi_e\epsilon_0E$&lt;/td&gt;
+&lt;td&gt;对于磁性材料 $\vec{M} = \chi_m \vec{H}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$\kappa$ 的引入&lt;/td&gt;
+&lt;td&gt;插入介质后 $C=\kappa_e C_0$&lt;/td&gt;
+&lt;td&gt;插入磁性材料后 $L=\kappa_mL_0$&amp;lt;br&amp;gt;$\vec{B} = \chi_m\mu_0 \vec{H}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;$\kappa$&lt;/td&gt;
+&lt;td&gt;节点常数 $\kappa_e=1+\chi_e$&lt;/td&gt;
+&lt;td&gt;磁导率 $\kappa_m = 1+\chi_m$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;X化强度矢量&lt;/td&gt;
+&lt;td&gt;极化强度矢量 $\vec{P}=\frac{\sum \vec{p_i}}{\Delta V}$&lt;/td&gt;
+&lt;td&gt;磁化强度矢量$\vec{M} =\frac{\sum\vec{\mu_m}}{\Delta V}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;X场能量密度&lt;/td&gt;
+&lt;td&gt;电场能量密度$u_E=\frac{1}{2}\epsilon_0E^2=\frac{1}{2}\vec{D}\cdot\vec{E}$&lt;/td&gt;
+&lt;td&gt;磁场能量密度 $u_B=\frac{1}{2}\frac{B^2}{\mu_0} = \frac{1}{2}\vec{B}\cdot\vec{H}$&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1&gt;Chapter 38 麦克斯韦方程组&lt;/h1&gt;
+&lt;h2&gt;公式推导&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;新的安培环路定律&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch38-Ampere.jpg&quot; alt=&quot;image-20241118105541330&quot; /&gt;
+$$
+\oint\vec{H}\cdot\vec{dl} = \iint_{S_2} \vec{j_0}\cdot\vec{dA}=-\iint_{S_1} \vec{j_0}\cdot\vec{dA} = i_0\
+\Rightarrow\oiint_{S}\vec{j_0}\cdot\vec{dA}=\iint_{S_2} \vec{j_0}\cdot\vec{dA}+\iint_{S_1} \vec{j_0}\cdot\vec{dA} = 0
+$$
+同时根据stolz公式我们又有
+$$
+\oint\vec{H}\cdot\vec{dl} = \iint_{S_2} (\nabla\times\vec{H})\cdot\vec{dA}
+$$
+&lt;strong&gt;但是存在问题：在电容的情况下不成立（如图中闭合曲面3）&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/img/phyII/Ch38-AmpereProblem.jpg&quot; alt=&quot;image-20241118110248459&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;$\Rightarrow$ 变化的电场应当算入其中！&lt;/p&gt;
+&lt;p&gt;引入变量：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;电位移通量 $\Phi_D=\iint \vec{D}\cdot\vec{dA}$  , 位移电流 $i_D=\frac{d\Phi_D}{dt} =\iint$&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;$\oint\vec{H}\cdot\vec{dl} = i_0+i_D = \iint (\vec{j_0}+\frac{\partial\vec{D}}{\partial t})\cdot \vec{dA}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;Chapter39&lt;/h1&gt;
+&lt;p&gt;中间漏了好多，有空补上&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;横波：传播方向 E &amp;amp; H 为常数0&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;纵波：$\vec{E} \perp \vec{H}$&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;电磁波的能流密度(Energy Flux Density)与动量&lt;/h4&gt;
+&lt;p&gt;$$
+\begin{aligned}
+\frac{dU}{dt} &amp;amp;= \frac{d}{dt}\iiint (\frac{1}{2}\vec{D}\cdot\vec{E}+\frac{1}{2}\vec{B}\cdot\vec{H})\
+&amp;amp;=\frac{1}{2}\iiint\frac{\partial }{\partial t}(\vec{D}\cdot\vec{E}+\vec{B}\cdot\vec{H})dv
+\end{aligned}
+$$
+$$
+\begin{aligned}
+\frac{\partial }{\partial t}(\vec{D}\cdot\vec{E}+\vec{B}\cdot\vec{H}) &amp;amp;= \kappa_e\epsilon_0\frac{\partial }{\partial t}(\vec{E}\cdot\vec{E})+\kappa_m\mu_0\frac{\partial }{\partial t}(\vec{H}\cdot\vec{H})\
+&amp;amp;=2\kappa_e\epsilon_0\vec{E}\cdot\frac{\partial \vec{E}}{\partial t}+2\kappa_m\mu_0\vec{H}\cdot\frac{\partial \vec{H}}{\partial t}\
+&amp;amp;=2\vec{E}\cdot\frac{\partial\vec{D}}{\partial t}+2\vec{H}\cdot\frac{\partial\vec{B}}{\partial t}
+\end{aligned}
+$$&lt;/p&gt;
+&lt;p&gt;由麦克斯韦方程组
+$$
+\frac{\partial\vec{D}}{\partial t}=\
+\frac{\partial\vec{B}}{\partial t}=
+$$&lt;/p&gt;
+</content:encoded></item><item><title>ADS学习笔记</title><link>https://ja101617.github.io/posts/note-ads/</link><guid isPermaLink="true">https://ja101617.github.io/posts/note-ads/</guid><description>ADS课程中的课堂笔记及课后的少量补充</description><pubDate>Tue, 24 Sep 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;导航&lt;/h1&gt;
 &lt;h2&gt;数据结构&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;#AVL&quot;&gt;AVL&lt;/a&gt;&lt;/li&gt;
@@ -1550,7 +2421,7 @@ insert node into min heap;
 &lt;li&gt;&lt;a href=&quot;#Chapter2&quot;&gt;&lt;strong&gt;Chapter2: Instructions: Language of the Computer&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#Chapter3&quot;&gt;&lt;strong&gt;Chapter3: Arithmetic for Computers&lt;/strong&gt;&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;&lt;a href=&quot;#Chapter4&quot;&gt;Chapter4: The Processor: Datapath and Control&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Chapter5: Large and Fast: Exploiting Memory Hierarchy&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;a href=&quot;#Chapter5&quot;&gt;Chapter5: Large and Fast: Exploiting Memory Hierarchy&lt;/a&gt;&lt;/strong&gt;&lt;/li&gt;
 &lt;li&gt;Chapter 6: Parallel processor from client to Cloud (选讲，非考试内容)&lt;/li&gt;
 &lt;li&gt;Appendix: Storage, Networks, and Other Peripherals (了解概念)&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;#%E9%99%84%E5%BD%95&quot;&gt;附录&lt;/a&gt;&lt;/li&gt;
@@ -2551,6 +3422,7 @@ end
 &lt;li&gt;不可预测事件（例如溢出、不合法指令等）&lt;/li&gt;
 &lt;li&gt;外部导致的&lt;/li&gt;
 &lt;/ul&gt;
+&lt;h1&gt;Chapter 5 Cache&amp;lt;a id=&quot;Chapter5&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
 &lt;h1&gt;附 录&amp;lt;a id=&quot;附录&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h1&gt;
 &lt;h2&gt;RISC-V operands&amp;lt;a id=&quot;附录operands&quot;&amp;gt;&amp;lt;/a&amp;gt;&lt;/h2&gt;
 &lt;p&gt;&lt;img src=&quot;/img/CO/RegTable.jpg&quot; alt=&quot;RISC-V operands&quot; /&gt;&lt;/p&gt;

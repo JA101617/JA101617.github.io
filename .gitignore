@@ -1,5 +1,5 @@
-# build output( no ignore for not update src/content)
-# dist/
+# build output( no ignore iff not update src/content)
+dist/
 
 # generated types
 .astro/
@@ -27,4 +27,4 @@ bun.lockb
 yarn.lock
 
 # Ignore source files
-src/content/
+# src/content/

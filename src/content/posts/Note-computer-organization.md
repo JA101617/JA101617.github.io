@@ -17,7 +17,7 @@ lang: 'zh-CN'
 - [**Chapter2: Instructions: Language of the Computer**](#Chapter2)
 - [**Chapter3: Arithmetic for Computers**](#Chapter3)
 - **[Chapter4: The Processor: Datapath and Control](#Chapter4)**
-- **Chapter5: Large and Fast: Exploiting Memory Hierarchy**
+- **[Chapter5: Large and Fast: Exploiting Memory Hierarchy](#Chapter5)**
 - Chapter 6: Parallel processor from client to Cloud (选讲，非考试内容)
 - Appendix: Storage, Networks, and Other Peripherals (了解概念)
 - [附录](#附录)
@@ -945,6 +945,10 @@ ID/EX.MemRead and
 
 - 不可预测事件（例如溢出、不合法指令等）
 - 外部导致的
+
+# Chapter 5 Cache<a id="Chapter5"></a>
+
+
 
 # 附 录<a id="附录"></a>
 
