@@ -709,13 +709,75 @@ $\Rightarrow$ 变化的电场应当算入其中！
 
 # Chapter39 
 
-中间漏了好多，有空补上
+## 基于麦克斯韦方程组推导电磁波性质
 
-- 横波：传播方向 E & H 为常数0
+### 五条性质
 
-- 纵波：$\vec{E} \perp \vec{H}$
+1. 电磁波是横波
+2.  $\vec{E}\perp\vec{H}$
+3.  $\vec{E}$ 与 $\vec{H}$ 同相(in phase)
+4. 遵循右手定则
+5. 传播速度 $v=\frac{1}{\sqrt{\kappa_e\epsilon_0\kappa_m\mu_0}}$
 
-#### 电磁波的能流密度(Energy Flux Density)与动量
+### 推导
+
+以下针对最简单形式进行推导，即：
+
+- 针对自由空间的情形（真空，分析部分电流密度 $\vec{j}$ 与自由电荷密度 $\rho_{e0}$ 均为0）
+- 只考虑由一个极远的点发射的电磁波
+  - 在空间中球形传播，但是因为极远可以近似认为传过来的是平面波
+- 认为波沿着 z(k) 的方向进行传播，波的平面在 xOy 方向
+
+初始我们有这一组方程组
+$$
+\begin{cases}
+\oiint \vec{E}\cdot\vec{dA} = \frac{q_0}{\epsilon_0}\\
+\oiint \vec{B}\cdot\vec{dA} = 0\\
+\oint \vec{E}\cdot\vec{dl} = -\iint\frac{\partial\vec{B}}{\partial t}\cdot\vec{dA} \\
+\oint \vec{B}\cdot\vec{dl}=\mu_0i_0+\mu_0\iint\frac{\partial\vec{D}}{\partial t}\cdot\vec{dA}\\
+\end{cases}
+$$
+统一成XX强度&微分形式如下
+$$
+\begin{cases}
+\nabla\cdot\vec{E} = 0\\
+\nabla\times\vec{E} = -\frac{\partial\vec{B}}{\partial t}=-\kappa_m\mu_0\frac{\partial\vec{H}}{\partial t} \\
+\nabla\cdot\vec{H} = 0\\
+\nabla\times\vec{H}=\frac{\partial\vec{D}}{\partial t}=\kappa_e\epsilon_0\frac{\partial\vec{E}}{\partial t}\\
+\end{cases}
+$$
+其中叉乘的两个式子能拆成6个，共计八个
+$$
+\begin{align}
+\frac{\partial\vec{E_x}}{\partial x}+\frac{\partial\vec{E_y}}{\partial y}+\frac{\partial\vec{E_z}}{\partial z}=0\tag{1}\label{maxwell-eq1}\\
+\frac{\partial\vec{E_z}}{\partial y}-\frac{\partial\vec{E_y}}{\partial z} = -\kappa_m\mu_0\frac{\partial\vec{H_x}}{\partial t}\tag{2-1}\label{maxwell-eq21}\\
+\frac{\partial\vec{E_x}}{\partial z}-\frac{\partial\vec{E_z}}{\partial x} = - \kappa_m\mu_0\frac{\partial\vec{H_y}}{\partial t}\tag{2-2}\label{maxwell-eq22}\\
+\frac{\partial\vec{E_x}}{\partial y}-\frac{\partial\vec{E_y}}{\partial x} = - \kappa_m\mu_0\frac{\partial\vec{H_z}}{\partial t}\tag{2-3}\label{maxwell-eq23}\\
+\frac{\partial\vec{H_x}}{\partial x}+\frac{\partial\vec{H_y}}{\partial y}+\frac{\partial\vec{H_z}}{\partial z}=0\tag{3}\label{maxwell-eq3}
+\\
+\frac{\partial\vec{H_z}}{\partial y}-\frac{\partial\vec{H_y}}{\partial z} = \kappa_e\epsilon_0\frac{\partial\vec{E_x}}{\partial t}\tag{4-1}\label{maxwell-eq41}\\
+\frac{\partial\vec{H_x}}{\partial z}-\frac{\partial\vec{H_z}}{\partial x} =  \kappa_e\epsilon_0\frac{\partial\vec{E_y}}{\partial t}\tag{4-2}\label{maxwell-eq42}\\
+\frac{\partial\vec{H_x}}{\partial y}-\frac{\partial\vec{H_y}}{\partial x} = \kappa_e\epsilon_0\frac{\partial\vec{E_z}}{\partial t}\tag{4-3}\label{maxwell-eq43}\\
+\end{align}
+$$
+值得注意的是由于这个平面波本质上还是球形扩散的电磁波的一部分，由于对称性我们知道
+$$
+\frac{\partial\vec{E_x}}{\partial x}=\frac{\partial\vec{E_y}}{\partial y} = 0\\
+\frac{\partial\vec{H_x}}{\partial x}=\frac{\partial\vec{H_y}}{\partial y} = 0\\
+$$
+
+- 由 $\eqref{maxwell-eq1}$  $\eqref{maxwell-eq3}$ 可知
+
+$$
+\frac{\partial\vec{E_z}}{\partial z} = 0\\
+\frac{\partial\vec{H_z}}{\partial z} = 0\\
+$$
+
+​	也即在 z 方向上 E 和 H 都是常量，自然与波无关，波在这个	方向上的 E 和 H 都是 0 ， 因而是横波
+
+- 
+
+## 电磁波的能流密度(Energy Flux Density)与动量
 
 $$
 \begin{aligned}
@@ -736,3 +798,139 @@ $$
 \frac{\partial\vec{D}}{\partial t}=\\
 \frac{\partial\vec{B}}{\partial t}=
 $$
+
+- 电磁波的动量密度
+  $$
+  g = \frac{S}{c^2}
+  $$
+  
+
+
+
+
+
+# Chapter40
+
+>mirror 反射镜
+>
+>lense 透镜
+>
+>prism 棱镜
+>
+>reflection 反射
+>
+>refraction 折射
+>
+>polarization 偏振
+>
+>interference 干涉
+>
+>diffraction 衍射
+>
+>dispersion 色散
+
+$$
+\begin{aligned}
+&c=\frac{1}{\sqrt{\mu_0\epsilon_0}} = 3e8m/s\\
+&v=\frac{1}{\sqrt{\kappa_m\kappa_e\mu_0\epsilon_0}} = \frac{c}{\sqrt{\kappa_m\kappa_e}}\\
+&\Rightarrow v=\frac{c}{n} ,n=\sqrt{\kappa_m\kappa_e}\\
+&其中\kappa_m\approx 1，所以可以近似为 n = \sqrt{\kappa_e}
+\end{aligned}
+$$
+
+- 色散：频率不同，$\kappa_e$ 不同
+- 多普勒效应（光源远离）： $f = f_0\frac{1-u/c}{\sqrt{1-u^2/c^2}}$
+  - 远离：红移，靠近：蓝移	
+- 折射 $\frac{\sin{\theta_2}}{\sin{\theta_1}} = \frac{n_1}{n_2}$
+  - 若 $\theta_2\ge\frac{\pi}{2}$ 则全反射
+- 色散
+  - 折射率与波长的关系
+  - $ n(\omega) = 1+\frac{A}{(\omega_0-\omega)^2}$
+- 惠更斯原理：波前的每一点作为点光源发出球面波，其包络面成为下一时刻的波前
+
+- 费马原理
+
+  - 光程
+
+  ![image-20241202100902223](/img/phyII/Ch40-Fermat'sPrinciple.jpg)
+
+  ​	如图的光路，有 $t_{QP} = \frac{\Delta l_1}{v_1} +  \frac{\Delta l_2}{v_2} +  \frac{\Delta l_3}{v_3} = \sum \frac{\Delta l_i n_i}{c} = \frac{(QMNP)}{c}$
+
+  ​	定义光程 $(QMNP) = \sum n_i\Delta l_i$
+
+  ​	连续变化则 $(QP) = \int_Q^P ndl$
+
+  - **费马原理的内容：** 光在传播过程中选择的路径会使得 $\delta(\int_Q^Pndl) = 0$ ，也即达到局部极值/驻值
+
+  - 可以基于此证明反射定律与折射定律
+
+    - 反射
+
+    ![image-20241202102250842](/img/phyII/Ch40-FermatForReflection.jpg)
+
+    - 折射
+
+​			<img src="/img/phyII/Ch40-FermatForRefraction.jpg" alt="image-20241202102321820" style="zoom:67%;" />
+
+
+
+- 成像
+
+  - 实像与虚像：光线聚焦则为实像，延长线聚焦则为虚像
+
+  - 一些符号约定：（默认光线从左到右）
+
+    ![image-20241202105607102](/img/phyII/Ch40-SignConvention.jpg)
+
+    - （折射）Q在A左侧则为实物，否则为虚物，实物 $o>0$
+    - （折射）Q'在A右侧则为实像，否则为虚像，实像 $i>0$
+    - （折射）球心C在A左侧则为凹，反之为凸，凸则 $r>0$
+
+    
+
+    - （反射）Q'在A左侧则为实像，否则为虚像，实像 $i>0$
+      - 记忆可以认为Q'折射为从法线反向转了 $\theta'$ 即 $-\theta'$
+
+  - 成像公式（TBC）
+
+    - 第一焦距： $f=\frac{n}{n'-n}r$
+    - 第二焦距： $f'=\frac{n'}{n'-n}r$
+
+- 薄透镜
+
+  - 例子：眼镜度数两百度 $\Leftrightarrow$ 镜片的焦距是 0.5m ($\frac{100}{f}$)
+
+  - 通过镜片两面的 $r_1$ 与 $r_2$ 配合达到
+
+  - 以下图厚凸镜为例
+
+    - [ ] 公式推导
+
+    <img src="E:\CODE\MyBlog\public\img\phyII\Ch40-ThinLens.jpg" alt="image-20241202112058603" style="zoom:80%;" />、
+
+​				两次成像： $\sum_1$ 折射，Q与Q1； $\sum_2$ 可以视为反射，Q1与Q'
+$$
+\begin{cases}
+\frac{f_1'}{i_1}+\frac{f_1}{o_1} = 1\\
+\frac{f_2'}{i_2}+\frac{f_2}{o_2} = 1
+\end{cases}
+$$
+​				当 $d=0$ 则趋于下图薄透镜
+
+<img src="E:\CODE\MyBlog\public\img\phyII\Ch40-ThinLens2.jpg" alt="image-20241202112820649" style="zoom:90%;" />
+$$
+\begin{cases}
+\frac{f_1'}{i_1}+\frac{f_1}{o_1} = 1\\
+\frac{f_2'}{i_2}+\frac{f_2}{-i_1} = 1
+\end{cases}
+\Rightarrow
+\begin{aligned}
+\frac{f_1'f_2'}{i_2}+\frac{f_1f_2}{o_1} = f_1'+f_2
+\end{aligned}
+$$
+​				即  $\frac{f_1'f_2'}{i}+\frac{f_1f_2}{o} = f_1'+f_2$ 
+
+- 眼睛
+  - 近视与老花：晶状体调节范围变小
+    - 近视：看不清无穷远处的图像，晶状体的 $f_{max}$ 小了
+    - 老花：看不清近处的图像，晶状体的 $f_{min}$ 大了

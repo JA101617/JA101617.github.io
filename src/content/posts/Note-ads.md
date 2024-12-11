@@ -1374,10 +1374,103 @@ void Huffman ( PriorityQueue  heap[ ],  int  C ){
 
 
 - 证明
-
 - [ ] 待理解补全
 
+# NPC问题
+
+# 近似
+
+# 随机化算法
+
+- 对于离散变量X，我们有
+
+$$
+E(X) = \sum i*Pr(X=i)
+$$
+
+### 例1：The Hiring Problem
+
+- 只招一个员工，共有 n 个面试者，每天面试一个人，如果被面素质高于当前员工则替换
+- 雇人的价格是 $C_h$  Hiring cost
+- 找一个面试者的价格是 $C_i$ Interviewing cost
+- $C_i << C_h$
+
+#### Sol 1
+
+- 策略如上
+
+- 第一个人必定被雇佣，第二个人被雇佣概率为 1/2，第三个人概率为 1/3，...，第 n 个人为 1/n
+
+- 最坏情况开销即素质递增， $O(nC_h)$ 
+
+- **Randomness assumption**
+
+  > any of first i candidates is equally likely to be best-qualified so far
+
+  
+
+- 对于随机的情况，雇佣次数的期望利用期望的线性性，转化为每个人被雇佣期望的加和，则有
+
+$$
+E(X) = \sum_{i=1}^n \frac{1}{n}=\ln{n}+O(1)
+$$
+
+​		平均的花销为 $O(\ln{n}C_h + nC_i)$
+
+因此可以将面试者数列随机打乱再进行面试
+    
+
+范例代码中：
+
+```cpp
+for(i in [1,n])
+    A[i].P = 1+rand()%(N^3)
+sort A[i] base on A[i].P
+```
+
+### 例1 在线ver
+
+- 无法获取全部面试者名单，只能雇佣一次
+
+#### Sol2
+
+- 对前 k 个人做调研，获取 max 不雇佣
+- 对后 n-k 个人，雇佣遇到的第一个超过 max 的人，否则雇佣最后一个
 
 
 
+定义$S$ 为雇佣到最佳， $S_i$ 为第 i 个面试者是最佳且被雇佣的
 
+则 
+$$
+\begin{aligned}
+Pr[S_i] &= Pr[i\ is\ the\ best]*Pr[no\ one\ at\ k+1~i-1\ are\ hired] \\
+&= \frac{1}{n}*\frac{k}{i-1} = \frac{k}{n(i-1)}
+\end{aligned}
+$$
+PS: 后面那一项等价于 [1,i-1]的最大值出现在[1,k]，故概率为 $\frac{k}{i-1}$
+$$
+Pr[S] = \sum_{i=k+1}^n Pr[S_i]=\sum_{i=k}^{n-1}\frac{k}{ni}
+$$
+由微寄分小知识
+$$
+\int_k^n \frac{1}{x}dx\le \sum_{i=k}^{n-1} \frac{1}{i}\le\int_{k-1}^{n-1} \frac{1}{x}dx
+$$
+不会就回去看看伟大的[辅学网站](#[首页 - 浙江大学竺可桢学院辅学计划站点](https://ckc-agc.bowling233.top/))
+
+则 $Pr[S]=\frac{k}{n}\ln{\frac{n}{k}}$
+
+### 快排
+
+随机化选择 split，直到选到中间部分也即[1/4N,3/4N]（称为找到一个 central splitter）
+
+期望选择次数
+$$
+E{X} = \frac{1}{2}+\frac{1}{2^2}+\frac{1}{2^3}+..+\frac{1}{2^n}=2
+$$
+（提示，这里不是 $\sum_{i=1}^ni2^{-i}$ 的原因是其展开思路是期望线性性）
+
+
+
+- **type j** : the subporblem S is of type j iff $N(\frac{3}{4})^{j+1}\le |S|\le N(\frac{3}{4})^j$
+  - 性质： 至多有 $(\frac{4}{3})^{j+1}$ 个 type j 的子问题

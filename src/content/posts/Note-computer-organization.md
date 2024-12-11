@@ -687,7 +687,7 @@ Q ：非阻塞和阻塞赋值？
 
 A ：非阻塞等式右边的值统一评估完一起赋值；阻塞赋值是逐条进行，以这组代码为例
 
-```veri
+```verilog
 always @ (posedge clk)begin
 	c<=1;
 	b<=c;
@@ -697,7 +697,7 @@ end
 
 上文是非阻塞赋值，因而c = 1需要两个时钟才能给到a
 
-```veri
+```verilog
 always @ (posedge clk)begin
 	c=1;
 	b=c;
@@ -946,9 +946,75 @@ ID/EX.MemRead and
 - 不可预测事件（例如溢出、不合法指令等）
 - 外部导致的
 
+### 单周期的处理
+### 流水线的处理
+- 视为一种特殊的hazard
+- 完成前面的操作，后面的操作及本操作的下一步即刻终止（flush）
+- 更改 SEPC,SCAUSE 等，跳转到处理程序
+
+问题：若同时存在多条指令出错
+
+- sol 1 : 在最先一条指令报错，把后面的指令flush掉（"precise exceptions"）软件压力小硬件压力大
+  - 但是在乱序处理等频发的复杂流水线不好用
+- sol 2 : 遇到问题报错，剩下交给软件（"Imprecise exceptions"）软件压力大硬件压力小
+
 # Chapter 5 Cache<a id="Chapter5"></a>
 
+- 原理：**时间局部性** 和 **空间局部性**
 
+**重要内容**
+
+![image-20241203092300481](/img/CO/Ch5-allinone.jpg)
+
+## Block Placement
+
+- direct mapped直接映射
+  - address % number of blocks
+  - 算1路组关联
+- full associative全关联
+  - 任意存都行
+  - 算BLOCKSIZE路组关联
+  - 不适用于大一点的cache
+- set associative组关联
+  - 可以存到其中某组的任意位置
+  - 每组有N个block，称为N路组关联
+  - block address % number of sets
+
+# Appendix<a id="Appendix"></a>
+
+
+
+## Buses and Other Connections between Processors Memory, and I/O devices
+
+- 总线(Bus)：分北桥和南桥,"shared communication link"
+
+  - 是一组线而非一根
+
+    - 包含两种线：Control lines & Data lines （同CPU）
+
+    - 按速度不同分为三类
+
+      - Processor memory：最快，用于CPU与RAM链接
+
+      - back plane：中等，用于子系统链接
+
+      - I/O：最慢，链接到外部设备
+
+    - 按时钟分为：synchronous bus & asynchronous bus
+
+      - 同步：速度快，但是要求时钟一致且距离够短（例如芯片内部）
+      - 异步：握手
+
+  - 南桥慢，北桥快
+
+  - Bus Arbitration
+    - daisy chain
+    - centralized
+    - self selection
+    - collision detection
+  - [ ] 总线最大带宽计算
+
+  - 如何提高带宽？
 
 # 附 录<a id="附录"></a>
 
