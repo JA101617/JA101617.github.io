@@ -1004,17 +1004,35 @@ ID/EX.MemRead and
 
       - 同步：速度快，但是要求时钟一致且距离够短（例如芯片内部）
       - 异步：握手
-
   - 南桥慢，北桥快
-
   - Bus Arbitration
     - daisy chain
     - centralized
     - self selection
     - collision detection
   - [ ] 总线最大带宽计算
-
   - 如何提高带宽？
+    - Increasing data bus width
+    - Use separate address and data lines
+    - transfer multiple words
+- I/O -> Memory,Processor,Operating System
+  - commands to I/O
+    - memory-mapped I/O(我们使用的)
+      - 给IO分配不同的内存接口
+
+    - special I/O instructions
+    - command port, data port
+
+  - 与处理器的交流
+    - Polling：周期性检查status bit
+      - 缺点：浪费CPU的时间
+
+    - Interrupt：I/O设备在需要时会引起处理器的中断
+      - 优势：同步操作（IO干活的时候CPU可以干别的）
+      - e.g. CPU让打印机启动->CPU继续干活，打印机龟速启动->启动完成，CPU中断，处理打印相关->指令下达完成后CPU继续干活，打印机龟速打印
+
+    - DMA(direct memory access)：设备与内存直接进行数据交流，不经过处理器（数据交流完了之后才跟CPU指令交流）
+
 
 # 附 录<a id="附录"></a>
 
