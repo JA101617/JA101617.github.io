@@ -1443,7 +1443,12 @@ $\Leftrightarrow$ 多项式时间可验证
 
 ### NPC问题
 
-- 任意的NP问题都可以多项式时间规约(polynomially reduce)到NPC问题
+- 任意的NP问题都可以多项式时间规约(polynomially reduce)到NPH问题
+- 而NPH中属于NP的部分为NPC问题，其关系如下图所示
+
+![P、NP、NP-complete 和 NP-hard 问题集的欧拉图。](https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/P_np_np-complete_np-hard.svg/2560px-P_np_np-complete_np-hard.svg.png)
+
+<center>By <a href="//commons.wikimedia.org/wiki/User:Behnam" title="User:Behnam">Behnam Esfahbod</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=3532181">Link</a></center>
 
 #### 规约
 
@@ -1536,6 +1541,8 @@ $\Leftrightarrow$ 多项式时间可验证
   则 Loop(Loop) 无法判断停机
 
   构成悖论 ~~可能写的不对，意会一下这个理发师悖论就好了~~
+  
+- 它是一个不可判定问题
 
 ### Postpone Corresponding Problem(PCP)
 
@@ -1593,6 +1600,317 @@ myc说略了
     - 则整张图上除了大小为 $K$ 的团之外的点全部选中必然构成一个大小为 $|V|-K$ 的节点覆盖（注意这里是判定问题而非优化问题），二者成对偶关系
 
 # 近似<a id="approx"></a>
+
+- 目的：对于一些问题利用多项式时间找到近似的最优解
+- 近似比(approximation ratio)：称一个算法的近似比为 $\rho(n) \iff$ $\forall n,$ C是最优解，$C^*$是近似解，则 $\max(\frac{C}{C^*},\frac{C^*}{C})\le \rho(n)$  $\iff$ 说这个算法是 $\rho(n)$-approximation algorithm
+- 近似范式(approximation scheme)：一种特殊的近似算法，除了数据以外接受 $\varepsilon$ 这个参数，保证是 $(1+\varepsilon)$-approximation algorithm
+  - PTAS(polynomial-time approximation scheme)：复杂度是对于 $n$ 的多项式，而对于 $\varepsilon$ 未必，例如 $O(n^{2/\varepsilon})$
+  - FPTAS(full polynomial-time approximation scheme)：复杂度对 $\varepsilon$ 也是多项式，如 $O((1/\varepsilon)^2n^3)$
+
+## 实例
+
+### Bin Packing
+
+- 问题：一维装箱任务，给定 $N$ 个长度为 $S_1,..,S_N$ 的物品，将其装到长度固定的箱子中，求最少的箱子数量
+- 属于NPH问题
+
+#### 在线算法
+
+存在物品序列使得任意在线算法的相似比至少为5/3
+
+##### Next Fit
+
+- 思路：只看当前这一个，能装就装，装不了新开
+
+- 若 $M$ 为理想装箱数量，则该算法最多使用 $2M-1$ 个箱子
+
+  - 证明思路：即证若NF需要 2M 或 2M+1 个箱子，则理想情况至少需要 M+1 个箱子
+
+  - 称每个箱子 $B_i$ 的空间利用率为 $0<S(B_i)\le 1$
+
+    则有 $S(B_{2k-1})+S(B_{2k}) > 1$
+
+    求和得到 $\sum_{i=1}^{2M} S(B_i) > M$ ，即理想情况也不止 $M$ 个箱子
+
+<details>
+	<summary>code</summary>
+	<pre><code>
+void NextFit ( )
+{   read item1;
+    while ( read item2 ) {
+        if ( item2 can be packed in the same bin as item1 )
+	place item2 in the bin;
+        else
+	create a new bin for item2;
+        item1 = item2;
+    } /* end-while */
+}
+  </code></pre>
+</details>
+
+##### First Fit
+
+- 思路：寻找前面所有箱子中第一个能放下的
+
+- 若 $M$ 为理想装箱数量，则该算法使用不多于 $1.7M$ 个箱子（已有构造出来的使用 1.7M-1.7 箱子的序列
+
+<details>
+	<summary>code</summary>
+	<pre><code>
+void FirstFit ( )
+{   while ( read item ) {
+        scan for the first bin that is large enough for item;
+        if ( found )
+	place item in that bin;
+        else
+	create a new bin for item;
+    } /* end-while */
+}
+  </code></pre>
+</details>
+
+##### Best Fit
+
+- 思路：寻找前面所有箱子中最刚刚好放下的
+
+- 若 $M$ 为理想装箱数量，则该算法使用不多于 $1.7M$ 个箱子
+
+<details>
+	<summary>code</summary>
+	<pre><code>
+void BestFit() {
+    while (read item) {
+        scan for the bin with the tightest fit (smallest remaining space) 
+        that is large enough for the item;
+        if (found)
+            place the item in that bin;
+        else
+            create a new bin for the item;
+    }
+}
+  </code></pre>
+</details>
+#### 离线算法
+
+- 思路：物品大小降序排列后再使用 FF 或 BF
+- 该算法使用不多于 $(11M+6)/9$ 个箱子，这是上确界（存在构造）
+
+### 背包
+
+- 分数背包是一个典型的贪心问题（按性价比排序）
+
+- 分数背包到01背包：强行按性价比选整件
+
+  - 近似比为2（记P为最大收益）
+    $$
+    p_{max}\le P_{opt}\le P_{frac}\\
+    p_{max}\le P_{greedy}\\
+    P_{opt}\le P_{frac}\le P_{greedy}+p_{max}\\
+    \Rightarrow P_{opt}/P_{greedy}\le 1+p_{max}/P_{greedy}\le 2
+    $$
+    其中
+
+    - $p_{max}$ 是单个物品最大价值
+    - $P_{frac}$ 是分数背包最优解
+    - $P_{greedy}$ 是贪心01的解
+    - $P_{opt}$ 是01的最优解
+
+- DP算法的优化处理：在值域范围太大时
+
+  - 将 $p_i$ 映射到更小的范围，通常除以一个常数 $K$
+
+  - 但是要保证够高的精度，以保证：
+
+    $(1+\varepsilon)P_{ans}\ge P$
+
+
+
+### K-center Problem
+
+- （2D）在平面中选择 K 个点，使得以这 $K$ 个点为圆心，r 为半径的圆能覆盖给出点集的所有点，且 r 最小化
+
+#### 贪心1
+
+- 首先选择所有点的中间值（取平均），然后持续添加点使得半径降低
+- 对于如图所示情形非常辣鸡
+
+![image-20241230153157709](/img/ads/ads-approx-Kcgreedy1.jpg)
+
+#### 二分答案
+
+- 只需要判断在二分的半径 $r$ 时是否有解，然而这个也很难精确判定，因此使用近似算法
+
+- 过程：
+
+  随机选择点，将距离其在 2r 以内的点全部删除。重复K次后若还剩下点，则判断该 r 无解
+
+- 若成功，说明 2r 是可行解，若失败，则说明 **r 必定不是可行解** （注意倍数）
+
+  - 前者显然，对于后者：假设最优解中使用 r 覆盖的点集为 S，则从 S 中任意挑选一个点，以其为圆心， 2r 的圆必定能覆盖 S 中所有点
+
+- 近似比：通过成功的二分压缩上限，失败的二分压缩下限，最终得到可行解为 2r 。故 $r < r_{opt} < 2r$ ，即 $\rho = 2$
+- 小优化：从随机选点转变为离原来选的点最远的点，不改变近似比
+
+- 除非 P = NP ，否则不存在 $\rho < 2$ 的算法
+  - Dominating-set Problem（NPC） ：能否找到一个大小不超过 $K$ 的点集，使得对于图上的所有点，要么属于 该点集，要么与点集有边相连
+  - 支配集问题是 K-center 的特殊情况：将图中每条边视作两个点距离为1，则如果存在支配集，$r=1$
+  - 若 $\rho < 2$ ，由于 r 为整数解，$r=1$ ，即这个NPC问题被多项式时间解决了
+  - 综上若 $P\neq NP$ ， $\rho \ge 2$
+
+# Local Search<a id="local"></a>
+
+## Framework
+
+- Local: 确定 neighbor的范围，找到 local 的最优解
+- Search: 从一个可行解开始，在邻域中搜索更优解，直到无法优化
+
+## Neighbor Relation
+
+- 称 S' 是 S 的邻居 $\iff$ S'可以通过对 S 进行微小修改得到 $\iff$ S~S'
+- N(S) ： {S':S~S'}
+
+<details>
+	<summary>例：梯度下降的代码</summary>
+	<pre><code>
+SolutionType Gradient_descent()
+{   Start from a feasible solution S in FS ;
+    MinCost = cost(S);
+    while (1) {
+        S’ = Search( N(S) ); /* find the best S’ in N(S) */
+        CurrentCost = cost(S’);
+        if ( CurrentCost < MinCost ) {
+            MinCost = CurrentCost;    S = S’;
+        }
+        else  break;
+    }
+    return S;
+}
+  </code></pre>
+</details>
+
+## 实例
+
+### Vertex Cover Problem
+
+>Given an undirected graph G = (V, E).  Find a minimum subset S of  V such that for each edge (u, v) in E, either u or v  is in S.
+
+- cost(S) = |S|
+- 起始 S = V，扰动：删去某个点
+- 极其容易陷入局部最优解，例如菊花图删去中心
+
+#### 优化：大都市算法(metropolis algorithm)
+
+- idea ：一定概率接受非更优解
+
+````cpp
+SolutionType Metropolis()
+{   Define constants k and T;
+    Start from a feasible solution S in FS ;
+    MinCost = cost(S);
+    while (1) {
+        S’ = Randomly chosen from N(S); 
+        CurrentCost = cost(S’);
+        if ( CurrentCost < MinCost ) {
+            MinCost = CurrentCost;    S = S’;
+        }
+        else {
+            With a probability p, let S = S’;
+            else  break;
+        }
+    }
+    return S;
+}
+
+````
+
+其中 $p=e^{-\Delta cost/(kT)}$ ， k 是一个系数，T是固定的“温度”
+
+#### 优化：模拟退火(Simulated Annealing)
+
+在metropolis基础上，T逐渐下降
+
+所谓退火就是锻造过程中温度下降的过程，随着温度下降原子排列趋于稳定。
+
+### Hopfield Neural Networks
+
+#### 问题
+对于G=(V,E)，边带权，为每个点分配状态($s_v=\pm 1$) ,使得：
+
+- 若 $w_e \ge 0$，u,v 不同状态
+- 若 $w_e < 0$ ， u,v 同状态
+
+$|w_e|$ 表示需求强烈程度
+
+也即：$\sum s_us_vw_e$ 的最小值求解
+
+#### 求解
+
+- 定义：
+
+  - 称一条边是好的当且仅当 $s_us_vw_e <0$ 
+
+  - 称一个局面是好的当且仅当$\sum s_us_vw_e\le 0$ 
+
+  - 称一个局面是稳定的当且仅当所有节点的要求被满足，即每个节点的邻接边中好边的边权绝对值总和小于坏边边权总和
+
+- 流程：每次选择一个没有被满足的点，翻转
+
+- 正确性：
+
+  - 定义整个图的能量 $E=-\frac{1}{2}\sum_i\sum_jw_{ij}s_is_j$
+
+  - 对不满足的点 $i$ 进行翻转，能量改变量为$\Delta E=-v_i\sum_{i\neq j}w_{ij}v_j $ ，希望 E 变小即希望 $v_i\sum_{i\neq j}w_{ij}v_j \ge 0$ ，即其邻接边中好边的边权绝对值总和小于坏边边权总和
+
+#### 复杂度
+  - 势能函数 $\Phi(S) =\sum_{\text{e is good}} |w_e|$
+  - 则每次翻转 $\Phi$ 都会增加，最坏情况每次增加1
+  - 复杂度是 $O(W)$ 的（其中W是最大权重），因而不一定是多项式
+
+### 最大割问题
+
+#### 问题
+将节点分为AB两个集合，所有链接A中点和B中点的边称为割，目标是最大化割的权重
+#### 求解
+- 类似hopfield的状态翻转，考虑更改某个节点的归属，收益为$gain(u)=W(新增的割边)-W(减少的割边)$ ,挑选 $gain > 0$ 的节点翻转
+
+- 同样不一定是多项式算法
+
+- 可以证明的近似比： 2 $W_{local}\ge 0.5 W_{global}$
+
+  - 证明：
+
+    $(A, B)$ 是局部最优 $\Rightarrow$ $\forall u \in A$,$\sum_{v\in A} w_{uv}\leq\sum_{v\in B}w_{uv}$ 
+
+    则
+
+  $$
+   2\sum_{u,v \in A}w_{uv}=\sum_{u\in A} \sum_{v\in A}w_{uv}\leq\sum_{u\in A} \sum_{v\in B}w_{uv}=w(A,B)\\
+   2 \sum_{u,v \in A} w_{uv} \leq w(A, B)
+  $$
+
+  ​	同理$ 2 \sum_{u,v \in B} w_{uv} \leq w(A, B)$ ，则合起来得到 $\sum_{u,v \in A} w_{uv}+\sum_{u,v \in B} w_{uv} \leq w(A, B)$
+
+  ​	$(A^*, B^*)$是全局最优$\Rightarrow$
+
+  ​	带入上面的结论，有$ w(A^*, B^*) \leq w(A, B) + w(A, B) = 2w(A, B)$
+
+  ​	即$ w(A, B) \geq \frac{1}{2} w(A^*, B^*)$
+
+- 学者结果：除非 P=NP，否则 近似比不小于 17/16
+
+#### 复杂度
+
+- 不是多项式时间复杂度
+- 如果限制为**仅在有足够大的优化时才继续运行**则可以做到
+  - **Big-improvement-flip** : 只更新翻转后收益增加大于 $\frac{2\varepsilon}{|V|}w(A,B)$ 的点
+  - 求得的答案满足 $(2+\varepsilon)w(A,B)\ge w(A^*,B^*)$
+  - 至多翻转 $O(n/\varepsilon \log{W})$ 次
+
+#### 其他优化
+
+- k-flip以增加搜索的邻域
+  - $O(n^k)$ 寻找邻居
+  - K-L算法：计算一批节点的增益，选其中一批统一更新
 
 # 随机化算法<a id="random"></a>
 
@@ -1685,6 +2003,221 @@ $$
   - 性质： 至多有 $(\frac{4}{3})^{j+1}$ 个 type j 的子问题
 
 ![image-20241224112956436](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241224112956436.png)
+
+# Parallel Algorithms<a id="parallel"></a>
+
+## PRAM 模型
+
+### 特性
+
+1. 假设存在多个处理器，且同时执行操作
+2. 假设所有处理器可以同时访问同一个全局的内存
+3. 假设所有处理器同步运行
+
+### 运算过程
+
+1. 同时读
+2. 各自计算
+3. 同时写
+
+### 缺陷
+
+1. 无法说明算法在不同数量处理器的实际表现
+2. 分配到处理器，过于细节繁琐而忽视算法总体架构
+
+### Work-Depth Presentation
+
+- Work load(总操作数) W(n)
+
+- Worst-case running time T(n)
+
+  按我的理解，T(n)表征了算法中不得不品的串行部分，不包括W(n) 的并行部分
+
+- **WD-presentation Sufficiency Theorem** : 对于一个用WD模式表示的算法，在任意的 $P(n)$ 个处理器上需要运行 $O(W(n)/P(n)+T(n))$ 的时间
+
+  - 但是要求算法遵循与WD表示法中相同的并发写入规则（不知道什么鬼）
+
+## 冲突处理规则
+
+- EREW(Exclusive read exclusive write)：同时读或者写同一个单元都不允许
+- CREW(Concurrent read exclusive write)：允许同时读同一个单元，不允许同时写
+- CRCW(Concurrent read Concurrent write)：允许同时读和写同一个单元
+  - Common rule : 要求所有写入值一致否则无效
+  - Arbitrary rule : 随机选一个写
+  - Priority rule : 依据优先级选一个写（PPT上说选择编号最小的处理器的结果）
+
+## 实例
+
+### 前缀和
+
+- B(h,i) 表示第 h 层（从0开始）第 i 号节点的计算结果，成树型结构向上累加
+
+![image-20241230203949806](/img/ads/ads-par-sum.jpg)
+
+#### PRAM 模型
+复制数据
+```cpp
+for P_i, 1 ≤ i ≤ n pardo
+    B(0, i) := A(i)
+```
+逐层向上累加
+```cpp
+for h = 1 to log n do //这层循环有层数依赖无法并行
+    if i ≤ n / 2^h
+        B(h, i) := B(h-1, 2i-1) + B(h-1, 2i)
+    else
+        stay idle
+```
+输出顶层节点
+```cpp
+for i = 1: output B(log n, 1); 
+for i > 1: stay idle
+```
+
+#### WD表示
+
+忽略部分细节
+
+```cpp
+for Pi ,  1 <= i <= n  pardo
+   B(0, i) := A( i )
+for h = 1 to log n 
+    for Pi, 1 <= i <= n/2^h  pardo
+        B(h, i) := B(h-1, 2i-1) + B(h-1, 2i)
+for i = 1 pardo
+   output  B(log n, 1)
+```
+
+- $T(n)=\log{n}+2$
+- $W(n) = n+n/2+n/4+...+n/2^k+1 = 2n$
+
+---
+
+进一步，若要求出每一个位置的前缀和，需要增加一个向下传播的过程，完整代码如下
+
+```cpp
+for Pi , 1 <= i <= n pardo
+  B(0, i) := A(i)
+for h = 1 to log n
+  for i , 1 <= i <= n/2h pardo
+    B(h, i) := B(h - 1, 2i - 1) + B(h - 1, 2i)
+for h = log n to 0
+  for i even, 1 <= i <= n/2h pardo
+    C(h, i) := C(h + 1, i/2)
+  for i = 1 pardo
+    C(h, 1) := B(h, 1)
+  for i odd, 3 <= i <= n/2h pardo
+    C(h, i) := C(h + 1, (i - 1)/2) + B(h, i)
+for Pi , 1 <= i <= n pardo
+  Output C(0, i)
+
+```
+
+$T(n)=O(\log{n})$   $W(n)=O(n)$
+
+### 归并
+
+将有序的A(1),...,A(n)和B(1),...B(m)合并为有序的C(1),...,C(n+m)
+
+- 思路：转合并为求解排名
+
+  - Rank(i,B)表示 $A_i$ 在B中的排名，即$B(Rank(i,B)) < A_i < B(Rank(i,B)+1)$
+  - Rank(i,A)表示 $B_i$ 在A中的排名
+
+  则Merge转化为如下两步
+
+  ```cpp
+  for Pi , 1 <= i <= n  pardo
+      C(i + RANK(i, B)) := A(i)
+  for Pi , 1 <= i <= n  pardo
+      C(i + RANK(i, A)) := B(i)
+  ```
+
+可以 $O(1)$ 计算（并行），故以下讨论Rank的求法
+
+#### sol 1 : 二分
+
+```cpp
+for Pi , 1 <= i <= n  pardo
+    RANK(i, B) := BS(A(i), B)
+    RANK(i, A) := BS(B(i), A)
+```
+
+$T(n)=O(\log{n})$   $W(n) = O(n\log{n})$ 
+
+#### sol 2 : 顺序计算
+
+```cpp
+i = j = 0; 
+while ( i <= n || j <= m ) {
+    if ( A(i+1) < B(j+1) )
+        RANK(++i, B) = j;
+    else RANK(++j, A) = i;
+}
+```
+
+$T(n) = W(n) = O(n+m)$
+
+#### sol 3 : 分块处理
+
+- 前置条件：n=m，且A(n+1)与B(n+1)都大于A(n)和B(n)
+- 则取 $p=n/\log{n}$ ，对A和B按等间隔 $\log{n}$ 分成 $p$ 个块，对每个块的第一个元素先求Rank
+  - 这一步 $T=O(\log{n})$  $W=O(p\log{n}) = O(n)$
+- 然后在两个大小为 $\log{n}$ 的块内求每个元素的Rank，使用串行（因为这里没有办法对这 $2\log{n}$ 个元素作并行了）
+  - 这一步 $T=O(\log{n})$ $W = O(p\log{n}) = O(n)$ 
+- 综上所述，总复杂度为$T=O(\log{n})$ $W=O(n)$
+
+### 找最大值
+
+#### 并行 ver0
+
+- 思路：并行比较 $n^2$ 对数的大小关系，唯一全都大于的就是 max
+
+```cpp
+for Pi , 1 <= i <= n  pardo
+    B(i) := 0
+for i and j, 1 <= i, j <= n  pardo
+    if ( (A(i) < A(j)) || ((A(i) = A(j)) && (i < j)) )
+            B(i) = 1
+    else B(j) = 1
+for Pi , 1 <= i <= n  pardo
+    if B(i) == 0
+       A(i) is a maximum in A
+```
+
+- 使用CRCW-Arbitrary rule
+- $T(n)=O(1)$   $W(n) = n^2$
+
+#### Doubly-logarithmic Paradigm
+
+1. 若按照 $\sqrt{n}$ 分块
+
+- 对于每个块，使用上述的ver 0求解 max 得到 $\{M_i\}$ ，（并行执行），$T=T(\sqrt{n}) = O(1)$   $W=W(\sqrt{n}) = O(n)$
+- 然后对 ${M_i}$ 再做同样的操作（按根号分块，聚合，如此反复）
+- 一共要执行 $n=2^{2^h}$ 的 $h$ ，即 $\log{\log{n}}$ 次
+- 故$ T = O(\log{\log{n}})\  W=O(n\log{\log{n}})$
+
+2. 若按照 $h=\log{\log{n}}$ 的大小分块，总组数 $n/h$
+
+- 同上述操作进行，共进行 $\log{\log{(n/h)}}$ 次递归
+- $T = O(h+\log{\log{(n/h)}}) = O(\log{\log{n}})$   $W=O(h\times(n/h)+(n/h)\log{\log{(n/h)}})=O(n)$
+- [ ] 理解这里多出来的h和h*n/h从何而来（目前猜测第一层使用了直接的线性求解max）
+
+#### 随机采样Random Sampling
+
+- 高可能性（但不是一定）失败概率 $O(1/n^c)$，c是一个正常数（不知道是几）
+- T(n) = O(1) W(n)=O(n)
+
+步骤：
+
+- $n^{1/8}$ 中随机取样，得到 $n^{7/8}$ 个元素
+  - $T=O(1),W=O(n^{7/8})$
+- 将这 $n^{7/8}$ 个元素再按 $n^{1/8}$ 为单位分块，一共就 $n^{3/4}$ 块；每个 $n^{1/8}$ 块取最大值
+  - $T=O(1),W=O(n^{3/4}×n^{2×1/8})=O(n)$
+- 现在剩下$n^{3/4}$ 个元素，按$n^{1/4}$ 为单位分块，共计 $n^{1/2}$ 个块；每个 $n^{1/4}$取最大值
+  - $T=O(1),W=O(n^{1/2}×n^{2×1/4})=O(n)$
+- 剩下 $n^{1/2}$ 个元素，直接取最大值
+  - $T=O(1),W=O(n^{2×1/2})=O(n)$
 
 # External Sorting<a id="external"></a>
 
