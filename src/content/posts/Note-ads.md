@@ -1454,7 +1454,7 @@ $\Leftrightarrow$ 多项式时间可验证
 
 >对于任意问题A的实例 $\alpha$ ，如果存在多项式时间（不妨假设其为 $O(N^{k_1})$ ）的算法 R 使得 $R(\alpha) = \beta$ ，且存在另一个多项式时间（假设为 $O(N^{k_2})$ ）的算法 D，$D(\beta)$ 的输出是问题 B 的一个解，且这个解答同样适用于问题 A ，则称问题 A 可以规约到 B，记作 $A\le_P B$
 
-![image-20241230111740401](img/ads/ads-NPC-reduce.jpg)
+![image-20241230111740401](/img/ads/ads-NPC-reduce.jpg)
 
 - 说人话就是可以在多项式时间内将问题 A 转化成 B
 
