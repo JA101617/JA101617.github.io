@@ -1058,3 +1058,14 @@ ID/EX.MemRead and
 ![RISC-Vinstructionencoding2](/img/CO/RISC-Vinstructionencoding2.jpg)
 
 ![RISC-Vinstructionencoding3](/img/CO/RISC-Vinstructionencoding3.jpg)
+
+
+
+
+
+
+
+# 最后一节课
+
+- 流水线，不同的配置，判断指令处理结果
+  - 4.20搞清楚！

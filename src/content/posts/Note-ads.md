@@ -27,6 +27,12 @@ lang: 'zh-CN'
 - [Divide and Conquer](#DivideConquer)
 - [DP](#DP)
 - [Greedy](#Greedy)
+- [NPC](#NPC)
+- [Approximation](#approx)
+- [Local Search](#local)
+- [Randomized Algorithms](#random)
+- [Parallel Algorithms](#parallel)
+- [External Sorting](#external)
 
 
 **注**：下文代码使用C++，以结构体数组实现
@@ -1255,9 +1261,9 @@ $$
 
 $T(N) = aT(N/b) + f(N)$
 
-- 若$\exist \epsilon > 0$ 使得 $f(N) = O(N^{log_b^{a}-\epsilon})$ ，则 $T(N) = \Theta(N^{log_b^a})$
--  若 $f(N) = \Theta(N^{log_b^a})$ ，则 $T(N) = \Theta(N^{log_b^a}\log{N})$
-- 若$\exist \epsilon > 0$ 使得 $f(N) = \Omega(N^{log_b^{a}-\epsilon})$ ，且存在常数 $c<1$ 使得 $af(N/b)<cf(N)$ 则 $T(N) = \Theta(f(N))$
+- 若$\exist \epsilon > 0$ 使得 $f(N) = O(N^{log_b^{a}-\epsilon})$ ，则 $T(N) = \Theta(N^{log_b{a}})$
+-  若 $f(N) = \Theta(N^{log_b{a}})$ ，则 $T(N) = \Theta(N^{log_b^a}\log{N})$
+- 若$\exist \epsilon > 0$ 使得 $f(N) = \Omega(N^{log_b{a}-\epsilon})$ ，且存在常数 $c<1$ 使得 $af(N/b)<cf(N)$ 则 $T(N) = \Theta(f(N))$
 
 ### 形式2
 
@@ -1334,8 +1340,6 @@ $$
 
 给定一系列活动 $S={a_1,...,a_n}$ ，每个活动占据时间 $[s_i,f_i)$ ，要求合理安排使得安排活动数量最大化
 
-my idea:
-
 1. 离散化，枚举每个活动 $f_s = \min_{j<s}{f_j} +1$ ，前缀 min 可以维护，总复杂度 $O(n)$
 
 2. 按结束时间第一关键字（升序）开始时间第二关键字（降序）排列，能塞就塞
@@ -1376,11 +1380,221 @@ void Huffman ( PriorityQueue  heap[ ],  int  C ){
 - 证明
 - [ ] 待理解补全
 
-# NPC问题
+# NPC问题<a id="NPC"></a>
 
-# 近似
+## Complexity
 
-# 随机化算法
+- 可分为P,NP,EXP,PSPACE...
+- 以下只介绍P和NP
+
+**NP的N是非确定性而非“NOT”**
+
+- 探讨判定问题(decidable problem)，一个问题的判定版本和优化版本存在联系
+
+对于最短路问题：
+
+1. 求解最短路
+2. 求解最短路路径
+3. 判定是否存在长度不大于 $k$ 的路径
+
+则$1\ge 2\ge 3$
+
+- 其中23等价，因为如果可求解3，二分答案即可求2，反之显然
+- 12也等价，因为如果能求解2，通过逐个删去边判断最短路是否变化即可得到1
+
+三者在多项式意义下难度等同
+
+以下就判定问题的范围内进行讨论，以间接推断优化问题的难度
+
+**但是不是所有问题的判定问题和优化问题在多项式意义下都相当**
+
+### 图灵机角度理解P与NP
+
+- **图灵机**
+  - 组成：包括无限内存（一条无限长的纸带，有单位格子的划分）和一个读写头（scanner,可以对纸带上的内容进行读写，可以移动）（还有一个有限状态控制器/程序）
+  - 运行方式
+    - 改变控制器状态
+    - 在读写头的位置进行数据修改
+    - 读写头移动（至多一个单位长度，也即向左一格/不动/向右一格）
+- **Deterministic Turing Machine** 每次执行一条指令，其后续指令也由这条指令和当前数据唯一确定
+- **Nondeterministic Turing Machine** 每次从一个有限集合中取出指令执行。如果存在执行指令选择集合能够有解，则该机器永远选择能达到有解的指令
+- P对应所有能在DTM上以输入规模的多项式时间求解的判定问题
+- NP对应所有能在NTM上以输入规模的多项式时间求解的判定问题
+
+注：不是所有判定问题都是NP的，例如判断一张图是否不存在hamiltonian cycle
+
+### 另一角度
+
+#### P(polynomial)
+
+实例I可分为yes-instance和no-instance
+
+判定问题的算法A(I)输出仅有yes or no
+
+如果A对于任意实例I，输出yes iff I是 yes-instance，则称A解决了这个问题
+
+若算法A存在多项式复杂度 $p(I)$ 使得对于任意的 I A都能在 $O(p(|I|))$ 终止（其中 $|I|$ 表示 $I$ 的规模），则称A是多项式时间的算法
+
+**P** ： 所有拥有多项式时间的算法的判定问题的集合
+
+#### NP(non-deterministically polynomial)
+
+$\Leftrightarrow$ 多项式时间可验证 
+
+### NPC问题
+
+- 任意的NP问题都可以多项式时间规约(polynomially reduce)到NPC问题
+
+#### 规约
+
+>对于任意问题A的实例 $\alpha$ ，如果存在多项式时间（不妨假设其为 $O(N^{k_1})$ ）的算法 R 使得 $R(\alpha) = \beta$ ，且存在另一个多项式时间（假设为 $O(N^{k_2})$ ）的算法 D，$D(\beta)$ 的输出是问题 B 的一个解，且这个解答同样适用于问题 A ，则称问题 A 可以规约到 B，记作 $A\le_P B$
+
+![image-20241230111740401](img/ads/ads-NPC-reduce.jpg)
+
+- 说人话就是可以在多项式时间内将问题 A 转化成 B
+
+## 形式化语言描述
+
+### 抽象问题的定义
+- 抽象问题 $Q$ 定义为一个二元关系 $Q \subseteq I \times S$，其中：
+  - $I$ 是问题的实例集合。
+  - $S$ 是问题的解集合。
+  - 对于每个问题实例 $i \in I$，存在一个解 $s \in S$。
+- 例：最短路径问题（Shortest Path Problem）
+  - $I = \{ \langle G, u, v \rangle : G \text{ 是一个无向图}, u, v \text{ 是 } G \text{ 的顶点} \}$
+  - $S = \{ \langle u, w_1, w_2, \ldots, w_k, v \rangle : \text{表示从 } u \text{ 到 } v \text{ 的路径} \}$
+- 判定问题（Decision Problem）可抽象为一个从 $I$ 到 $\{0, 1\}$ 的映射：
+  - $Q(i) = 1$ 表示实例 $i$ 有解。
+  - $Q(i) = 0$ 表示实例 $i$ 无解。
+
+### 编码与具体问题
+- 编码（Encoding）
+  - $I$ 映射为二进制字符串集合 $\{0, 1\}^*$。
+  - $Q$ 映射为具体问题 $Q(x) \in \{0, 1\}$，其中 $x \in \{0, 1\}^*$ 是编码后的问题实例。
+
+### 基本概念
+（基于判定问题）
+
+- 字母表 $\Sigma$：有限符号集合，例如 $\Sigma = \{0, 1\}$。
+- 语言 $L$ 是由字母表 $\Sigma$ 构成的字符串集合。
+  - $L \subseteq \Sigma^*$，其中 $\Sigma^*$ 是 $\Sigma$ 上所有可能字符串的集合。
+  - $L = \{x\in\sum^*:Q(x)=1\}$
+  - 空字符串记为 $\varepsilon$ ，空语言记为 $\empty$
+- 语言操作：
+  - 补集（Complement）：$\Sigma^* - L$ 表示 $L$ 的补集。
+  - 连接（Concatenation）：$L_1 \cdot L_2 = \{x_1x_2 : x_1 \in L_1, x_2 \in L_2 \}$。
+  - 闭包（Kleene Star）：
+    - $L^* = \{\varepsilon\} \cup L \cup L^2 \cup L^3 \cup \cdots$。
+    - $L^k$ 表示 $k$ 次自连接。
+- 决定语言与接受语言：
+  - 算法 A 接受字符串 x $\Leftrightarrow$ A(x)=1，反之则为 A 拒绝 x
+  - L 被 A 决定：A必须正确接受 $L$ 中的所有字符串，且拒绝 $L^c$ 中的所有字符串。
+  - L被 A 接受：算法仅需要正确接受 $L$ 中的字符串，而无需对 $L^c$ 的字符串作出正确判断。
+
+### P&NP&NPC
+- P类问题：
+  - 语言 $L \subseteq \{0, 1\}^*$ 属于 $P$，如果存在一个算法 $A$ 满足：
+    - 对于所有输入 $x \in \{0, 1\}^*$，$A(x)$ 可以在多项式时间内判断 $x \in L$。
+
+- NP类问题：
+  - 语言 $L \subseteq \{0, 1\}^*$ 属于 $NP$，如果存在一个多项式时间验证算法 $A(x, y)$ 和一个常数 $c$，满足：
+    - 对于任意 $x \in \{0, 1\}^*$，
+      $x \in L \iff \exists y \in \{0, 1\}^* \text{ 且 } |y| = O(|x|^c) \text{ 使得 } A(x, y) = 1$。
+    - $y$ 是验证算法使用的“证书”(certificate)。
+  
+- co-NP： $\{L:\bar{L}\in NP\}$
+
+  - 若 $P=NP$ ，则有 $NP=co-NP$
+  - 具体可能的关系如下
+
+  ![image-20241230120124114](/img/ads/ads-NPC-4poss.jpg)
+
+- 多项式时间规约：一个语言 $L_1$ 多项式时间归约到语言 $L_2$ （记作 $L_1 \leq_P L_2$）即存在一个多项式时间可计算函数 $f : \{0, 1\}^* \to \{0, 1\}^*$，使得对于所有 $x \in \{0, 1\}^*$，$x \in L_1 \iff f(x) \in L_2$
+  - 称 $f$ 为 reduction function, 能多项式时间计算 $f$ 的算法 $F$ 为 reduction algorithm
+
+- NPC：$L \subseteq \{0, 1\}^*$ 是NPC问题，需满足
+  
+  1. $L \in NP$。
+  
+  2. $\forall L' \in NP$，$L' \leq_P L$。
+
+## 实例
+
+### Halting Problem 停机问题
+
+- 若可判定，则存在一个函数P，对于一段代码，返回1/0（不停机/停机）
+
+- 则
+
+  ```cpp
+  Loop(P){
+  	if(P(P)) return 0;
+  	else infinityloop();
+  }
+  ```
+
+  则 Loop(Loop) 无法判断停机
+
+  构成悖论 ~~可能写的不对，意会一下这个理发师悖论就好了~~
+
+### Postpone Corresponding Problem(PCP)
+
+大意是每张牌分上下两个标签，提问是否存在某个线性放置方式使得前一张牌的下标签与后一张牌的上标签一致
+
+myc说略了
+
+### Hamilton Cycle Problem(HCP)
+
+> Hamiltonian cycle problem: Given a graph G=(V, E), is there a simple cycle that visits all vertices?
+
+### Traveling Salesman Problem(TSP)
+
+> Traveling salesman problem: Given a complete graph G=(V, E), with edge costs, and an integer K, is there a simple cycle that visits all vertices and has total cost $\le$ K?
+
+### Circuit-SAT
+
+第一个被证明是NPC的问题，又称 satisfiability problem
+
+>Input a boolean expression and ask if it has an assignment to the variables that gives the expression a value of 1.
+
+### Clique Problem
+
+> Given an undirected graph G = (V, E) and an integer K, does G contain a complete subgraph (clique) of (at least) K vertices?
+>
+> CLIQUE = { <G, K> : G is a graph with a clique of size K }.
+
+### Vertex Cover Problem
+
+> Given an undirected graph G = (V, E) and an integer K, does G contain a subset V' $\subseteq$ V such that |V'| is (at most) K and every edge in G has a vertex in V' (vertex cover)?
+>
+> VERTEX-COVER = { <G, K> : G has a vertex cover of size K }.
+
+### 哈密顿回路问题到旅行商问题
+
+- 已知Hamilton Cycle Problem是NPC的，求证Traveling Salesman Problem也是NPC的
+
+- 证明TSP是NP问题，并通过规约证明 $HCP\le_P TSP$ 即可
+
+  - Q：为什么要先证明是NP的
+
+    A：如果不说明它是NP的，它完全可能落入NPH问题中
+
+  - NP：因为它可以多项式验证，显然
+
+  - 规约方式：将HCP的输入图 G 转为完全图 $G'$ ，G中不存在的边的边权设为 $K+1$ ，那么如果 TSP 成立， HCP也成立
+
+### Clique问题到节点覆盖问题
+
+- 已知Clique问题是NPC，求证节点覆盖问题是NPC
+  - NP：可以多项式验证
+    - 检查 $|V'|\le K$，枚举图上每条边即可， $O(N^3)$ （其实我觉得用不着 $N^3$， 可能是什么奇怪的实现方式）
+  - 规约 $CLIQUE\le_P VERTEX-COVER$
+    - 对于团问题的图 G ，构造其补图 $G'$
+    - 则整张图上除了大小为 $K$ 的团之外的点全部选中必然构成一个大小为 $|V|-K$ 的节点覆盖（注意这里是判定问题而非优化问题），二者成对偶关系
+
+# 近似<a id="approx"></a>
+
+# 随机化算法<a id="random"></a>
 
 - 对于离散变量X，我们有
 
@@ -1407,8 +1621,6 @@ $$
 
   > any of first i candidates is equally likely to be best-qualified so far
 
-  
-
 - 对于随机的情况，雇佣次数的期望利用期望的线性性，转化为每个人被雇佣期望的加和，则有
 
 $$
@@ -1418,9 +1630,8 @@ $$
 ​		平均的花销为 $O(\ln{n}C_h + nC_i)$
 
 因此可以将面试者数列随机打乱再进行面试
-    
 
-范例代码中：
+范例代码：
 
 ```cpp
 for(i in [1,n])
@@ -1470,7 +1681,100 @@ E{X} = \frac{1}{2}+\frac{1}{2^2}+\frac{1}{2^3}+..+\frac{1}{2^n}=2
 $$
 （提示，这里不是 $\sum_{i=1}^ni2^{-i}$ 的原因是其展开思路是期望线性性）
 
-
-
 - **type j** : the subporblem S is of type j iff $N(\frac{3}{4})^{j+1}\le |S|\le N(\frac{3}{4})^j$
   - 性质： 至多有 $(\frac{4}{3})^{j+1}$ 个 type j 的子问题
+
+![image-20241224112956436](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241224112956436.png)
+
+# External Sorting<a id="external"></a>
+
+~~这个开篇真的会梦回计组~~
+
+- 内存不足以排序的数据量，访问磁盘开销巨大（记得看看计组cache那一章）$\Rightarrow$ 使用归并排序，但是磁盘访问次数尽可能最小化
+- why归并排序？ 内存一次性能处理的数据量有限，归并能够在这一基础下把有序数列规模增大直到有序 ~~其他排序做得到吗.jpg~~
+
+以下令内存最大容量为 $M$ , 总数据量 $N$ ，实行 $k$ 路归并
+
+## 一些名词
+
+- **run** : 一段数据，它应当是内部有序的
+- **pass** : 将 $k$ 路数据归并到其他路的过程
+- **copy** : 从一路将数据分发到若干路的过程（正常不会出现在计数中，只是老师在用3 tapes做2路归并的例子时出现过)
+- **tape** : 一个磁盘，这里可以理解为一个无限大的存放 runs 的地方
+
+## 性能优化
+
+### Passes
+
+$2k$ 个磁盘时
+
+- Number of passes = $1+\lceil\log_k{N/M}\rceil$
+  - "1" 是从 $T_1$ 向其他磁带分发 pass 的过程，由于是第一次还需要将每个 pass 内部变为有序
+  - 此后每一次 pass （假设还是统一归并到 $T_1$ ）会让 $pass$ 数量变为 $\frac{1}{k}$  （上取整）
+
+- 老师给出的其中一个例子如下
+
+![image-20241229120325961](/img/ads/Extsort-2kexample.jpg)
+
+此时要优化passes的数量：
+
+1. 增加 $k$  $\Rightarrow$ tape数量、排序复杂度增加
+
+2. 算法优化：Replacement Selection
+
+   - 可以获得更长的run从而减少passes
+   
+   <details>
+		<summary> Replacement Selection </summary>
+	    <pre>
+	When the input is much too large to fit into memory, we have to do **external sorting** instead of internal sorting.  One of the key steps in external sorting is to generate sets of sorted records (also called **runs**) with limited internal memory.  The simplest method is to read as many records as possible into the memory, and sort them internally, then write the resulting run back to some tape.  The size of each run is the same as the capacity of the internal memory.
+   **Replacement Selection** sorting algorithm was described in 1965 by Donald Knuth.  Notice that as soon as the first record is written to an output tape, the memory it used becomes available for another record.  Assume that we are sorting in ascending order, if the next record is not smaller than the record we have just output, then it can be included in the run.
+   For example, suppose that we have a set of input { 81, 94, 11, 96, 12, 99, 35 }, and our memory can sort 3 records only.  By the simplest method we will obtain three runs: { 11, 81, 94 }, { 12, 96, 99 } and { 35 }.  According to the replacement selection algorithm, we would read and sort the first 3 records { 81, 94, 11 } and output 11 as the smallest one.  Then one space is available so 96 is read in and will join the first run since it is larger than 11. Now we have { 81, 94, 96 }.  After 81 is out, 12 comes in but it must belong to the next run since it is smaller than 81.  Hence we have { 94, 96, 12 } where 12 will stay since it belongs to the next run.  When 94 is out and 99 is in, since 99 is larger than 94, it must belong to the **first run**.  Eventually we will obtain two runs: the first one contains { 11, 81, 94, 96, 99 } and the second one contains { 12, 35 }.
+       </pre>
+   </details>
+
+### Tapes:Polyphase Merge Sorting多相归并
+
+$k+1$ 个磁盘
+
+- 合并规则有所变化：不会把现有runs的磁盘一定要搬空了
+
+- 二路归并时
+
+  > If the number of runs is a fibonacci number $F_N$ , then the best way to distribute them is to split them into $F_{N-1}$ and $F_{N-2}$
+
+  例：$(a,b,c)$ 表示 $T_1T_2T_3$ 中的 runs 数量
+  $$
+  (21,13,0)\rightarrow(8,0,13)\rightarrow(0,8,5)\rightarrow\\
+  (5,3,0)\rightarrow(2,0,3)\rightarrow(0,2,1)\rightarrow\\(1,1,0)\rightarrow
+  (0,0,1)
+  $$
+
+- $k$ 路归并时
+
+  - 定义 $k$ 阶斐波那契数： $F_N^{(k)} = \sum_{i=1}^k F_{N-i}^{(k)}$
+  - 按照 $k$ 阶斐波那契数拆分更优
+  - 实现方式（参考修佬的PPT）：
+    - 每次 $k$ 路归一路，取 $k$ 路中的 min ，然后 $k$ 路各自减去 min
+    - 显而易见这样能始终保持一路为空
+  
+- Q：如果数量不恰好为斐波那契数？
+
+  A：在后面补上空的 runs 即可
+
+### Parallel Operation
+
+对于 $k$ 路归并需要 $2k$ 个读缓存和 2 个写缓存
+
+（GPT对于这个2的系数的解释，以读为例：一个缓冲区正在被读取时，另一个缓冲区可以并行加载下一块数据）
+
+- 如果 $k$ 增长，IO时间会增加但是 passes 会减少，buffer空间减小
+- 为达到最高效率，需要依据硬件的参数找到 trade-off 的较优解
+
+### Merge Time
+
+- 利用哈夫曼编码数
+
+例如：对四个2,4,5,15的runs作合并，如图所示的合并效率最高， $T=O(the\ weighted\ external\  path\ length)$
+
+![image-20241229162209552](/img/ads/ads-ext-huffman.jpg)
