@@ -1690,10 +1690,12 @@ void BestFit() {
 }
   </code></pre>
 </details>
+
+
 #### 离线算法
 
 - 思路：物品大小降序排列后再使用 FF 或 BF
-- 该算法使用不多于 $(11M+6)/9$ 个箱子，这是上确界（存在构造）
+- 该算法使用不多于 $(11M+6)/9$ 个箱子，这是确界（存在构造）
 
 ### 背包
 
@@ -1912,6 +1914,12 @@ $|w_e|$ 表示需求强烈程度
   - $O(n^k)$ 寻找邻居
   - K-L算法：计算一批节点的增益，选其中一批统一更新
 
+## 作业
+
+![image-20241231155954347](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241231155954347.png)
+
+构造，不会
+
 # 随机化算法<a id="random"></a>
 
 - 对于离散变量X，我们有
@@ -1985,9 +1993,11 @@ $$
 $$
 \int_k^n \frac{1}{x}dx\le \sum_{i=k}^{n-1} \frac{1}{i}\le\int_{k-1}^{n-1} \frac{1}{x}dx
 $$
-不会就回去看看伟大的[辅学网站](#[首页 - 浙江大学竺可桢学院辅学计划站点](https://ckc-agc.bowling233.top/))
+不会就回去看看伟大的[辅学网站](https://ckc-agc.bowling233.top/)
 
 则 $Pr[S]=\frac{k}{n}\ln{\frac{n}{k}}$
+
+取 $k=N/e$ 则 $Pr_{max}=1/e$
 
 ### 快排
 
@@ -2005,6 +2015,20 @@ $$
 ![image-20241224112956436](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241224112956436.png)
 
 # Parallel Algorithms<a id="parallel"></a>
+
+## 省流
+
+| 问题-算法                     | T                  | W                   |
+| ----------------------------- | ------------------ | ------------------- |
+| 前缀和                        | $O(\log{n})$       | $O(n)$              |
+| 单轮归并-并行二分             | $O(\log{n})$       | $O(n\log{n})$       |
+| 单轮归并-$\log{n}$分块        | $O(\log{n})$       | $O(n)$              |
+| 找最大值-朴素并行             | $O(1)$             | $O(n^2)$            |
+| 找最大值-$\sqrt{n}$ 分块      | $O(\log{\log{n}})$ | $O(n\log{\log{n}})$ |
+| 找最大值-$\log{\log{n}}$ 分块 | $O(\log{\log{n}})$ | $O(n\log{\log{n}})$ |
+| 找最大值-随机采样             | $O(1)$             | $O(n)$              |
+
+- $W(n)/P(n)+T(n)$
 
 ## PRAM 模型
 
@@ -2219,6 +2243,41 @@ for Pi , 1 <= i <= n  pardo
 - 剩下 $n^{1/2}$ 个元素，直接取最大值
   - $T=O(1),W=O(n^{2×1/2})=O(n)$
 
+## 习题
+
+1. In order to solve  the maximum finding problem by a parallel  algorithm  with *T*(*n*)=*O*(1) , we need work load $W(n)=Ω(n^2)$ in return.(F)
+
+   ver0确实需要 $W(n)=O(n^2)$ ，但是随机采样不是，认为随机采样可以解决问题（实在不行多跑几次）
+
+   以下的另外一道题就是正确的表述
+
+   > To solve the Maximum Finding problem with parallel Random Sampling method, *O*(*n*) processors are required to get *T*(*n*)=*O*(1) and *W*(*n*)=*O*(*n*) with very high probability. 
+
+2. The prefix-min problem is to find for each *i*, 1≤*i*≤*n*, the smallest element among *A*(1), *A*(2), ⋯, *A*(*i*).  What is the run time and work load for the following algorithm?
+
+   ```cpp
+   for i, 1≤i≤n pardo
+     B(0, i) = A(i)
+   for h=1 to log(n)
+     for i, 1≤i≤n/2^h pardo
+       B(h, i) = min {B(h-1, 2i-1), B(h-1, 2i)}
+   for h=log(n) to 0
+     for i even, 1≤i≤n/2^h pardo
+       C(h, i) = C(h+1, i/2)
+     for i=1 pardo
+       C(h, 1) = B(h, 1)
+     for i odd, 3≤i≤n/2^h pardo
+       C(h, i) = min {C(h + 1, (i - 1)/2), B(h, i)}
+   for i, 1≤i≤n pardo
+     Output C(0, i)
+   ```
+
+​		$T=O(\log{n})$   $W=O(n)$
+
+​		同求前缀和  ~~这道题题面写的lofn我真的会笑死~~
+
+
+
 # External Sorting<a id="external"></a>
 
 ~~这个开篇真的会梦回计组~~
@@ -2311,3 +2370,7 @@ $k+1$ 个磁盘
 例如：对四个2,4,5,15的runs作合并，如图所示的合并效率最高， $T=O(the\ weighted\ external\  path\ length)$
 
 ![image-20241229162209552](/img/ads/ads-ext-huffman.jpg)
+
+# Left Undone
+
+![image-20241231184319762](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241231184319762.png)
