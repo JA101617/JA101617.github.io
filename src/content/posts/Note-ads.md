@@ -11,6 +11,8 @@ lang: 'zh-CN'
 
 # 导航
 
+- [补天](#SOS)
+
 ## 数据结构
 
 - [AVL](#AVL)
@@ -38,6 +40,8 @@ lang: 'zh-CN'
 **注**：下文代码使用C++，以结构体数组实现
 
 # Amortized Analysis均摊分析  
+
+**$\text{worst-case bound}\ge\text{amortized bound}\ge\text{average-case bound}$**
 
 ## Aggregate Analysis
 
@@ -281,6 +285,8 @@ int insert(int p, int v){
 - zig-zag : 自己&父节点，父节点&再上一级节点方向不同，对自己进行两次反向旋转
 
 （配图见下）
+
+> Splaying not only moves the accessed node to the root, but also roughly halves the depth of most nodes on the path.
 
 ## 操作
 
@@ -717,6 +723,7 @@ int Insert(int cur, int val){
   - 定义每个节点的黑高 (Black height)是从自己向下到NIL的路径上黑色节点的个数（**但是不包含自己**）
     - 例如 BH(NIL) = 0， 单个节点的树 BH = 1（对应NIL，根节点本身不算在内）
 
+**Internal node与External node**: External node指NIL，其他都是Internal
 
 **性质：**
 
@@ -748,7 +755,7 @@ int Insert(int cur, int val){
         - 如果”根节点“的父亲是黑，直接结束
         - 如果根节点父亲是红的，向上递归，可能转成其他case
       - case 2 : 基于橙色节点左旋转为case 3
-      - case 3 : 红色节点染黑，其父亲染红，再将新的黑色节点右旋上去
+      - case 3 : 红色节点染黑，其父亲染红，再将新的黑色节点右旋上去。个人理解思路为将红色节点分给右侧
 	    ![Insert](/img/ads/RBT-insert.jpg)
 	    
 	    - 综合上述情况，只有case1可能向上递归，其他情况不会。只有case2 和 case3 需要 Rotate ，因此最多旋转次数为从 case2 转到 case3 ，即最多两次
@@ -841,6 +848,7 @@ int Insert(int cur, int val){
 ## Stop Words
 
 - 可以理解为“虚词”，过于普遍的单词没必要 index （比如 a, the , it ）
+- **但是出现频率最高的词不一定是stop word**
 
 寻找单词
 
@@ -994,6 +1002,7 @@ int Insert(int cur, int val){
   - $\Phi (D_i) = number\ \  of\ \ heavy\ \ nodes$
     - heavy nodes :  右子树大于左子树的节点
     - 除了在归并路线上的节点，其他节点的轻重性质不变化
+      - 重节点一定会变轻，但是轻节点不一定变重
     - 定义最开始的右路径（即归并路线）上轻节点 $l_i$ ，重节点 $h_i$ 。
       - 则 $l_i$ 越多 $l_i$ 越少（ $l_i$ 多则堆趋于左倾堆，则右路径长度就短，至多到 $O(\log N)$ 级别）
     - 极端情况变化：轻全变重
@@ -1002,7 +1011,7 @@ $$
 T_{worst}=l_1+h_1+l_2+h_2\\
 \phi_i = h_1+h_2+h\\
 \phi_{i+1} \le l_1+l_2+h\\
-T_{amortized} = T_{worst}+\phi_{i+1}-\phi_i\le 2(l_1+l_2) \Rightarrow O(\log N)  
+T_{amortized} = T_{worst}+\phi_{i+1}-\phi_i\le 2(l_1+l_2) \Rightarrow O(\log N)
 $$
 
 ## 作业题
@@ -1516,7 +1525,8 @@ $\Leftrightarrow$ 多项式时间可验证
 
 - 多项式时间规约：一个语言 $L_1$ 多项式时间归约到语言 $L_2$ （记作 $L_1 \leq_P L_2$）即存在一个多项式时间可计算函数 $f : \{0, 1\}^* \to \{0, 1\}^*$，使得对于所有 $x \in \{0, 1\}^*$，$x \in L_1 \iff f(x) \in L_2$
   - 称 $f$ 为 reduction function, 能多项式时间计算 $f$ 的算法 $F$ 为 reduction algorithm
-
+  - 注意这个 $iff$ 符号，如果题目只有单向的话是错的，此事在98亦有记载
+  
 - NPC：$L \subseteq \{0, 1\}^*$ 是NPC问题，需满足
   
   1. $L \in NP$。
@@ -1916,7 +1926,7 @@ $|w_e|$ 表示需求强烈程度
 
 ## 作业
 
-![image-20241231155954347](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241231155954347.png)
+![image-20241231155954347](/img/ads/Local-HW.jpg)
 
 构造，不会
 
@@ -2025,7 +2035,7 @@ $$
 | 单轮归并-$\log{n}$分块        | $O(\log{n})$       | $O(n)$              |
 | 找最大值-朴素并行             | $O(1)$             | $O(n^2)$            |
 | 找最大值-$\sqrt{n}$ 分块      | $O(\log{\log{n}})$ | $O(n\log{\log{n}})$ |
-| 找最大值-$\log{\log{n}}$ 分块 | $O(\log{\log{n}})$ | $O(n\log{\log{n}})$ |
+| 找最大值-$\log{\log{n}}$ 分块 | $O(\log{\log{n}})$ | $O(n)$              |
 | 找最大值-随机采样             | $O(1)$             | $O(n)$              |
 
 - $W(n)/P(n)+T(n)$
@@ -2371,6 +2381,22 @@ $k+1$ 个磁盘
 
 ![image-20241229162209552](/img/ads/ads-ext-huffman.jpg)
 
-# Left Undone
+# Left Undone<a id="SOS"></a>
 
-![image-20241231184319762](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241231184319762.png)
+![image-20241231184319762](/img/ads/SOS-1.jpg)
+
+cuo?
+
+![image-20250102150425613](/img/ads/SOS-2.jpg)
+
+![image-20250102150745147](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20250102150745147.png)
+
+![image-20250102154801138](/img/ads/SOS-3.jpg)
+
+利用期望，单个盒子一个没中的概率为 $(1-\frac{1}{m})^m\rightarrow \frac{1}{e}$
+
+![image-20250102163541647](/img/ads/SOS-4.jpg)
+
+![image-20250102234714756](C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20250102234714756.png)
+
+这。。。。。猜测可能是因为不一定是常数
