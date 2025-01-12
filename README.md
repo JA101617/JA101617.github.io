@@ -2,4 +2,4 @@
 - 课堂笔记
 - 各种碎碎念
 
-[欢迎来玩！](#https://ja101617.github.io/)
+[欢迎来玩！](https://ja101617.github.io/)
