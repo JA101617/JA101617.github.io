@@ -1,4 +1,6 @@
 site_name: JA's Blog
+site_author: 静安
+copyright: 'Copyright &copy 2025 静安'
 # 文章结构
 nav:
   - "封面": 
@@ -6,7 +8,12 @@ nav:
     - "关于": content/Cover/about.md
   - "课堂笔记": 
     - content/Note/index.md
-    - "ADS": content/Note/ADS/about.md
+    - "ADS": 
+       - content/Note/ADS/about.md
+       - "均摊分析": content/Note/ADS/01-Amortized-Analysis.md
+  - "杂项": 
+    - content/Other/index.md
+    - "大二上吐槽": content/Other/Sem3Exp.md
 
 
 
@@ -63,6 +70,8 @@ theme:  #主题
     #  toggle:
     #    icon: material/weather-night  #图标，月亮
     #    name: Switch to light mode
+
+
   font:  #字体，false 则阻止从Google加载字体
   # 内置隐私插件自动下载和自托管 Web 字体文件，无需阻止。其他字体使用附加样式表 extra.css 。
     text: Roboto  #常规字体，默认Roboto，正文、标题等，300、400、400i和700
@@ -81,9 +90,9 @@ markdown_extensions:  #推荐配置Markdown基本语法及其扩展
   - md_in_html  #HTML 中的 Markdown
   - toc:  #目录
       toc_depth: 6 #目录深度，默认6，0则隐藏
-#      title: On this page  #默认值，自动获取
-#      permalink: true   #每个标题的末尾添加段落符号锚链接，默认false
-#      permalink: ⚓︎  #每个标题的末尾添加自定义符号锚链接
+      #title: On this page  #默认值，自动获取
+      permalink: true   #每个标题的末尾添加段落符号锚链接，默认false
+      permalink: ⚓︎  #每个标题的末尾添加自定义符号锚链接
 #      permalink_title: Anchor link to this section for reference #在悬停时显示并由屏幕阅读器阅读的锚链接的标题
   - tables #表格（未推荐）
   - pymdownx.arithmatex:  #数学公式

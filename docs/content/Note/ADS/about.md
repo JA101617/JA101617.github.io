@@ -412,13 +412,13 @@ int insert(int p, int v){
   <img src="/img/ads/ads-SplayZig.png" alt="ads-SplayZig" style="zoom:67%;" />
 
 
-  $$
+$$
   \begin{aligned}
   \hat{c_i} =& 1 + \Phi(T_2) - \Phi(T_1)\\
    = &1 + R_2(x) - R_1(x) + (R_2(p) - R_1(p))\\
    \leq &1 + R_2(x) - R_1(x)
    \end{aligned}
-  $$
+$$
 
 - zig-zag: 
 
@@ -457,23 +457,23 @@ $$
   <img src="/img/ads/ads-SplayZigZig.png" alt="ads-SplayZigzig" style="zoom:67%;" />
 
 
-  $$
+$$
   \begin{aligned}
   \hat{c_i} =& 2 + \Phi(T_2) - \Phi(T_1)\\
    = &2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\\
    = &2 + R_2(p) + R_2(g) - R_1(p) - R_1(x)\\
    \leq &2 + R_2(x) + R_2(g) - 2R_1(x)
    \end{aligned}
-  $$
+$$
 
   同理zig-zag的均值不等式可得$ R_1(x)+R_2(g)-2R_2(x)\leq -2$ ，即 $2R_2(x) - R_1(x) - R_2(g)\ge 2$
 
   所以
-  $$
+$$
   \begin{aligned}
   \hat{c_i} \leq &2 + R_2(x) + R_2(g) - 2R_1(x)\leq 3(R_2(x)-R_1(x))
   \end{aligned}
-  $$
+$$
 
 ​		假设一次splay共计进行了 $n$ 步，因为单zig只会在转到根出现，则总复杂度
 $$
