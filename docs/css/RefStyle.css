@@ -1,35 +1,4 @@
-[data-md-color-scheme="custom-light"] {
-    --md-hue: 195; /* 可选，定义主色调的色相 */
-    
-    /* 默认背景色 */
-    --md-default-bg-color: #ffffff; /* 白色背景 */
-    --md-default-bg-color--light: #f9f9f9;
-    --md-default-bg-color--lighter: #f5f5f5;
-    --md-default-bg-color--lightest: #f0f0f0;
-  
-    /* 代码块背景色 */
-    --md-code-bg-color: #f8f9fa;
-  
-    /* 主色 (primary) */
-    --md-primary-fg-color: #8AAEC9; /* 你的要求颜色 */
-    --md-primary-fg-color--light: #c4e0f4; /* 计算得出的较亮色 */
-    --md-primary-fg-color--dark: #567f99; /* 计算得出的较暗色 */
-    --md-primary-bg-color: #ffffff; /* 默认背景色 */
-    --md-primary-bg-color--light: #ffffffb3;
-  
-    /* 强调色 (accent) */
-    --md-accent-fg-color: #FCC47A; /* 你的要求颜色 */
-    --md-accent-fg-color--transparent: #fcc47a1a;
-    --md-accent-bg-color: #ffffff;
-    --md-accent-bg-color--light: #ffffffb3;
-  
-    /* 标题和链接色 */
-    --md-typeset-a-color: var(--md-primary-fg-color);
-  
-    /* 提示框 */
-    --md-admonition-fg-color: var(--md-default-fg-color);
-    --md-admonition-bg-color: var(--md-default-bg-color);
-  }
+
   [data-md-color-scheme="mycustom-light"] {
     --md-hue: 6;
     --md-default-bg-color: #fff;
@@ -106,7 +75,7 @@
     --md-primary-bg-color: #fff;
     --md-primary-bg-color--light: #ffffffb3;
   
-    --md-typeset-a-color: #207592;
+    --md-typeset-a-color: #2693b7;
   
     --md-accent-fg-color: #CAA375;
     --md-accent-fg-color--transparent: #caa3751a;
@@ -118,6 +87,38 @@
 
 
 /*颜色备份*/
+[data-md-color-scheme="custom-light"] {
+  --md-hue: 195; /* 可选，定义主色调的色相 */
+  
+  /* 默认背景色 */
+  --md-default-bg-color: #ffffff; /* 白色背景 */
+  --md-default-bg-color--light: #f9f9f9;
+  --md-default-bg-color--lighter: #f5f5f5;
+  --md-default-bg-color--lightest: #f0f0f0;
+
+  /* 代码块背景色 */
+  --md-code-bg-color: #f8f9fa;
+
+  /* 主色 (primary) */
+  --md-primary-fg-color: #8AAEC9; /* 你的要求颜色 */
+  --md-primary-fg-color--light: #c4e0f4; /* 计算得出的较亮色 */
+  --md-primary-fg-color--dark: #567f99; /* 计算得出的较暗色 */
+  --md-primary-bg-color: #ffffff; /* 默认背景色 */
+  --md-primary-bg-color--light: #ffffffb3;
+
+  /* 强调色 (accent) */
+  --md-accent-fg-color: #FCC47A; /* 你的要求颜色 */
+  --md-accent-fg-color--transparent: #fcc47a1a;
+  --md-accent-bg-color: #ffffff;
+  --md-accent-bg-color--light: #ffffffb3;
+
+  /* 标题和链接色 */
+  --md-typeset-a-color: var(--md-primary-fg-color);
+
+  /* 提示框 */
+  --md-admonition-fg-color: var(--md-default-fg-color);
+  --md-admonition-bg-color: var(--md-default-bg-color);
+}
   [data-md-color-scheme="custom-dark"] {
     --md-hue: 200; /* 可选，定义主色调的色相 */
     --md-saturation: 5%;
