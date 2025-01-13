@@ -3,17 +3,16 @@ site_author: 静安
 copyright: 'Copyright &copy 2025 静安'
 # 文章结构
 nav:
-  - "封面": 
-    - "封面": content/Cover/index.md
-    - "关于": content/Cover/about.md
+  - "封面": index.md
+  - "关于": about.md
   - "课堂笔记": 
-    - content/Note/index.md
+    - Note/index.md
     - "ADS": 
-       - content/Note/ADS/about.md
-       - "均摊分析": content/Note/ADS/01-Amortized-Analysis.md
+       - Note/ADS/about.md
+       - "均摊分析": Note/ADS/01-Amortized-Analysis.md
   - "杂项": 
-    - content/Other/index.md
-    - "大二上吐槽": content/Other/Sem3Exp.md
+    - Other/index.md
+    - "大二上吐槽": Other/Sem3Exp.md
 
 
 
