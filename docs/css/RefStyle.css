@@ -5,7 +5,7 @@
     --md-default-bg-color--light: #f9f9f9;
     --md-default-bg-color--lighter: hsla(var(--md-hue), 90%, 93%, 0.26);
     --md-default-bg-color--lightest: hsla(var(--md-hue), 90%, 93%, 0.07);
-    --md-code-bg-color: #fff;
+    --md-code-bg-color: #000000;
   
     --md-primary-fg-color: #8AAEC9;
     --md-primary-fg-color--light: #c4e0f4;
