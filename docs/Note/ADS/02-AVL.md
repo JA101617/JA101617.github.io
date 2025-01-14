@@ -254,9 +254,13 @@ $$
 
 ??? note "T2:AVL插入操作"
 	Insert 2, 1, 4, 5, 9, 3, 6, 7 into an initially empty AVL tree.  Which one of the following statements is FALSE?
+
 	A.4 is the root
-	B.3 and 7 are siblings
-	C.2 and 6 are siblings
-	D.9 is the parent of 7
+	
+    B.3 and 7 are siblings
+	
+    C.2 and 6 are siblings
+	
+    D.9 is the parent of 7
 	??? note "Answer"
         B
