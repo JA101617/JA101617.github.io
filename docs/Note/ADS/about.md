@@ -1,15 +1,3 @@
----
-title: ADS学习笔记
-published: 2024-09-24
-description: 'ADS课程中的课堂笔记及课后的少量补充'
-image: ''
-tags: [algorithm,ads]
-category: 'notebook'
-draft: false 
-lang: 'zh-CN' 
-
----
-
 # 导航
 
 - [补天](#SOS)

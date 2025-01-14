@@ -10,6 +10,7 @@ nav:
     - "ADS": 
        - Note/ADS/about.md
        - "均摊分析": Note/ADS/01-Amortized-Analysis.md
+       - "AVL": Note/ADS/02-AVL.md
   - "杂项": 
     - Other/index.md
     - "大二上吐槽": Other/Sem3Exp.md
@@ -133,7 +134,7 @@ plugins:  #插件
 
 
 extra_javascript:
-  - javascripts/baidu-tongji.js  #百度统计
+  #- javascripts/baidu-tongji.js  #百度统计我没有诶
   - javascripts/mathjax.js  #数学公式的JS
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
