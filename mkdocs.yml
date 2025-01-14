@@ -11,6 +11,7 @@ nav:
        - Note/ADS/about.md
        - "均摊分析": Note/ADS/01-Amortized-Analysis.md
        - "AVL": Note/ADS/02-AVL.md
+       - "Splay": Note/ADS/03-Splay.md
   - "杂项": 
     - Other/index.md
     - "大二上吐槽": Other/Sem3Exp.md
