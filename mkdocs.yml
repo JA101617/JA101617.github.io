@@ -14,6 +14,9 @@ nav:
        - "Splay": Note/ADS/03-Splay.md
        - "B+树": Note/ADS/04-B+.md
        - "红黑树": Note/ADS/05-RBT.md
+       - "倒排索引": Note/ADS/06-Inverted-File-Index.md
+       - "左偏树": Note/ADS/07-Leftist.md
+       - "斜堆": Note/ADS/08-SkewHeap.md
   - "杂项": 
     - Other/index.md
     - "大二上吐槽": Other/Sem3Exp.md
@@ -43,6 +46,7 @@ theme:  #主题
     - search.highlight  #搜索词高亮突出显示
     - search.share   #搜索共享
     - header.autohide  #标题自动隐藏
+    - content.code.copy
 
   palette:
 
