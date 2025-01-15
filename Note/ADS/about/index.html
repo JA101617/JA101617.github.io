@@ -1,0 +1,5599 @@
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="静安">
+      
+      
+      
+        <link rel="prev" href="../../">
+      
+      
+        <link rel="next" href="../01-Amortized-Analysis/">
+      
+      
+      <link rel="icon" href="../../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+    
+    
+      
+        <title>导航 - JA's Blog</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.6f8fc17f.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../css/RefStyle.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="mycustom-light" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          跳转至
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="页眉">
+    <a href="../../.." title="JA&#39;s Blog" class="md-header__button md-logo" aria-label="JA's Blog" data-md-component="logo">
+      
+  <img src="../../../assets/avatar.jpg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            JA's Blog
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              导航
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="mycustom-light" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="mycustom-dark" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="搜索" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="查找">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="分享" aria-label="分享" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="清空当前内容" aria-label="清空当前内容" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            正在初始化搜索引擎
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="标签" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  封面
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../about/" class="md-tabs__link">
+        
+  
+    
+  
+  关于
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+    
+  
+  课堂笔记
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../Other/" class="md-tabs__link">
+          
+  
+    
+  
+  杂项
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="导航栏" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="JA&#39;s Blog" class="md-nav__button md-logo" aria-label="JA's Blog" data-md-component="logo">
+      
+  <img src="../../../assets/avatar.jpg" alt="logo">
+
+    </a>
+    JA's Blog
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    封面
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../about/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    关于
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    课堂笔记
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            课堂笔记
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    ADS
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            ADS
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    导航
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    导航
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据结构
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      算法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amortized-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Amortized Analysis均摊分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Amortized Analysis均摊分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregate Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accounting-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accounting method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#potential-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Potential method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avl-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      AVL Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AVL Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotation-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotation Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#splay" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splay
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Splay">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些名词
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splay_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splay操作的复杂度分析
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      B+ Tree
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B+ Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      红黑树
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="红黑树">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avlrbt" class="md-nav__link">
+    <span class="md-ellipsis">
+      比较：AVL与RBT的旋转操作次数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inverted-file-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inverted File Index
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inverted File Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#word-stemming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Word Stemming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stop Words
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributed-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distributed Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thresholding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      左偏堆
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="左偏堆">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      斜堆
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="斜堆">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      二项队列
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二项队列">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      均摊分析
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结：复杂度
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backtracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backtracking
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#divide-and-conquer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Divide and Conquer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Divide and Conquer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      主定理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      DP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      DP 问题的特点
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#greedy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Greedy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Greedy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      哈夫曼编码树
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#npc" class="md-nav__link">
+    <span class="md-ellipsis">
+      NPC问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NPC问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complexity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pnp" class="md-nav__link">
+    <span class="md-ellipsis">
+      图灵机角度理解P与NP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      另一角度
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="另一角度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ppolynomial" class="md-nav__link">
+    <span class="md-ellipsis">
+      P(polynomial)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npnon-deterministically-polynomial" class="md-nav__link">
+    <span class="md-ellipsis">
+      NP(non-deterministically polynomial)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      NPC问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NPC问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      规约
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式化语言描述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="形式化语言描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      抽象问题的定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      编码与具体问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      基本概念
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pnpnpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      P&amp;NP&amp;NPC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      实例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#halting-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Halting Problem 停机问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postpone-corresponding-problempcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Postpone Corresponding Problem(PCP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hamilton-cycle-problemhcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hamilton Cycle Problem(HCP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traveling-salesman-problemtsp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traveling Salesman Problem(TSP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-sat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit-SAT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clique-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clique Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vertex-cover-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vertex Cover Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      哈密顿回路问题到旅行商问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clique问题到节点覆盖问题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      近似
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="近似">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      实例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bin-packing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bin Packing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bin Packing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      在线算法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="在线算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      First Fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Fit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      离线算法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      背包
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#k-center-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      K-center Problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="K-center Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      贪心1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      二分答案
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local Search
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neighbor-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neighbor Relation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    <span class="md-ellipsis">
+      实例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vertex-cover-problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vertex Cover Problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vertex Cover Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metropolis-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      优化：大都市算法(metropolis algorithm)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulated-annealing" class="md-nav__link">
+    <span class="md-ellipsis">
+      优化：模拟退火(Simulated Annealing)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hopfield-neural-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hopfield Neural Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hopfield Neural Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    <span class="md-ellipsis">
+      问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    <span class="md-ellipsis">
+      求解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    <span class="md-ellipsis">
+      复杂度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    <span class="md-ellipsis">
+      最大割问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="最大割问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    <span class="md-ellipsis">
+      问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    <span class="md-ellipsis">
+      求解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    <span class="md-ellipsis">
+      复杂度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_48" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他优化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_49" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-Amortized-Analysis/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    均摊分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-AVL/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    AVL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-Splay/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Splay
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-B%2B/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    B+树
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-RBT/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    红黑树
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../../Other/" class="md-nav__link ">
+              
+  
+  <span class="md-ellipsis">
+    杂项
+  </span>
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            杂项
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../Other/Sem3Exp/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    大二上吐槽
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="目录">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      目录
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      数据结构
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      算法
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#amortized-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Amortized Analysis均摊分析
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Amortized Analysis均摊分析">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aggregate-analysis" class="md-nav__link">
+    <span class="md-ellipsis">
+      Aggregate Analysis
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accounting-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accounting method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#potential-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      Potential method
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#avl-trees" class="md-nav__link">
+    <span class="md-ellipsis">
+      AVL Trees
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AVL Trees">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rotation-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rotation Operations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#splay" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splay
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Splay">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      一些名词
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#splay_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Splay操作的复杂度分析
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#b-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      B+ Tree
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="B+ Tree">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      红黑树
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="红黑树">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#avlrbt" class="md-nav__link">
+    <span class="md-ellipsis">
+      比较：AVL与RBT的旋转操作次数
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inverted-file-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inverted File Index
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Inverted File Index">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#word-stemming" class="md-nav__link">
+    <span class="md-ellipsis">
+      Word Stemming
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stop-words" class="md-nav__link">
+    <span class="md-ellipsis">
+      Stop Words
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#distributed-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Distributed Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dynamic-indexing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Dynamic Indexing
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#thresholding" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thresholding
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#evaluate" class="md-nav__link">
+    <span class="md-ellipsis">
+      Evaluate
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      左偏堆
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="左偏堆">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      斜堆
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="斜堆">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      二项队列
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="二项队列">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      操作
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_22" class="md-nav__link">
+    <span class="md-ellipsis">
+      均摊分析
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_23" class="md-nav__link">
+    <span class="md-ellipsis">
+      总结：复杂度
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#backtracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backtracking
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#divide-and-conquer" class="md-nav__link">
+    <span class="md-ellipsis">
+      Divide and Conquer
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Divide and Conquer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_24" class="md-nav__link">
+    <span class="md-ellipsis">
+      主定理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式3
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dp" class="md-nav__link">
+    <span class="md-ellipsis">
+      DP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="DP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dp_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      DP 问题的特点
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#greedy" class="md-nav__link">
+    <span class="md-ellipsis">
+      Greedy
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Greedy">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_25" class="md-nav__link">
+    <span class="md-ellipsis">
+      哈夫曼编码树
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#npc" class="md-nav__link">
+    <span class="md-ellipsis">
+      NPC问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NPC问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#complexity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Complexity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pnp" class="md-nav__link">
+    <span class="md-ellipsis">
+      图灵机角度理解P与NP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_26" class="md-nav__link">
+    <span class="md-ellipsis">
+      另一角度
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="另一角度">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ppolynomial" class="md-nav__link">
+    <span class="md-ellipsis">
+      P(polynomial)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npnon-deterministically-polynomial" class="md-nav__link">
+    <span class="md-ellipsis">
+      NP(non-deterministically polynomial)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#npc_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      NPC问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="NPC问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_27" class="md-nav__link">
+    <span class="md-ellipsis">
+      规约
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_28" class="md-nav__link">
+    <span class="md-ellipsis">
+      形式化语言描述
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="形式化语言描述">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_29" class="md-nav__link">
+    <span class="md-ellipsis">
+      抽象问题的定义
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_30" class="md-nav__link">
+    <span class="md-ellipsis">
+      编码与具体问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_31" class="md-nav__link">
+    <span class="md-ellipsis">
+      基本概念
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pnpnpc" class="md-nav__link">
+    <span class="md-ellipsis">
+      P&amp;NP&amp;NPC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_32" class="md-nav__link">
+    <span class="md-ellipsis">
+      实例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#halting-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Halting Problem 停机问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#postpone-corresponding-problempcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Postpone Corresponding Problem(PCP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hamilton-cycle-problemhcp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hamilton Cycle Problem(HCP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traveling-salesman-problemtsp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traveling Salesman Problem(TSP)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#circuit-sat" class="md-nav__link">
+    <span class="md-ellipsis">
+      Circuit-SAT
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clique-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clique Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vertex-cover-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vertex Cover Problem
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_33" class="md-nav__link">
+    <span class="md-ellipsis">
+      哈密顿回路问题到旅行商问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#clique" class="md-nav__link">
+    <span class="md-ellipsis">
+      Clique问题到节点覆盖问题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_34" class="md-nav__link">
+    <span class="md-ellipsis">
+      近似
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="近似">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_35" class="md-nav__link">
+    <span class="md-ellipsis">
+      实例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bin-packing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bin Packing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Bin Packing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_36" class="md-nav__link">
+    <span class="md-ellipsis">
+      在线算法
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="在线算法">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#next-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Next Fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#first-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      First Fit
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#best-fit" class="md-nav__link">
+    <span class="md-ellipsis">
+      Best Fit
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_37" class="md-nav__link">
+    <span class="md-ellipsis">
+      离线算法
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_38" class="md-nav__link">
+    <span class="md-ellipsis">
+      背包
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#k-center-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      K-center Problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="K-center Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      贪心1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_39" class="md-nav__link">
+    <span class="md-ellipsis">
+      二分答案
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#local-search" class="md-nav__link">
+    <span class="md-ellipsis">
+      Local Search
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Local Search">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#neighbor-relation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Neighbor Relation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_40" class="md-nav__link">
+    <span class="md-ellipsis">
+      实例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vertex-cover-problem_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Vertex Cover Problem
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Vertex Cover Problem">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metropolis-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      优化：大都市算法(metropolis algorithm)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulated-annealing" class="md-nav__link">
+    <span class="md-ellipsis">
+      优化：模拟退火(Simulated Annealing)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#hopfield-neural-networks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hopfield Neural Networks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hopfield Neural Networks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_41" class="md-nav__link">
+    <span class="md-ellipsis">
+      问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_42" class="md-nav__link">
+    <span class="md-ellipsis">
+      求解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_43" class="md-nav__link">
+    <span class="md-ellipsis">
+      复杂度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_44" class="md-nav__link">
+    <span class="md-ellipsis">
+      最大割问题
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="最大割问题">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_45" class="md-nav__link">
+    <span class="md-ellipsis">
+      问题
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_46" class="md-nav__link">
+    <span class="md-ellipsis">
+      求解
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_47" class="md-nav__link">
+    <span class="md-ellipsis">
+      复杂度
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_48" class="md-nav__link">
+    <span class="md-ellipsis">
+      其他优化
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_49" class="md-nav__link">
+    <span class="md-ellipsis">
+      作业
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="_1">导航<a class="headerlink" href="#_1" title="Permanent link">⚓︎</a></h1>
+<ul>
+<li><a href="#SOS">补天</a></li>
+</ul>
+<h2 id="_2">数据结构<a class="headerlink" href="#_2" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li><a href="#AVL">AVL</a></li>
+<li><a href="#Splay">Splay</a></li>
+<li><a href="#B+">B+ Tree</a></li>
+<li><a href="#RB">RB Tree</a></li>
+<li><a href="#Leftist">Leftist Heap</a></li>
+<li><a href="#Skew">Skew Heap</a></li>
+<li><a href="#Binomial">Binomial Heap</a></li>
+</ul>
+<h2 id="_3">算法<a class="headerlink" href="#_3" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li><a href="#backtracking">Backtracking</a></li>
+<li><a href="#DivideConquer">Divide and Conquer</a></li>
+<li><a href="#DP">DP</a></li>
+<li><a href="#Greedy">Greedy</a></li>
+<li><a href="#NPC">NPC</a></li>
+<li><a href="#approx">Approximation</a></li>
+<li><a href="#local">Local Search</a></li>
+<li><a href="#random">Randomized Algorithms</a></li>
+<li><a href="#parallel">Parallel Algorithms</a></li>
+<li><a href="#external">External Sorting</a></li>
+</ul>
+<p><strong>注</strong>：下文代码使用C++，以结构体数组实现</p>
+<h2 id="amortized-analysis">Amortized Analysis均摊分析<a class="headerlink" href="#amortized-analysis" title="Permanent link">⚓︎</a></h2>
+<p><strong><span class="arithmatex">\(\text{worst-case bound}\ge\text{amortized bound}\ge\text{average-case bound}\)</span></strong></p>
+<h3 id="aggregate-analysis">Aggregate Analysis<a class="headerlink" href="#aggregate-analysis" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><span class="arithmatex">\(n\)</span> 个操作总最差用时 <span class="arithmatex">\(T(n)\)</span>， 则 amortized cost 为 <span class="arithmatex">\(\dfrac{ T(n) } { n }\)</span> </li>
+</ul>
+<h3 id="accounting-method">Accounting method<a class="headerlink" href="#accounting-method" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>类似存款存入不会比取出少，设计每种操作的均摊成本<span class="arithmatex">\(\hat{c_i}\)</span> ，当某次操作的 <span class="arithmatex">\(\hat{c_i} &gt; c_i\)</span> 差额被称为 credit ，后面如果存在 <span class="arithmatex">\(\hat{c_i} &lt; c_i\)</span> 的情况，差额可以用 credit 补上，则</li>
+</ul>
+<div class="arithmatex">\[
+T_{amortized} = \dfrac{\sum \hat{c_i} }{n} \ge \dfrac{\sum c_i}{n}
+\]</div>
+<h3 id="potential-method">Potential method<a class="headerlink" href="#potential-method" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>定义势能函数 <span class="arithmatex">\(\Phi(D_i)\)</span> ，则前文的 credit 就演化为 <span class="arithmatex">\(\hat{c_i}-c_i = Credit_i = \Phi(op_i)-\Phi( op_{ i-1 } )\)</span></li>
+</ul>
+<div class="arithmatex">\[
+\begin{aligned}
+\sum_{ i=1 }^n  \hat{c_i} &amp;= \sum_{i=1}^n (c_i+\Phi(op_i)-\Phi( op_{i-1} ) )\\
+&amp;= \Phi(op_n)-\Phi(op_0)+\sum_{i=1}^n c_i
+\end{aligned}
+\]</div>
+<p>需要<span class="arithmatex">\(\Phi(op)\)</span>的复杂度不高于 <span class="arithmatex">\(\displaystyle\sum_{i=1}^n \hat{c_i}\)</span>，方便起见可以让<span class="arithmatex">\(\Phi(op_0)=0\)</span></p>
+<h3 id="_4">作业题<a class="headerlink" href="#_4" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：概念辨析 </summary>
+    <pre>
+    When doing amortized analysis, which one of the following statements is FALSE?
+    A.Aggregate analysis shows that for all n, a sequence of n operations takes worst-case time T(n) in total.  Then the amortized cost per operation is therefore T(n)/n
+    B.For potential method, a good potential function should always assume its maximum at the start of the sequence
+    C.For accounting method, when an operation's amortized cost exceeds its actual cost, we save the difference as credit to pay for later operations whose amortized cost is less than their actual cost
+    D.The difference between aggregate analysis and accounting method is that the later one assumes that the amortized costs of the operations may differ from each other
+    Answer : B
+    </pre>
+</details>
+<details>
+    <summary> T2：势能函数设计 </summary>
+    <img src="/img/ads/AmortizedT2-5.jpg" alt="image-20241111204947435" />
+    <pre>Answer : D</pre>
+    <img src="https://zhoutimemachine.github.io/note/courses/imgs/ads/ads_hw_1.2.png" alt="1.2"/>
+</details>
+
+<h2 id="avl-trees">AVL Trees<a id="AVL"></a><a class="headerlink" href="#avl-trees" title="Permanent link">⚓︎</a></h2>
+<p><strong>定义：</strong> </p>
+<ul>
+<li>空树是平衡的</li>
+<li>非空树是平衡的当且仅当左右子树是平衡的且其高度差不超过1</li>
+</ul>
+<p><strong>注</strong>：定义空树高度为-1</p>
+<p><strong>Balance Factor：</strong> <span class="arithmatex">\(BF(node) = h_L-h_R\)</span></p>
+<ul>
+<li>没有绝对值，可以为负，对于平衡的树，BF取值为<span class="arithmatex">\(\pm 1\)</span>或 <span class="arithmatex">\(0\)</span></li>
+<li>故当某节点的BF值不为上述值则需要调整</li>
+</ul>
+<p><strong>树高</strong></p>
+<ul>
+<li>记 <span class="arithmatex">\(n_h\)</span> 为树高 h 的情况下节点数最小值，那么 $n_h = n_{h-1} + n_{h-2} + 1 $ </li>
+<li>与斐波那契对照，可得 <span class="arithmatex">\(n_h = F_{h+3}-1\)</span> </li>
+<li>从斐波那契数列的通项可以看出 <span class="arithmatex">\(h = O(\log{N})\)</span></li>
+</ul>
+<details>
+    <summary> 结构体定义 </summary>
+    <pre><code>
+struct Node{
+    int lson, rson, val, h;
+}t[maxn];
+  </code></pre>
+</details>
+
+<h3 id="rotation-operations">Rotation Operations<a class="headerlink" href="#rotation-operations" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>Left-Rotate</strong></li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+int Lrotate(int p){
+    int rs = t[p].rson;
+    t[p].rson = t[rs].lson;
+    t[rs].lson = p;
+    t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+    t[rs].h = max(H(t[rs].lson),H(t[rs].rson))+1;
+    return rs;
+}
+  </code></pre>
+</details>
+
+<ul>
+<li><strong>Right-Rotate</strong></li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+int Rrotate(int p){
+    int ls = t[p].lson;
+    t[p].lson = t[ls].rson;
+    t[ls].rson = p;
+    t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+    t[ls].h = max(H(t[ls].lson),H(t[ls].rson))+1;
+    return ls;
+}
+  </code></pre>
+</details>
+
+<p><img src="/img/ads/ads-AVLRotate.png" alt="ads-AVLRotate" style="zoom:67%;" /></p>
+<ul>
+<li><strong>LR-Rotate</strong>：先以 <span class="arithmatex">\(ls\)</span> 为中心左旋再以 <span class="arithmatex">\(p\)</span> 为中心右旋</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+int LRrotate(int p){
+    t[p].lson = Lrotate(t[p].lson);
+    return Rrotate(p);
+}
+  </code></pre>
+</details>
+
+<ul>
+<li><strong>RL-Rotate</strong>：先以 <span class="arithmatex">\(rs\)</span> 为中心右旋再以 <span class="arithmatex">\(p\)</span> 为中心左旋</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+int RLrotate(int p){
+    t[p].rson = Rrotate(t[p].rson);
+    return Lrotate(p);
+}
+  </code></pre>
+</details>
+
+<h3 id="_5">操作<a class="headerlink" href="#_5" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>Maintain</li>
+</ul>
+<p>​ 如果需要调整， <span class="arithmatex">\(|BF(D)|=2\)</span> ，以下以左倾为例进行分析（右倾是对称的）。树结构如下</p>
+<p><img alt="TreeStruct" src="/img/ads/AVLMaintain.jpg" /></p>
+<ul>
+<li>若 <span class="arithmatex">\(BF(B)\ge0\)</span> ，<code>Rrotate(D)</code> 即可</li>
+</ul>
+<p><img alt="Rrot" src="/img/ads/AVLMaintainRrot.jpg" /></p>
+<ul>
+<li>反之 <code>LRrotate(D)</code></li>
+</ul>
+<p><img alt="LRrot" src="/img/ads/AVLMaintainLRrot.jpg" /></p>
+<details>
+    <summary> code </summary>
+    <pre><code>
+    int H(int p){
+        return (p <= tot && p != 0)? t[p].h : -1;
+    }
+    void Maintain(int p){
+        int ls = t[p].lson, rs = t[p].rson;
+        if(H(ls) - H(rs) == 2){
+            if(H(t[ls].lson) >= H(t[ls].rson)) Rrotate(p);
+            else LRrotate(p);
+        }
+        else if(H(ls) - H(rs) == -2){
+            if(H(t[rs].rson) >= H(t[rs].lson)) Lrotate(p);
+            else RLrotate(p);
+        }
+        t[p].h = max(H(t[p].lson),H(t[p].rson))+1;
+    }
+      </code></pre>
+  </details>
+
+<ul>
+<li>
+<p>显然复杂度 <span class="arithmatex">\(O(1)\)</span></p>
+</li>
+<li>
+<p>Insert</p>
+</li>
+<li>
+<p>因为要递归找到叶子所以是 <span class="arithmatex">\(O(\log{N})\)</span></p>
+</li>
+<li>只影响其祖先的BF值，故只用在递归的时候通过返回值提醒祖先节点进行检查。进一步观察可知，当某个节点通过Rotate完成调整后，该子树的 <span class="arithmatex">\(BF\)</span> 值相比插入前不变，故实际上只在离其最近的不平衡祖先进行调整</li>
+<li>因为只在最近的不平衡祖先进行调整，而 Maintain 函数中最多进行一次 LR 或者 RL ，因此整个插入过程 Rotate 次数至多为 2</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+int insert(int p, int v){
+    if(!p){
+        t[++tot] = (Node){0, 0, v, 0};
+        return tot;
+    }
+    if(v <= t[p].val) t[p].lson = insert(t[p].lson,v);
+    else t[p].rson = insert(t[p].rson,v);
+    Maintain(p);
+    return p;
+}
+  </code></pre>
+</details>
+
+<ul>
+<li>Delete</li>
+<li>删除节点<ul>
+<li>叶节点：直接删掉</li>
+<li>只有左子树/右子树：用有的那个子节点替代自己（此时那个子节点一定是个叶节点）</li>
+<li>兼有左右子树：取前驱/后继替代自己，将其节点删掉</li>
+<li>从删除的叶节点向上调整即可</li>
+</ul>
+</li>
+<li>值得注意的是，删除节点后的向上调整并不停止于第一个失衡的祖先，一个节点删除可能引发上方处于BF值同号临界的一系列祖先都失衡需要旋转，因此旋转次数 <span class="arithmatex">\(O(\log{N})\)</span> ，总复杂度 <span class="arithmatex">\(O(\log{N})\)</span></li>
+<li>Find, Predecessor, Successor, Rank：同正常二叉树， <span class="arithmatex">\(O(\log{N})\)</span> </li>
+</ul>
+<h3 id="_6">作业题<a class="headerlink" href="#_6" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：最少结点数计算 </summary>
+    <pre>
+    If the depth of an AVL tree is 6 (the depth of an empty tree is defined to be -1), then the minimum possible number of nodes in this tree is:33
+    </pre>
+</details>
+
+<details>
+    <summary> T2：AVL的插入 </summary>
+    <pre>
+    Insert 2, 1, 4, 5, 9, 3, 6, 7 into an initially empty AVL tree.  Which one of the following statements is FALSE?
+    A.4 is the root
+    B.3 and 7 are siblings
+    C.2 and 6 are siblings
+    D.9 is the parent of 7
+    Answer : B
+    </pre>
+</details>
+
+<h2 id="splay">Splay<a id="Splay"></a><a class="headerlink" href="#splay" title="Permanent link">⚓︎</a></h2>
+<h3 id="_7">一些名词<a class="headerlink" href="#_7" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>zig : 当前节点向父节点位置旋转</li>
+<li>zig-zig : 自己&amp;父节点&amp;再上一级节点方向相同，对自己&amp;父节点进行同向旋转</li>
+<li>zig-zag : 自己&amp;父节点，父节点&amp;再上一级节点方向不同，对自己进行两次反向旋转</li>
+</ul>
+<p>（配图见下）</p>
+<blockquote>
+<p>Splaying not only moves the accessed node to the root, but also roughly halves the depth of most nodes on the path.</p>
+</blockquote>
+<h3 id="_8">操作<a class="headerlink" href="#_8" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>Rotate</p>
+</li>
+<li>
+<p>以右旋为例，设当前节点 <span class="arithmatex">\(x\)</span>， 父亲 <span class="arithmatex">\(y\)</span></p>
+<ul>
+<li><span class="arithmatex">\(x\)</span> 的右儿子给 <span class="arithmatex">\(y\)</span> ， <span class="arithmatex">\(y\)</span> 的左儿子给 <span class="arithmatex">\(x\)</span></li>
+<li>若 <span class="arithmatex">\(y\)</span> 有父亲 <span class="arithmatex">\(z\)</span> 则 <span class="arithmatex">\(x\)</span> 顶替 <span class="arithmatex">\(y\)</span> 的位置</li>
+</ul>
+</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+    void Rotate(int x) {
+      int y = fa[x], z = fa[y], chk = get(x);
+      ch[y][chk] = ch[x][chk ^ 1];
+      if (ch[x][chk ^ 1]) fa[ch[x][chk ^ 1]] = y;
+      ch[x][chk ^ 1] = y;
+      fa[y] = x;
+      fa[x] = z;
+      if (z) ch[z][y == ch[z][1]] = x;
+      maintain(y);
+      maintain(x);
+    }
+    </code></pre>
+  </details>
+
+<ul>
+<li>
+<p>其中 <code>maintain</code> 只是维护子树信息，由具体使用决定，一般是 <span class="arithmatex">\(O(1)\)</span> ， 因而整个操作 <span class="arithmatex">\(O(1)\)</span> </p>
+</li>
+<li>
+<p>Splay</p>
+</li>
+<li>
+<p>核心操作，将一个节点一路转到根</p>
+</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+  bool get(int x) { return x == ch[fa[x]][1]; }
+  void Splay(int x) {
+    for (int f = fa[x]; f = fa[x], f; rotate(x))
+      if (fa[f]) Rotate(get(x) == get(f) ? f : x);
+    rt = x;
+  }
+    </code></pre>
+</details>
+
+<ul>
+<li>复杂度单次可能 <span class="arithmatex">\(O(N)\)</span> ，但是均摊是 <span class="arithmatex">\(O(\log N)\)</span> 的，分析见下</li>
+<li>
+<p>Find</p>
+</li>
+<li>
+<p>一路往下找 + splay上去</p>
+</li>
+<li>$ O(\log{N})$ </li>
+<li>
+<p>Delete</p>
+</li>
+<li>
+<p>找到点并splay上去，如果计数为1则删除节点，否则合并两棵子树（查询当前根节点的前驱，将其设为根，并将其右儿子设为另一棵树的根）</p>
+</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>  void Delete(int k) {
+    Find(k);
+    if (cnt[rt] > 1) {
+      cnt[rt]--;
+      Maintain(rt);
+      return;
+    }
+    if (!ch[rt][0] && !ch[rt][1]) {
+      Clear(rt);
+      rt = 0;
+      return;
+    }
+    if (!ch[rt][0]) {
+      int cur = rt;
+      rt = ch[rt][1];
+      fa[rt] = 0;
+      Clear(cur);
+      return;
+    }
+    if (!ch[rt][1]) {
+      int cur = rt;
+      rt = ch[rt][0];
+      fa[rt] = 0;
+      Clear(cur);
+      return;
+    }
+    int cur = rt, x = Pre();
+    fa[ch[cur][1]] = x;
+    ch[x][1] = ch[cur][1];
+    Clear(cur);
+    Maintain(rt);
+  }
+    </code></pre>
+</details>
+
+<ul>
+<li>
+<p><span class="arithmatex">\(O(\log N)\)</span></p>
+</li>
+<li>
+<p>Insert操作</p>
+</li>
+<li>
+<p>一路往下找+splay上去</p>
+</li>
+<li><span class="arithmatex">\(O(\log{N})\)</span></li>
+</ul>
+<h3 id="splay_1">Splay操作的复杂度分析<a class="headerlink" href="#splay_1" title="Permanent link">⚓︎</a></h3>
+<p>写完才发现oiwiki上有很详细的分析...挂个<a href="https://oi-wiki.org/ds/splay/#时间复杂度">链接</a></p>
+<ul>
+<li>
+<p>势能函数<span class="arithmatex">\(\Phi(p) =\sum_{i\in subtree(p)} \log{S(i)}\)</span>，其中 <span class="arithmatex">\(S(i)\)</span> 指 <span class="arithmatex">\(i\)</span> 的子树大小。记 <span class="arithmatex">\(\log{S(i)} = rank(i)\)</span> ，则 <span class="arithmatex">\(\Phi(p)=\sum_{i\in subtree(p)} rank(i)\)</span></p>
+</li>
+<li>
+<p>zig, zig-zig, zig-zag本体复杂度为1,2,2</p>
+</li>
+<li>
+<p>zig : </p>
+</li>
+</ul>
+<p><img src="/img/ads/ads-SplayZig.png" alt="ads-SplayZig" style="zoom:67%;" /></p>
+<div class="arithmatex">\[
+  \begin{aligned}
+  \hat{c_i} =&amp; 1 + \Phi(T_2) - \Phi(T_1)\\
+   = &amp;1 + R_2(x) - R_1(x) + (R_2(p) - R_1(p))\\
+   \leq &amp;1 + R_2(x) - R_1(x)
+   \end{aligned}
+\]</div>
+<ul>
+<li>zig-zag: </li>
+</ul>
+<p><img src="/img/ads/ads-SplayZigZag.jpg" alt="ads-SplayZigZag" style="zoom:67%;" /></p>
+<p>$$
+\begin{aligned}
+ \hat{c_i} =&amp; 2 + \Phi(T_2) - \Phi(T_1)\
+   = &amp;2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\</p>
+<p>\end{aligned}
+$$
+  因为<span class="arithmatex">\(R_1(g) = R_2(x)\)</span>
+  故
+$$
+\begin{aligned}
+\hat{c_i} = &amp;2 - (R_1(x) + R_1(p) )+ R_2(p)  + R_2(g)\
+  \leq &amp;2 - 2R_1(x) + R_2(p) + R_2(g)
+\end{aligned}
+$$</p>
+<p>又因为 $ R_2(p) = \log{(1+A+B)}$, $ R_2(g) = \log{(1+C+D)}$ ，<span class="arithmatex">\(R_2(x) = \log(3+A+B+C+D)\)</span></p>
+<p>令 <span class="arithmatex">\(a = 1+A+B\)</span> , <span class="arithmatex">\(b = 1 + C + D\)</span>  , $ c = 3 + A + B + C + D$ , 则 <span class="arithmatex">\(a+b\leq c\)</span> ，<span class="arithmatex">\(\log{a}+\log{b} =\log{(ab)}\leq \log{\frac{c^2}{4}} = 2\log{c} - 2\)</span> ， 即 
+$$
+2+R_2(p)+R_2(g)\leq 2R_2(x)
+$$
+  所以
+$$
+\hat{c_i} \leq 2(R_2(x)-R_1(x))
+$$</p>
+<ul>
+<li>zig-zig : </li>
+</ul>
+<p><img src="/img/ads/ads-SplayZigZig.png" alt="ads-SplayZigzig" style="zoom:67%;" /></p>
+<div class="arithmatex">\[
+  \begin{aligned}
+  \hat{c_i} =&amp; 2 + \Phi(T_2) - \Phi(T_1)\\
+   = &amp;2 + R_2(x) - R_1(x) + R_2(p) - R_1(p) + R_2(g) - R_1(g)\\
+   = &amp;2 + R_2(p) + R_2(g) - R_1(p) - R_1(x)\\
+   \leq &amp;2 + R_2(x) + R_2(g) - 2R_1(x)
+   \end{aligned}
+\]</div>
+<p>同理zig-zag的均值不等式可得$ R_1(x)+R_2(g)-2R_2(x)\leq -2$ ，即 <span class="arithmatex">\(2R_2(x) - R_1(x) - R_2(g)\ge 2\)</span></p>
+<p>所以
+$$
+  \begin{aligned}
+  \hat{c_i} \leq &amp;2 + R_2(x) + R_2(g) - 2R_1(x)\leq 3(R_2(x)-R_1(x))
+  \end{aligned}
+$$</p>
+<p>​       假设一次splay共计进行了 <span class="arithmatex">\(n\)</span> 步，因为单zig只会在转到根出现，则总复杂度
+$$
+T_n \leq 1+3(R_n(x)-R_0(x))
+$$
+​       而<span class="arithmatex">\(R_n(x)\)</span> 为 <span class="arithmatex">\(O(\log{N})\)</span>的，所以splay操作也是<span class="arithmatex">\(O(\log{N})\)</span>的</p>
+<p>​       值得注意的是<span class="arithmatex">\(R_0(x)\)</span>不一定为0</p>
+<h3 id="_9">作业题<a class="headerlink" href="#_9" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：access(splay)操作 </summary>
+    <img src="/img/ads/Splay-T1.jpg" alt="RBT-T1" />
+    <pre>Tips:与父亲同向则先转父亲，否则先转自己（然后都要转一次自己）</pre>
+</details>
+
+<h2 id="b-tree">B+ Tree<a id="B+"></a><a class="headerlink" href="#b-tree" title="Permanent link">⚓︎</a></h2>
+<p>是一种多叉树</p>
+<p><strong>定义</strong> : A B+ tree of order M is a tree with following structural properties:</p>
+<ul>
+<li>Root: a leaf / has [2~M] children</li>
+<li>Nonleaf nodes (except root) : has [<span class="arithmatex">\(\lceil M/2 \rceil\)</span> , M] children</li>
+<li>Leaf: same depth</li>
+</ul>
+<p>如图为 M = 3 的情况</p>
+<p>可以看出非叶子节点最多存储 M-1 个键值，其中第 i 个对应其第 i+1 个子树中存储的最小值</p>
+<p><img alt="Degree3Bplus" src="/img/ads/B+Order3.jpg" /></p>
+<h3 id="_10">操作<a class="headerlink" href="#_10" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>Find</li>
+<li>与当前节点的所有子节点左边界值进行比较以找到应该在的区间</li>
+<li>如果不使用二分查找优化复杂度 <span class="arithmatex">\(O((M/\log{M})\log{N})\)</span> ，否则 <span class="arithmatex">\(O(\log{N})\)</span> 。 Insert 和 Delete 操作同理。</li>
+</ul>
+<details>
+    <summary> code </summary>
+    <pre><code>
+ Node Find(int key, Node cur){
+    int i = 0;
+    while( i < cur.cntSon )
+        if(key >= cur.keys[i] ) ++i;
+    if( i == cur.cntkeys ) return EmptyNode;
+    return Find(key, cur.son[i]);
+ }
+    </code></pre>
+</details>
+
+<ul>
+<li>Insert</li>
+<li>
+<p>先递归到对应的区间，即叶节点，此时有几种情况</p>
+<ul>
+<li>如果那个区间包含的数不超过 M - 1 个：直接插入进去就行</li>
+<li>
+<p>否则，需要对这个区间进行分裂，上层结构也需要有相应变化</p>
+</li>
+<li>
+<p>当前叶节点分裂成两个，各自拥有 <span class="arithmatex">\(\lfloor (M+1)/2 \rfloor\)</span> 个数</p>
+</li>
+<li>递归处理父节点，直到找到一个儿子数量没到 <span class="arithmatex">\(M-1\)</span> 的祖宗节点为止。如果直到根节点都不满足要求，重新建一0个根节点并将原根节点分裂</li>
+</ul>
+</li>
+</ul>
+<details>
+    <summary>Check：检测是否已经存在</summary>
+    <pre><code>
+int Check(struct Node t, int v){
+    for(int i = t.totv; i; --i)
+        if(t.v[i - 1] == v) return 1;
+    return 0;
+}
+    </code></pre>
+</details>
+
+<details>
+    <summary>Set：更新节点属性</summary>
+    <pre><code>
+void Set(int id, int Totch, int Totv, int Leaf){
+    T[id].totch = Totch;
+    T[id].IsLeaf = Leaf;
+    T[id].totv = Totv;
+}
+    </code></pre>
+</details>
+
+<details>
+    <summary>UpdateRelation：更新节点亲子关系</summary>
+    <pre><code>
+void UpdateRelation(int ffa, int son0, int son1){
+    T[ffa].ch[0] = son0;
+    T[ffa].ch[1] = son1;
+    T[son0].fa = ffa;
+    T[son1].fa = ffa;
+}
+    </code></pre>
+</details>
+
+<details>
+    <summary>InsData：在指定数组插入数据并保持数组有序</summary>
+    <pre><code>
+void InsData(int *fro, int *dest, int *len, int val){
+    for(int i = 0; i &lt; (*len); ++i){
+        dest[i] = fro[i];
+    }
+    dest[(*len)] = val;
+    for(int i = (*len); i && dest[i - 1] &gt; val; --i){
+        dest[i] = dest[i - 1];
+        dest[i - 1] = val;
+    }
+    (*len)++;
+}*
+    </code></pre>
+</details>
+
+<details>
+    <summary>Deal：沿着链向上处理分裂</summary>
+    <pre><code>void deal(int cur, int son0, int son1, int insert_val){
+    if(!cur){
+        Set(cur = root = ++cnt, 2, 1, 0);
+        UpdateRelation(cur, son0, son1);
+        T[cur].v[0] = insert_val;
+        T[cur].fa = 0;
+        return;
+    }
+    //处理掉父亲关系问题
+    if(T[cur].totv &lt; 2){
+        InsData(T[cur].v, T[cur].v, &T[cur].totv, insert_val);
+        int pos;
+        for(pos = T[cur].totch; pos; --pos){
+            if(T[cur].ch[pos - 1] == son0){
+                T[cur].ch[pos] = son1;
+                break;
+            }
+            T[cur].ch[pos] = T[cur].ch[pos - 1];
+        }
+        T[cur].totch++;
+        T[son1].fa = cur;
+        return;
+    }
+    // 分裂示意图
+    //                                  /            \(v2)
+    //   cur(v1~v3)              cur(v1)          newnode(v3)
+    //  /   |   \        =&gt;      /    \            /      \
+    // A    son   B              A     son0        son1    B
+    //
+    InsData(T[cur].v, b, &T[cur].totv, insert_val);
+    Set(++cnt, 2, 1, 0);
+    T[cnt].v[0] = b[2];
+    Set(cur, 2, 1, 0);
+    T[cur].v[0] = b[0];
+    if(T[cur].ch[0] == son0) {
+        UpdateRelation(cnt, T[cur].ch[1], T[cur].ch[2]);
+        UpdateRelation(cur, son0, son1);
+    }
+    else if(T[cur].ch[1] == son0) {
+        UpdateRelation(cnt, son1, T[cur].ch[2]);
+        UpdateRelation(cur, T[cur].ch[0], son0);
+    }
+    else UpdateRelation(cnt, son0, son1);
+    deal(T[cur].fa, cur, cnt, b[1]);
+}
+    </code></pre>
+</details>
+
+<details>
+    <summary>Insert：插入值</summary>
+    <pre><code>
+int Insert(int cur, int val){
+    if(T[cur].IsLeaf){
+        if(Check(T[cur], val)) return 0;
+        if(T[cur].totv &lt; 3){
+            InsData(T[cur].v, T[cur].v, &T[cur].totv, val);
+        }
+        else{
+            InsData(T[cur].v, b, &T[cur].totv, val);
+            Set(++cnt, 0, 2, 1);
+            Set(cur, 0, 2, 1);
+            for(int i = 0; i &lt; 2; ++i){
+                T[cur].v[i] = b[i];
+                T[cnt].v[i] = b[2+i];
+            }
+            if(T[cur].fa)
+                deal(T[cur].fa, cur, cnt, b[2]);
+            else{
+                Set(root = ++cnt, 2, 1, 0);
+                T[root].v[0] = b[2];
+                T[root].fa = 0;
+                UpdateRelation(root, cur, cnt - 1);
+            }
+        }
+        return 1;
+    }
+    int to_node = 0;
+    for(int i = 0; i &lt; T[cur].totv; ++i)
+        if(val &gt;= T[cur].v[i]) ++to_node;
+    return Insert(T[cur].ch[to_node], val);
+}
+    </code></pre>
+</details>
+
+<ul>
+<li>Delete</li>
+<li>同样是递归到相应叶节点进行处理<ul>
+<li>当删除掉当前值不会使叶节点包含值少于 <span class="arithmatex">\(\lceil M/2 \rceil\)</span> ，直接删除</li>
+<li>若删除后本节点不符合要求</li>
+<li>若兄弟节点包含多于 <span class="arithmatex">\(\lceil M/2 \rceil\)</span> 个值，可以从兄弟节点借一个，并更新父节点中的分隔值</li>
+<li>否则与兄弟节点合并并删除父节点中的分隔值，递归处理父节点</li>
+</ul>
+</li>
+</ul>
+<h3 id="_11">作业题<a class="headerlink" href="#_11" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：节点数计算 </summary>
+    <pre>
+    A 2-3 tree with 3 nonleaf nodes must have 18 keys at most.(T)
+    Tips:叶节点指的是直接连向数值的节点而非数值本体
+    </pre>
+</details>
+
+<details>
+    <summary> T2：插入与分裂操作 </summary>
+    <img src="/img/ads/BPT-T2.jpg" alt="BPT-T2" />
+    <pre>
+    结构大致是(懒得画图，自行意会一下)
+    [6]
+    [2,4][8]
+    [0,1][2,3][4,5][6,7][8,9]
+    </pre>
+</details>
+
+<details>
+    <summary> T3：删除操作 </summary>
+    <img src="/img/ads/BPT-T3.jpg" alt="BPT-T3" />
+    <pre>
+    结构是
+    [4,6]
+    [1,2,3][4,5][6,7,8]
+    目前还没有写过删除的代码所以实现细节不明
+    </pre>
+</details>
+
+<details>
+    <summary> T4：概念辨析 </summary>
+    <img src="/img/ads/BPT-T4.jpg" alt="BPT-T4" />
+    <pre>
+    注意只有根节点这种特例！！
+    </pre>
+</details>
+
+<h2 id="_12">红黑树<a id="RB"></a><a class="headerlink" href="#_12" title="Permanent link">⚓︎</a></h2>
+<p><strong>定义：</strong> 一棵红黑树需要满足如下条件：</p>
+<ul>
+<li>节点分为红黑两种颜色</li>
+<li>根节点为黑色</li>
+<li>空节点（NIL）为黑色</li>
+<li>红色节点的子节点一定为黑色</li>
+<li>从根节点往下到叶节点（NIL），每条路径上黑色节点数量相同</li>
+<li>定义每个节点的黑高 (Black height)是从自己向下到NIL的路径上黑色节点的个数（<strong>但是不包含自己</strong>）<ul>
+<li>例如 BH(NIL) = 0， 单个节点的树 BH = 1（对应NIL，根节点本身不算在内）</li>
+</ul>
+</li>
+</ul>
+<p><strong>Internal node与External node</strong>: External node指NIL，其他都是Internal</p>
+<p><strong>性质：</strong></p>
+<ul>
+<li>
+<p>可以得到的导出性质（用于判别红黑树）：红黑树的红色节点的两个子节点一定同为叶子或同不为叶子（其中叶子指NIL）。</p>
+</li>
+<li>
+<p><span class="arithmatex">\(N\)</span> 个内部节点（不含NIL）的红黑树的高度最大为 <span class="arithmatex">\(2\log_2(N+1)\)</span></p>
+</li>
+<li>
+<p>证明：综合以下两条</p>
+</li>
+</ul>
+<p>$$
+  \begin{cases}
+  N \ge 2^{BlackHeight} - 1\
+  Height \le 2BlackHeight
+  \end{cases}
+  $$</p>
+<h3 id="_13">操作<a class="headerlink" href="#_13" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>Rotate : 与 <a href="#AVL">AVL</a> 的旋转操作基本一致</p>
+</li>
+<li>
+<p>Insert</p>
+</li>
+<li>
+<p>思路为先以红色节点的形式像普通BST一样插在叶节点（因为会有两个NIL所有肯定满足性质4，且插入红色节点不影响黑高），然后再调整使得红色节点不相邻。记插入节点为 x</p>
+<ul>
+<li>
+<p>若 x.fa 是黑色就不用调整</p>
+</li>
+<li>
+<p>若 x.fa 是红色，需要分类讨论并且向上递归处理。下图中橘色节点代表使红黑树失衡的子树</p>
+</li>
+<li>case 1：将两个红色节点染黑，“根节点”染红，并向上递归处理（引号是因为是当前考虑的子树的根而不一定是整颗树的）<ul>
+<li>如果"根节点"没有父亲，则根节点再染黑，结束</li>
+<li>如果”根节点“的父亲是黑，直接结束</li>
+<li>如果根节点父亲是红的，向上递归，可能转成其他case</li>
+</ul>
+</li>
+<li>case 2 : 基于橙色节点左旋转为case 3</li>
+<li>
+<p>case 3 : 红色节点染黑，其父亲染红，再将新的黑色节点右旋上去。个人理解思路为将红色节点分给右侧
+    <img alt="Insert" src="/img/ads/RBT-insert.jpg" /></p>
+</li>
+<li>
+<p>综合上述情况，只有case1可能向上递归，其他情况不会。只有case2 和 case3 需要 Rotate ，因此最多旋转次数为从 case2 转到 case3 ，即最多两次</p>
+</li>
+</ul>
+</li>
+<li>
+<p>复杂度 <span class="arithmatex">\(O(\log N)\)</span></p>
+</li>
+<li>
+<p>Delete</p>
+</li>
+</ul>
+<p><del>赞美<a href="https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec02/#删除">修佬</a></del></p>
+<ul>
+<li>
+<p>考虑分成两部分进行分类讨论：删除和删除后平衡维护</p>
+</li>
+<li>
+<p>删除</p>
+<ul>
+<li>
+<p>case 0 : 如果整颗树只有一个节点直接删，无需后续维护（可以理解为特化的 case 3 ? )</p>
+</li>
+<li>
+<p>case 1 : 如果该节点左右儿子都有就取前驱/后继（只取值不取颜色）代替自己并删除前驱/后继对应节点，前驱/后继可能是没有儿子的，这种情况即转为 case 3 ，也可能是只有一个儿子的，这种情况即转为 case 2</p>
+</li>
+<li>
+<p>case 2 : 如果该节点左右儿子只有一个，则那个节点一定是红的（因为黑高一致），则本节点一定是黑的。用子节点代替待删除节点并染黑即可，无需后续维护</p>
+</li>
+<li>
+<p>case 3 : 如果该节点没有（非空）子节点，若节点为红直接删掉，节点为黑删掉后还要维护一下</p>
+</li>
+</ul>
+<p><strong>结论</strong> 每个 case 都能转化为删除叶节点的情况，但只有在最后转化为删除某黑色节点时才会导致黑高的性质不能满足，需要进行平衡维护。</p>
+</li>
+<li>
+<p>平衡维护：也需要递归地调整。记当前导致失衡的子树的根节点是x（颜色不定） ，依据兄弟节点(w)、其子节点(lc &amp; rc)以及父亲节点(fa)进行分类。以下以 x 为左子树为例，右子树则需对称处理。</p>
+<ul>
+<li>
+<p>case 1 : w,lc,rc全黑</p>
+</li>
+<li>
+<p>case 1.1 fa 是红色的：将 w 染红， fa 染黑，相当于从 w 子树中抽一个黑色出来共享给 x</p>
+</li>
+<li>
+<p>case 1.2 fa 是黑色的：同样将 w 染红，然而在 fa 的子树内无法找到可以用来从红转黑共享给 x 的黑色节点，因而将矛盾转移到 fa 以上的部分。如果 fa 就是根节点，则可以直接退出（因为整棵树黑高平等减一）。</p>
+</li>
+<li>
+<p>case 2 : w黑，rc红：将 w 染为和 fa 相同的颜色，将 rc 和 fa 染黑，并对 fa 进行一次左旋。思路是给 x 上方补一个黑节点，为了和其他子树保持一致顶上留一个与原 fa 相同的节点。因为 rc 的高度-1，将 rc 本身变黑以弥补。</p>
+</li>
+</ul>
+<p><img alt="case2" src="/img/ads/RBT-DeleteBalanceCase2.jpg" /></p>
+<ul>
+<li>case 3 : w,rc黑，lc红：刚刚那个思路中更改 rc 颜色用于补偿的步骤无法实施。将 w 染红， lc 染黑，右旋 w 使得 b 成为新的根。可以发现在 w 和 lc 对调染色时， lc 的整体黑高比 rc 高了 1，其左右两子树的黑高倒是与 rc 一致，因此将 lc 转到根节点后 lc 子树内黑高与原先一致，但右子节点变红了，则状况转为 case 2 。</li>
+</ul>
+<p><img alt="case3" src="/img/ads/RBT-DeleteBalanceCase3.jpg" /></p>
+<ul>
+<li>case 4 : fa,lc,rc黑，w红：将 fa 左旋，使 w 成为新的根节点。但此时左右两子树黑高差1，因此将 fa 染红， w 染黑（此时至少保证了向 lc 方向的路径与向 rc 方向的路径黑高一致），然而 fa 子树内黑高仍然不相等，因此递归到子树中去，可能转化为 case 1.1,case 2,case 3。</li>
+</ul>
+<p>​      <del>懒得画了，借一下oiwiki的图</del></p>
+<p><img alt="case4" src="/img/ads/RBT-DeleteBalanceCase4.jpg" /></p>
+<ul>
+<li>综合以上四种情况：case1.2需要向上递归，case4需要向下递归，剩余情况无需递归。case2，case3，case4中存在Rotate操作，则最多旋转次数为由 case4 转到 case3 再到 case2 ，共计3次</li>
+</ul>
+</li>
+<li>
+<p>删除部分最坏即寻找前驱后继，复杂度为树高；平衡维护部分向上递归 (case1.2) 与向下递归 (case4) 不兼容，因此最坏复杂度即树高， <span class="arithmatex">\(O(\log{N})\)</span></p>
+</li>
+<li>
+<p>查找前驱后继等操作同正常 BST</p>
+</li>
+</ul>
+<h3 id="avlrbt">比较：AVL与RBT的旋转操作次数<a class="headerlink" href="#avlrbt" title="Permanent link">⚓︎</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>AVL</th>
+<th>RBT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td><span class="arithmatex">\(\le 2\)</span></td>
+<td><span class="arithmatex">\(\le 2\)</span></td>
+</tr>
+<tr>
+<td>Delete</td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(\le 3\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>分析见<a href="#AVL">AVL</a>和<a href="#RB">RBT</a>的相应部分。</p>
+<h3 id="_14">作业题<a class="headerlink" href="#_14" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：插入节点 </summary>
+    <img src="/img/ads/RBT-T1.jpg" alt="RBT-T1" />
+    <pre>Tips:得到结果19是红色的</pre>
+</details>
+
+<details>
+    <summary> T2：删除节点（但是强度很低） </summary>
+    <img src="/img/ads/RBT-T2.jpg" alt="RBT-T2" />
+    <pre>Tips:谁顶上去谁变黑</pre>
+</details>
+
+<h2 id="inverted-file-index">Inverted File Index<a class="headerlink" href="#inverted-file-index" title="Permanent link">⚓︎</a></h2>
+<p><strong>定义：</strong></p>
+<ul>
+<li><strong>Index:</strong> a mechanism for locating a given term in a text.</li>
+<li>**Inverted file: **  contains a list of pointers (e.g. the number of a page) to all occurrences of that term in the text.</li>
+</ul>
+<h3 id="word-stemming">Word Stemming<a class="headerlink" href="#word-stemming" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>将一个单词化为它的词根</li>
+</ul>
+<h3 id="stop-words">Stop Words<a class="headerlink" href="#stop-words" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>可以理解为“虚词”，过于普遍的单词没必要 index （比如 a, the , it ）</li>
+<li><strong>但是出现频率最高的词不一定是stop word</strong></li>
+</ul>
+<p>寻找单词</p>
+<ul>
+<li>Sol1 : Search trees(b tree,b+ tree, trie)</li>
+<li>Sol2 : Hashing</li>
+</ul>
+<h3 id="distributed-indexing">Distributed Indexing<a class="headerlink" href="#distributed-indexing" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>Term-partitioned Index</strong>  依据单词字典序存储，存储困难，检索容易，容灾能力差</li>
+<li><strong>Document-partiitioned index</strong> 依据文章划分存储，存储容易，检索困难，容灾能力好</li>
+</ul>
+<h3 id="dynamic-indexing">Dynamic Indexing<a class="headerlink" href="#dynamic-indexing" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>文档加入正常插入</li>
+<li>文档删除：攒够一定量删除请求（存在auxiliary index）统一处理（写满了/定期），处理时需要在main index和auxiliary index同步检索</li>
+<li>树型结构太大就改用懒删除</li>
+</ul>
+<h3 id="thresholding">Thresholding<a class="headerlink" href="#thresholding" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>Document：只取出权重前 x 的文档</li>
+<li>Query：对词组按出现频率排序，按照频率由高到低的词组搜索到的文档贡献不同的权重</li>
+</ul>
+<h3 id="evaluate">Evaluate<a class="headerlink" href="#evaluate" title="Permanent link">⚓︎</a></h3>
+<p>对于一次搜索</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Relevant</th>
+<th>Irrelevant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Retrieved</td>
+<td><span class="arithmatex">\(R_R\)</span></td>
+<td><span class="arithmatex">\(I_R\)</span></td>
+</tr>
+<tr>
+<td>Not Retrieved</td>
+<td><span class="arithmatex">\(R_N\)</span></td>
+<td><span class="arithmatex">\(I_N\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>则有两个评估指标</p>
+<ul>
+<li><strong>Precision精确度</strong> <span class="arithmatex">\(P=R_R/(R_R+I_R)\)</span></li>
+<li><strong>Recall召回率</strong> <span class="arithmatex">\(R=R_R/(R_R+R_N)\)</span></li>
+</ul>
+<h3 id="_15">作业题<a class="headerlink" href="#_15" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：Distributed Indexing </summary>
+    <img src="/img/ads/IFI-T1.jpg" alt="IFI-T1" />
+    <pre>
+    区分两种存储方式
+    </pre>
+</details>
+
+<details>
+    <summary> T2：Evaluation </summary>
+    <img src="/img/ads/IFI-T2.jpg" alt="IFI-T2" />
+    <pre>
+    问的是召回率
+    </pre>
+</details>
+
+<details>
+    <summary> T3：accessing terms </summary>
+    <img src="/img/ads/IFI-T3.jpg" alt="IFI-T3" />
+    <pre>
+    哈希表不利于搜索序列和模糊搜索
+    </pre>
+</details>
+
+<h2 id="_16">左偏堆<a id="Leftist"></a><a class="headerlink" href="#_16" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>思路：使右子树相对稀疏</li>
+<li><strong>Npl</strong> : null path length，一个节点到其子树内**没有两个孩子的节点**的最短距离。特别的，Npl(NULL) = -1 。</li>
+<li><span class="arithmatex">\(Npl(X) = \displaystyle\min_{\forall C \in son(X)} \{Npl(C) + 1\}\)</span></li>
+<li>左偏堆要求对于所有节点的左右儿子有 <span class="arithmatex">\(Npl(ls) \ge Npl(rs)\)</span> <ul>
+<li>如果不满足可以交换左右儿子实现</li>
+</ul>
+</li>
+<li>性质</li>
+<li>右路径长度为 r 的左偏堆至少拥有 <span class="arithmatex">\(2^r-1\)</span> 个节点。（此时是满二叉树）[tips : 数学归纳法]</li>
+</ul>
+<details>
+    <summary>结构体定义</summary>
+    <pre><code>
+    struct TreeNode{
+        ElementType Element;
+        PriorityQueue Left,Right;
+        int Npl;
+    };
+  </code></pre>
+</details>
+
+<ul>
+<li>
+<p>复杂度</p>
+</li>
+<li>
+<p>Merge : O(logN)</p>
+</li>
+</ul>
+<details>
+    <summary>code</summary>
+    <pre><code>
+      PriorityQueue Merge( PriorityQueue H1, PriorityQueue H2 )
+      {
+        if(H1 == NULL) return H2;
+        if(H2 == NULL) return H1;
+        if(H1->Element > H2->Element) swap(H1,H2);
+        if(H1->Left == NULL) H1->Left = H2;
+        else{
+            H1->Right = Merge(H1->Right,H2);
+            if(H1->Left->Npl < H1->Right->Npl) SwapChildren(H1);
+            H1->Npl = H1->Right->Npl + 1;
+        }
+        return H1;
+      }
+    </code></pre>
+  </details>
+
+<ul>
+<li>DeleteMin : 将根节点左右儿子合并就行，O(logN)</li>
+</ul>
+<h3 id="_17">作业题<a class="headerlink" href="#_17" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> T1：Build heap </summary>
+    <img src="/img/ads/LH-T1.jpg" alt="LH-T1" />
+    <pre>
+    由这道题可以理解为什么左偏树和斜堆的BuildHeap复杂度是（斜堆是均摊）O(n)
+    </pre>
+</details>
+
+<h2 id="_18">斜堆<a id="Skew"></a><a class="headerlink" href="#_18" title="Permanent link">⚓︎</a></h2>
+<p>神必算法</p>
+<ul>
+<li>每Merge必调换左右儿子</li>
+<li><strong>只有在合并的末尾，即叶子节点才无需交换左右儿子</strong> ，这是与下面这份代码实现不同的</li>
+</ul>
+<details>
+    <summary>早年的代码一份</summary>
+    <pre><code>
+    newnode(int v){//返回节点编号     
+        int x=++cnt;    
+        val[x]=v,ls[x]=rs[x]=0;     
+        return x; 
+    } 
+    int merge(int a,int b){//以a,b为根的树合并,返回根节点   
+        if(!a||!b) return a+b;
+        if(val[a] > val[b]) swap(a,b);  
+        rs[a]=merge(rs[a],b);   
+        swap(ls[a],rs[a]);
+        return a; 
+    }
+  </code></pre>
+</details>
+
+<ul>
+<li>复杂度：均摊分析</li>
+<li><span class="arithmatex">\(D_i = the\ \ root\ \ of\ \ the\ \ resulting\ \ tree\)</span> </li>
+<li><span class="arithmatex">\(\Phi (D_i) = number\ \  of\ \ heavy\ \ nodes\)</span><ul>
+<li>heavy nodes :  右子树大于左子树的节点</li>
+<li>除了在归并路线上的节点，其他节点的轻重性质不变化</li>
+<li>重节点一定会变轻，但是轻节点不一定变重</li>
+<li>定义最开始的右路径（即归并路线）上轻节点 <span class="arithmatex">\(l_i\)</span> ，重节点 <span class="arithmatex">\(h_i\)</span> 。</li>
+<li>则 <span class="arithmatex">\(l_i\)</span> 越多 <span class="arithmatex">\(l_i\)</span> 越少（ <span class="arithmatex">\(l_i\)</span> 多则堆趋于左倾堆，则右路径长度就短，至多到 <span class="arithmatex">\(O(\log N)\)</span> 级别）</li>
+<li>极端情况变化：轻全变重</li>
+</ul>
+</li>
+</ul>
+<div class="arithmatex">\[
+T_{worst}=l_1+h_1+l_2+h_2\\
+\phi_i = h_1+h_2+h\\
+\phi_{i+1} \le l_1+l_2+h\\
+T_{amortized} = T_{worst}+\phi_{i+1}-\phi_i\le 2(l_1+l_2) \Rightarrow O(\log N)
+\]</div>
+<h3 id="_19">作业题<a class="headerlink" href="#_19" title="Permanent link">⚓︎</a></h3>
+<p>直接把结论列出来好了</p>
+<ul>
+<li>按顺序插入 <span class="arithmatex">\(1-2^k-1\)</span> 得到的总是完全满二叉树</li>
+<li>斜堆的 right path 长度是任意的，只是轻节点数受到限制</li>
+</ul>
+<h2 id="_20">二项队列<a id="Binomial"></a><a class="headerlink" href="#_20" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>是一些堆（二项树）的集合（森林）</li>
+<li>k阶二项树（ <span class="arithmatex">\(B_k\)</span> ）由两个k-1阶二项树将两个根相连形成，特别的，单点是0阶。</li>
+<li><span class="arithmatex">\(B_k\)</span> 共有 <span class="arithmatex">\(2^k\)</span> 个节点，深度为 <span class="arithmatex">\(i\)</span> 的一层（根为0）有 <span class="arithmatex">\((^k_i)\)</span> 个</li>
+</ul>
+<p><img alt="BinomialQueuesExample" src="/img/ads/BinomialQueuesExample.jpg" /></p>
+<ul>
+<li>以长子兄弟的形式存储，同一节点的所有儿子按子树大小降序排列</li>
+</ul>
+<h3 id="_21">操作<a class="headerlink" href="#_21" title="Permanent link">⚓︎</a></h3>
+<details>
+    <summary> 结构体定义 </summary>
+    <pre><code>
+      typedef struct BinNode *Position;
+      typedef struct Collection *BinQueue;
+      typedef struct BinNode *BinTree;
+      struct BinNode
+      {
+        ElementType Element;
+        Position LeftChild;
+        Position NextSibling;
+      };
+      struct Collection
+      {
+        int CurrentSize;
+        BinTree TheTrees[MaxTrees];
+      };
+    </code></pre>
+</details>
+
+<ul>
+<li>Merge：单次复杂度 <span class="arithmatex">\(O(\log n)\)</span> ， 均摊 <span class="arithmatex">\(O(1)\)</span></li>
+<li>二项树的合并，显然 <span class="arithmatex">\(O(1)\)</span>，两个堆的合并类似于两个二进制数逐位做加法</li>
+</ul>
+<details>
+    <summary> 两棵树的合并 </summary>
+    <pre><code>
+      BinTree CombineTrees( BinTree T1, BinTree T2 )
+      {
+        if(T1->Element > T2->Element) return CombineTrees(T2,T1);
+        T2->NextSibling = T1->LeftChild;
+        T1->LeftChild = T2;
+        return T1;
+      }
+    </code></pre>
+</details>
+
+<details>
+    <summary> 两个二项堆的合并 </summary>
+    <pre><code>
+      BinQueue Merge( BinQueue H1, BinQueue H2 )
+      {
+        BinTree T1,T2,Carry = NULL;
+        int i,j;
+        if( H1->CurrentSize + H2->CurrentSize > Capacity ) ErrorMessage();
+        H1->CurrentSize += H2->CurrentSize;
+        for( i = 0; j = 1; j <= H1->CurrentSize; ++i, j *= 2){
+            T1 = H1->TheTrees[i];
+            T2 = H2->TheTrees[i];
+            switch(4*!!Carry + 2*!!T2 + !!T1){
+                case 0:case 1:break;
+                case 2: H1->TheTrees[i] = T2;
+                        H2->TheTrees[i] = NULL;break;
+                case 4: H1->TheTrees[i] = Carry;
+                        Carry = NULL;break;
+                case 3: Carry = CombineTrees( T1, T2 );
+                        H1->TheTrees[i] = H2->TheTrees[i] = NULL;break;
+                case 5: Carry = CombineTrees( T1, Carry );
+                        H1->TheTrees[i] = NULL;break;
+                case 6: Carry = CombineTrees( T2, Carry );
+                        H2->TheTrees[i] = NULL; break;
+                case 7: H1->TheTrees[i] = Carry; 
+                        Carry = CombineTrees( T1, T2 ); 
+                        H2->TheTrees[i] = NULL; break;
+            }
+        }
+        return H1;
+      }
+    </code></pre>
+</details>
+
+<ul>
+<li>Find-Min : 在根节点队列中遍历寻找 <span class="arithmatex">\(O(\log{n})\)</span> 但是如果专门记录更新可以做到 <span class="arithmatex">\(O(1)\)</span></li>
+<li>Insert：即将一棵 <span class="arithmatex">\(B_0\)</span> 树合并到队列中，单次最好 <span class="arithmatex">\(O(1)\)</span> 最坏 <span class="arithmatex">\(O(\log n)\)</span> ， 均摊 <span class="arithmatex">\(O(1)\)</span></li>
+<li>Build：将节点逐个插入，由均摊分析得总复杂度 <span class="arithmatex">\(O(n)\)</span></li>
+<li>DeleteMin：将最小根节点取出，将其对应二项树拆成所有子树再Merge回去， <span class="arithmatex">\(O(\log n)\)</span></li>
+</ul>
+<details>
+    <summary> DeleteMin </summary>
+    <pre><code>
+    ElementType  DeleteMin( BinQueue H )
+    {   
+        BinQueue DeletedQueue; 
+        Position DeletedTree, OldRoot;
+        ElementType MinItem = Infinity;
+        int i, j, MinTree;
+        if ( IsEmpty( H ) )  {  PrintErrorMessage();  return –Infinity; }
+        for ( i = 0; i < MaxTrees; i++) {
+            if( H->TheTrees[i] && H->TheTrees[i]->Element < MinItem ) { 
+                MinItem = H->TheTrees[i]->Element;  MinTree = i;            } 
+        } /* end for-i-loop */
+        DeletedTree = H->TheTrees[ MinTree ];  
+        H->TheTrees[ MinTree ] = NULL;
+        OldRoot = DeletedTree; 
+        DeletedTree = DeletedTree->LeftChild;   
+        free(OldRoot);
+        DeletedQueue = Initialize();    
+        DeletedQueue->CurrentSize = ( 1<<MinTree ) – 1;  
+        for ( j = MinTree – 1; j >= 0; j – – ) {  
+            DeletedQueue->TheTrees[j] = DeletedTree;
+            DeletedTree = DeletedTree->NextSibling;
+            DeletedQueue->TheTrees[j]->NextSibling = NULL;
+        }
+        H->CurrentSize  – = DeletedQueue->CurrentSize + 1;
+        H = Merge( H, DeletedQueue );
+        return MinItem;
+    }
+    </code></pre>
+</details>
+
+<ul>
+<li>Decrease Key：在二叉树上进行上调，显然 <span class="arithmatex">\(O(\log n)\)</span></li>
+</ul>
+<h3 id="_22">均摊分析<a class="headerlink" href="#_22" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>建树</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(\Phi = number\ \ of\ \ trees\)</span></p>
+</li>
+<li>
+<p>假设进行插入时现有单独的树<span class="arithmatex">\(B_0,B_1,...,B_k, B_{k+t},....(t\ge 2)\)</span>，则插入时会与 <span class="arithmatex">\(B_0\)</span> 到 <span class="arithmatex">\(B_k\)</span> 合并得到一棵 <span class="arithmatex">\(B_{k+1}\)</span> ，其他不变，则 <span class="arithmatex">\(\Phi_i - \Phi_{i-1} = -k\)</span> （正在插入的那个点也是一棵树）</p>
+</li>
+<li>
+<p>$\hat{c_i} = c_i + \Phi_i - \Phi_{i-1} = 1+(k+1) -k = 2 $</p>
+</li>
+<li>
+<p>为什么<span class="arithmatex">\(c_i = 1 + (k+1)\)</span> ？</p>
+<p>因为要有 <span class="arithmatex">\(k+1\)</span> 次合并和 <span class="arithmatex">\(O(1)\)</span> 的创建节点</p>
+</li>
+<li>
+<p>Banking Method : 每个点初始一块钱，合并操作花掉两棵子树之一（被合并成为儿子那个点）的一块钱，则整个树至少还有一块钱（在根节点上），则整个系统钱不会为负，因而总复杂度是 <span class="arithmatex">\(O(N)\)</span> 的</p>
+</li>
+</ul>
+</li>
+<li>
+<p>插入：由建树的过程可以得到每个点的插入平均下来是 <span class="arithmatex">\(O(1)\)</span> 的</p>
+</li>
+</ul>
+<h2 id="_23">总结：复杂度<a class="headerlink" href="#_23" title="Permanent link">⚓︎</a></h2>
+<table>
+<thead>
+<tr>
+<th>Heaps</th>
+<th>Leftist</th>
+<th>Skew</th>
+<th>Binomial</th>
+<th>Fibonacci</th>
+<th>Binary</th>
+<th>Link list</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Make heap</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+</tr>
+<tr>
+<td>Build heap</td>
+<td><span class="arithmatex">\(\Theta (N)\)</span></td>
+<td>amortized<span class="arithmatex">\(\Theta(N)\)</span></td>
+<td><span class="arithmatex">\(\Theta(N)\)</span></td>
+<td><span class="arithmatex">\(\Theta(N)\)</span></td>
+<td><span class="arithmatex">\(\Theta(N)\)</span></td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+</tr>
+<tr>
+<td>Find-Min</td>
+<td><span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span>或<span class="arithmatex">\(\Theta( 1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+</tr>
+<tr>
+<td>Merge(Union)</td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td><span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(N)\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+</tr>
+<tr>
+<td>Insert</td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+</tr>
+<tr>
+<td>Delete-Min</td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+</tr>
+<tr>
+<td>Decrease-Key</td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(\Theta(1)\)</span></td>
+<td><span class="arithmatex">\(\Theta(\log{N})\)</span></td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>注</strong> ： </p>
+<ol>
+<li>Make heap指初始化一个空的堆， Build heap则是依据已有数据构建堆</li>
+<li>Delete指在只知道数值的情况下删除数值对应节点</li>
+<li>Decrease-Key指将一已知节点的值修改并调整数据结构的过程</li>
+<li>Link list指无序的链表，仅用作对照</li>
+<li>内容参考了<a href="https://en.wikipedia.org/wiki/Priority_queue#Summary_of_running_times">Wikipedia</a></li>
+<li>二项堆的Find-Min操作的两种复杂度取决于有没有用变量实时更新记录Min值，老师PPT中貌似默认不维护</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>BST</th>
+<th>RBTree</th>
+<th>AVL</th>
+<th>Splay</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Insert</td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+</tr>
+<tr>
+<td>Delete</td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+</tr>
+<tr>
+<td>Find</td>
+<td><span class="arithmatex">\(O(N)\)</span></td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td><span class="arithmatex">\(O(\log{N})\)</span></td>
+<td>amortized<span class="arithmatex">\(O(\log{N})\)</span></td>
+</tr>
+</tbody>
+</table>
+<h2 id="backtracking">Backtracking<a id="backtracking"></a><a class="headerlink" href="#backtracking" title="Permanent link">⚓︎</a></h2>
+<details>
+    <summary> 回溯模板 </summary>
+    <pre><code>
+    bool Backtracking ( int i ){
+        Found = false;
+        if ( i > N )return true; /* solved with (x1, ..., xN) */
+        for ( each xi in Si ) { 
+            /* check if satisfies the restriction R */
+            OK = Check((x1, ..., xi) , R ); 
+            /* pruning */
+            if ( OK ) {
+                Count xi in;
+                Found = Backtracking( i+1 );
+                if ( !Found )Undo( i ); 
+                /* recover to (x1, ..., xi-1) */
+            }
+            if ( Found ) break; 
+        }
+        return Found;
+    }
+    </code></pre>
+</details>
+
+<ul>
+<li>
+<p>考虑对称性可以少算不少</p>
+</li>
+<li>
+<p>min-max搜索</p>
+</li>
+</ul>
+<p>以棋类游戏（三子棋为例）评估一个情况的优劣为其所有后继中估值最低的那种，从而得到最优解。围棋这类，只需模糊搜索评估的优劣比人强就行。</p>
+<ul>
+<li>找到比另一分支更小的结果可以直接停掉</li>
+<li>定义某局面的"goodness"为如下等式</li>
+</ul>
+<div class="arithmatex">\[
+f(P) = W_{computer}-W_{human}
+\]</div>
+<p>​               其中W表示在P局面下获胜的结局数。</p>
+<p>​               computer的目标是使其最大化，人类反之，因而搜索呈现一层取min一层取max的              状态。</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(\alpha-\beta\)</span> pruning</p>
+</li>
+<li>
+<p><span class="arithmatex">\(\alpha\)</span> pruning ： 在求 max 的层向下搜索（则本层是取min），如果计算出比当前解更小的解就无需再搜索</p>
+</li>
+</ul>
+<p><img alt="alpha" src="/img/ads/alphapruning.jpg" /></p>
+<ul>
+<li><span class="arithmatex">\(\beta\)</span> pruning ： 在求 min 的层向下搜索（则本层取max），若计算出比当前已知解更大的解就无需再搜索</li>
+</ul>
+<p><img alt="beta" src="/img/ads/betapruning.jpg" /></p>
+<h2 id="divide-and-conquer">Divide and Conquer<a id="DivideConquer"></a><a class="headerlink" href="#divide-and-conquer" title="Permanent link">⚓︎</a></h2>
+<p>重点是主定理</p>
+<h3 id="_24">主定理<a class="headerlink" href="#_24" title="Permanent link">⚓︎</a></h3>
+<p><strong>一些数学推导基础</strong></p>
+<ul>
+<li><span class="arithmatex">\(a^{\log_b{N}} = a^{\frac{\log_a{N}}{\log_a{b}}}=N^{\log_b{a}}\)</span></li>
+<li>对 <span class="arithmatex">\(T(N) = aT(N/b)+f(N)\)</span> 的推导</li>
+</ul>
+<div class="arithmatex">\[
+\begin{aligned}
+T(N) &amp;= aT(N/b)+f(N)\\
+    &amp;=a(aT(N/b^2)+f(N/b))+f(N)\\
+    &amp;=...\\
+    &amp;=a^kT(N/b^k)+\sum_{i=0}^{k-1} a^if(N/b^i) ,其中 k=\log_b{N}\\
+    &amp;=N^{log_b{a}}+\sum_{i=0}^{k-1} a^if(N/b^i)
+\end{aligned}
+\]</div>
+<p>若后面那坨东西复杂度不高于 <span class="arithmatex">\(N^{log_b{a}}\)</span> ，则总复杂度就是 <span class="arithmatex">\(\Theta(N^{log_b{a}})\)</span> </p>
+<p>一个值得关注的临界是 <span class="arithmatex">\(f(N) = N^{log_b{a}}\)</span>  ，这意味着 <span class="arithmatex">\(a^if(N/b^i)\)</span> 与 <span class="arithmatex">\(f(N)\)</span> 等同，后面的级数和大致由 <span class="arithmatex">\(f(N)log_b{N}\)</span> 划定界限。</p>
+<h3 id="1">形式1<a class="headerlink" href="#1" title="Permanent link">⚓︎</a></h3>
+<p><span class="arithmatex">\(T(N) = aT(N/b) + f(N)\)</span></p>
+<ul>
+<li>若<span class="arithmatex">\(\exist \epsilon &gt; 0\)</span> 使得 <span class="arithmatex">\(f(N) = O(N^{log_b^{a}-\epsilon})\)</span> ，则 <span class="arithmatex">\(T(N) = \Theta(N^{log_b{a}})\)</span></li>
+<li>若 <span class="arithmatex">\(f(N) = \Theta(N^{log_b{a}})\)</span> ，则 <span class="arithmatex">\(T(N) = \Theta(N^{log_b^a}\log{N})\)</span></li>
+<li>若<span class="arithmatex">\(\exist \epsilon &gt; 0\)</span> 使得 <span class="arithmatex">\(f(N) = \Omega(N^{log_b{a}-\epsilon})\)</span> ，且存在常数 <span class="arithmatex">\(c&lt;1\)</span> 使得 <span class="arithmatex">\(af(N/b)&lt;cf(N)\)</span> 则 <span class="arithmatex">\(T(N) = \Theta(f(N))\)</span></li>
+</ul>
+<h3 id="2">形式2<a class="headerlink" href="#2" title="Permanent link">⚓︎</a></h3>
+<p><span class="arithmatex">\(T(N) = aT(N/b) + f(N)\)</span></p>
+<ul>
+<li>若<span class="arithmatex">\(\exist \kappa&lt;1\)</span> 使得 <span class="arithmatex">\(af(N/b) = \kappa f(N)\)</span> ，则 <span class="arithmatex">\(T(N) = \Theta(f(N))\)</span></li>
+<li>若 <span class="arithmatex">\(af(N/b) = f(N)\)</span> ，则 <span class="arithmatex">\(T(N) = \Theta(f(N)\log_b{N})\)</span></li>
+<li>若<span class="arithmatex">\(\exist K &gt; 1\)</span> 使得 <span class="arithmatex">\(af(N/b) = K f(N)\)</span> ，则 $T(N) = \Theta(N^{log_b{a}}) $</li>
+</ul>
+<h3 id="3">形式3<a class="headerlink" href="#3" title="Permanent link">⚓︎</a></h3>
+<p><span class="arithmatex">\(T(N) = aT(N/b) + \Theta(N^k\log^p{N})\)</span> <span class="arithmatex">\((a\ge 1,b&gt;1,p\ge 0)\)</span>的解
+$$
+T(N) = 
+\begin{cases} 
+      O(N^{\log_b a}) &amp; \text{if } a &gt; b^k \
+      O(N^k \log^{p+1} N) &amp; \text{if } a = b^k \
+      O(N^k \log^p N) &amp; \text{if } a &lt; b^k 
+   \end{cases}
+$$</p>
+<h2 id="dp">DP<a id="DP"></a><a class="headerlink" href="#dp" title="Permanent link">⚓︎</a></h2>
+<p><strong>范例：矩阵乘法次序决定</strong></p>
+<p><code>f[l][r]</code> 为完成 l 到 r 的乘法的最小次数，则
+$$
+f[l][r] = \min_{k\in[l,r-1]} f[l][k]+f[k+1][r]+Row[l]<em>Col[k]*Col[r]
+$$
+**卡特兰数*</em></p>
+<p>矩阵乘法的方案数
+$$
+b_n=\sum_{i=1}^{n-1} b_ib_{n-i}
+$$
+通项公式
+$$
+h_n=\frac{1}{n+1}(_n^{2n})
+$$
+对应实例</p>
+<ul>
+<li>出栈次序</li>
+<li>括号匹配</li>
+</ul>
+<h3 id="dp_1">DP 问题的特点<a class="headerlink" href="#dp_1" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>Optimal Substructure</li>
+</ul>
+<p><strong>样例：BST建立</strong></p>
+<table>
+<thead>
+<tr>
+<th>break</th>
+<th>case</th>
+<th>char</th>
+<th>do</th>
+<th>return</th>
+<th>switch</th>
+<th>void</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0.22</td>
+<td>0.18</td>
+<td>0.20</td>
+<td>0.05</td>
+<td>0.25</td>
+<td>0.02</td>
+<td>0.08</td>
+</tr>
+</tbody>
+</table>
+<p>建立BST使得 <span class="arithmatex">\(\sum prob_i\times (h_i+1)\)</span> 最小</p>
+<p>记 <span class="arithmatex">\(f_{i,j}\)</span> 为 i 到 j 区间二叉树建好后的代价
+$$
+f_{i,j} = \min_{k\in[i+1,j-1]} f_{i,k-1} + f_{k+1,j} + w_{i,j}
+$$
+<strong>样例：Floyd</strong></p>
+<h2 id="greedy">Greedy<a id="Greedy"></a><a class="headerlink" href="#greedy" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>当且仅当局部最优解和全局最优解重合时有效，否则正确性无法保证</li>
+<li>但是一般乱搞离最优解不会太远</li>
+</ul>
+<p><strong>例题</strong></p>
+<p>给定一系列活动 <span class="arithmatex">\(S={a_1,...,a_n}\)</span> ，每个活动占据时间 <span class="arithmatex">\([s_i,f_i)\)</span> ，要求合理安排使得安排活动数量最大化</p>
+<ol>
+<li>
+<p>离散化，枚举每个活动 <span class="arithmatex">\(f_s = \min_{j&lt;s}{f_j} +1\)</span> ，前缀 min 可以维护，总复杂度 <span class="arithmatex">\(O(n)\)</span></p>
+</li>
+<li>
+<p>按结束时间第一关键字（升序）开始时间第二关键字（降序）排列，能塞就塞</p>
+</li>
+<li>
+<p>证明</p>
+</li>
+</ol>
+<blockquote>
+<p>Consider any nonempty subproblem <span class="arithmatex">\(S_k\)</span> ,and let <span class="arithmatex">\(a_m\)</span> be an activity in <span class="arithmatex">\(S_k\)</span> with the earliest finish time.  Then <span class="arithmatex">\(a_m\)</span> is included in some maximum-size subset of mutually compatible activities of <span class="arithmatex">\(S_k\)</span>.</p>
+</blockquote>
+<p>​       若 <span class="arithmatex">\(A_k\)</span> 是一个最优解集合</p>
+<p>​       若 <span class="arithmatex">\(a_m\in A_k\)</span> 无需证明</p>
+<p>​       否则将 <span class="arithmatex">\(A_k\)</span> 中的最早结束的活动替换为 <span class="arithmatex">\(a_m\)</span> 仍然合法</p>
+<h3 id="_25">哈夫曼编码树<a class="headerlink" href="#_25" title="Permanent link">⚓︎</a></h3>
+<p>依据出现频率编码，形成的二叉树只在叶节点对应字符的编码</p>
+<details>
+    <summary> code </summary>
+    <pre><code>
+void Huffman ( PriorityQueue  heap[ ],  int  C ){   
+    consider the C characters as C single node binary trees,and initialize them into a min heap;
+    for ( i = 1; i < C; i++ ) { 
+        create a new node;
+        /* be greedy here */
+        delete root from min heap and attach it to left_child of node;
+        delete root from min heap and attach it to right_child of node;
+        weight of node = sum of weights of its children;
+        /* weight of a tree = sum of the frequencies of its leaves */
+        insert node into min heap;
+    }
+}
+    </code></pre>
+</details>
+
+<ul class="task-list">
+<li>证明</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 待理解补全</li>
+</ul>
+<h2 id="npc">NPC问题<a id="NPC"></a><a class="headerlink" href="#npc" title="Permanent link">⚓︎</a></h2>
+<h3 id="complexity">Complexity<a class="headerlink" href="#complexity" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>可分为P,NP,EXP,PSPACE...</li>
+<li>以下只介绍P和NP</li>
+</ul>
+<p><strong>NP的N是非确定性而非“NOT”</strong></p>
+<ul>
+<li>探讨判定问题(decidable problem)，一个问题的判定版本和优化版本存在联系</li>
+</ul>
+<p>对于最短路问题：</p>
+<ol>
+<li>求解最短路</li>
+<li>求解最短路路径</li>
+<li>判定是否存在长度不大于 <span class="arithmatex">\(k\)</span> 的路径</li>
+</ol>
+<p>则<span class="arithmatex">\(1\ge 2\ge 3\)</span></p>
+<ul>
+<li>其中23等价，因为如果可求解3，二分答案即可求2，反之显然</li>
+<li>12也等价，因为如果能求解2，通过逐个删去边判断最短路是否变化即可得到1</li>
+</ul>
+<p>三者在多项式意义下难度等同</p>
+<p>以下就判定问题的范围内进行讨论，以间接推断优化问题的难度</p>
+<p><strong>但是不是所有问题的判定问题和优化问题在多项式意义下都相当</strong></p>
+<h3 id="pnp">图灵机角度理解P与NP<a class="headerlink" href="#pnp" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li><strong>图灵机</strong></li>
+<li>组成：包括无限内存（一条无限长的纸带，有单位格子的划分）和一个读写头（scanner,可以对纸带上的内容进行读写，可以移动）（还有一个有限状态控制器/程序）</li>
+<li>运行方式<ul>
+<li>改变控制器状态</li>
+<li>在读写头的位置进行数据修改</li>
+<li>读写头移动（至多一个单位长度，也即向左一格/不动/向右一格）</li>
+</ul>
+</li>
+<li><strong>Deterministic Turing Machine</strong> 每次执行一条指令，其后续指令也由这条指令和当前数据唯一确定</li>
+<li><strong>Nondeterministic Turing Machine</strong> 每次从一个有限集合中取出指令执行。如果存在执行指令选择集合能够有解，则该机器永远选择能达到有解的指令</li>
+<li>P对应所有能在DTM上以输入规模的多项式时间求解的判定问题</li>
+<li>NP对应所有能在NTM上以输入规模的多项式时间求解的判定问题</li>
+</ul>
+<p>注：不是所有判定问题都是NP的，例如判断一张图是否不存在hamiltonian cycle</p>
+<h3 id="_26">另一角度<a class="headerlink" href="#_26" title="Permanent link">⚓︎</a></h3>
+<h4 id="ppolynomial">P(polynomial)<a class="headerlink" href="#ppolynomial" title="Permanent link">⚓︎</a></h4>
+<p>实例I可分为yes-instance和no-instance</p>
+<p>判定问题的算法A(I)输出仅有yes or no</p>
+<p>如果A对于任意实例I，输出yes iff I是 yes-instance，则称A解决了这个问题</p>
+<p>若算法A存在多项式复杂度 <span class="arithmatex">\(p(I)\)</span> 使得对于任意的 I A都能在 <span class="arithmatex">\(O(p(|I|))\)</span> 终止（其中 <span class="arithmatex">\(|I|\)</span> 表示 <span class="arithmatex">\(I\)</span> 的规模），则称A是多项式时间的算法</p>
+<p><strong>P</strong> ： 所有拥有多项式时间的算法的判定问题的集合</p>
+<h4 id="npnon-deterministically-polynomial">NP(non-deterministically polynomial)<a class="headerlink" href="#npnon-deterministically-polynomial" title="Permanent link">⚓︎</a></h4>
+<p><span class="arithmatex">\(\Leftrightarrow\)</span> 多项式时间可验证 </p>
+<h3 id="npc_1">NPC问题<a class="headerlink" href="#npc_1" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>任意的NP问题都可以多项式时间规约(polynomially reduce)到NPH问题</li>
+<li>而NPH中属于NP的部分为NPC问题，其关系如下图所示</li>
+</ul>
+<p><img alt="P、NP、NP-complete 和 NP-hard 问题集的欧拉图。" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/P_np_np-complete_np-hard.svg/2560px-P_np_np-complete_np-hard.svg.png" /></p>
+<p><center>By <a href="//commons.wikimedia.org/wiki/User:Behnam" title="User:Behnam">Behnam Esfahbod</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0" title="Creative Commons Attribution-Share Alike 3.0">CC BY-SA 3.0</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=3532181">Link</a></center></p>
+<h4 id="_27">规约<a class="headerlink" href="#_27" title="Permanent link">⚓︎</a></h4>
+<blockquote>
+<p>对于任意问题A的实例 <span class="arithmatex">\(\alpha\)</span> ，如果存在多项式时间（不妨假设其为 <span class="arithmatex">\(O(N^{k_1})\)</span> ）的算法 R 使得 <span class="arithmatex">\(R(\alpha) = \beta\)</span> ，且存在另一个多项式时间（假设为 <span class="arithmatex">\(O(N^{k_2})\)</span> ）的算法 D，<span class="arithmatex">\(D(\beta)\)</span> 的输出是问题 B 的一个解，且这个解答同样适用于问题 A ，则称问题 A 可以规约到 B，记作 <span class="arithmatex">\(A\le_P B\)</span></p>
+</blockquote>
+<p><img alt="image-20241230111740401" src="/img/ads/ads-NPC-reduce.jpg" /></p>
+<ul>
+<li>说人话就是可以在多项式时间内将问题 A 转化成 B</li>
+</ul>
+<h3 id="_28">形式化语言描述<a class="headerlink" href="#_28" title="Permanent link">⚓︎</a></h3>
+<h4 id="_29">抽象问题的定义<a class="headerlink" href="#_29" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>抽象问题 <span class="arithmatex">\(Q\)</span> 定义为一个二元关系 <span class="arithmatex">\(Q \subseteq I \times S\)</span>，其中：</li>
+<li><span class="arithmatex">\(I\)</span> 是问题的实例集合。</li>
+<li><span class="arithmatex">\(S\)</span> 是问题的解集合。</li>
+<li>对于每个问题实例 <span class="arithmatex">\(i \in I\)</span>，存在一个解 <span class="arithmatex">\(s \in S\)</span>。</li>
+<li>例：最短路径问题（Shortest Path Problem）</li>
+<li><span class="arithmatex">\(I = \{ \langle G, u, v \rangle : G \text{ 是一个无向图}, u, v \text{ 是 } G \text{ 的顶点} \}\)</span></li>
+<li><span class="arithmatex">\(S = \{ \langle u, w_1, w_2, \ldots, w_k, v \rangle : \text{表示从 } u \text{ 到 } v \text{ 的路径} \}\)</span></li>
+<li>判定问题（Decision Problem）可抽象为一个从 <span class="arithmatex">\(I\)</span> 到 <span class="arithmatex">\(\{0, 1\}\)</span> 的映射：</li>
+<li><span class="arithmatex">\(Q(i) = 1\)</span> 表示实例 <span class="arithmatex">\(i\)</span> 有解。</li>
+<li><span class="arithmatex">\(Q(i) = 0\)</span> 表示实例 <span class="arithmatex">\(i\)</span> 无解。</li>
+</ul>
+<h4 id="_30">编码与具体问题<a class="headerlink" href="#_30" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>编码（Encoding）</li>
+<li><span class="arithmatex">\(I\)</span> 映射为二进制字符串集合 <span class="arithmatex">\(\{0, 1\}^*\)</span>。</li>
+<li><span class="arithmatex">\(Q\)</span> 映射为具体问题 <span class="arithmatex">\(Q(x) \in \{0, 1\}\)</span>，其中 <span class="arithmatex">\(x \in \{0, 1\}^*\)</span> 是编码后的问题实例。</li>
+</ul>
+<h4 id="_31">基本概念<a class="headerlink" href="#_31" title="Permanent link">⚓︎</a></h4>
+<p>（基于判定问题）</p>
+<ul>
+<li>字母表 <span class="arithmatex">\(\Sigma\)</span>：有限符号集合，例如 <span class="arithmatex">\(\Sigma = \{0, 1\}\)</span>。</li>
+<li>语言 <span class="arithmatex">\(L\)</span> 是由字母表 <span class="arithmatex">\(\Sigma\)</span> 构成的字符串集合。</li>
+<li><span class="arithmatex">\(L \subseteq \Sigma^*\)</span>，其中 <span class="arithmatex">\(\Sigma^*\)</span> 是 <span class="arithmatex">\(\Sigma\)</span> 上所有可能字符串的集合。</li>
+<li><span class="arithmatex">\(L = \{x\in\sum^*:Q(x)=1\}\)</span></li>
+<li>空字符串记为 <span class="arithmatex">\(\varepsilon\)</span> ，空语言记为 <span class="arithmatex">\(\empty\)</span></li>
+<li>语言操作：</li>
+<li>补集（Complement）：<span class="arithmatex">\(\Sigma^* - L\)</span> 表示 <span class="arithmatex">\(L\)</span> 的补集。</li>
+<li>连接（Concatenation）：<span class="arithmatex">\(L_1 \cdot L_2 = \{x_1x_2 : x_1 \in L_1, x_2 \in L_2 \}\)</span>。</li>
+<li>闭包（Kleene Star）：<ul>
+<li><span class="arithmatex">\(L^* = \{\varepsilon\} \cup L \cup L^2 \cup L^3 \cup \cdots\)</span>。</li>
+<li><span class="arithmatex">\(L^k\)</span> 表示 <span class="arithmatex">\(k\)</span> 次自连接。</li>
+</ul>
+</li>
+<li>决定语言与接受语言：</li>
+<li>算法 A 接受字符串 x <span class="arithmatex">\(\Leftrightarrow\)</span> A(x)=1，反之则为 A 拒绝 x</li>
+<li>L 被 A 决定：A必须正确接受 <span class="arithmatex">\(L\)</span> 中的所有字符串，且拒绝 <span class="arithmatex">\(L^c\)</span> 中的所有字符串。</li>
+<li>L被 A 接受：算法仅需要正确接受 <span class="arithmatex">\(L\)</span> 中的字符串，而无需对 <span class="arithmatex">\(L^c\)</span> 的字符串作出正确判断。</li>
+</ul>
+<h4 id="pnpnpc">P&amp;NP&amp;NPC<a class="headerlink" href="#pnpnpc" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>P类问题：</p>
+</li>
+<li>
+<p>语言 <span class="arithmatex">\(L \subseteq \{0, 1\}^*\)</span> 属于 <span class="arithmatex">\(P\)</span>，如果存在一个算法 <span class="arithmatex">\(A\)</span> 满足：</p>
+<ul>
+<li>对于所有输入 <span class="arithmatex">\(x \in \{0, 1\}^*\)</span>，<span class="arithmatex">\(A(x)\)</span> 可以在多项式时间内判断 <span class="arithmatex">\(x \in L\)</span>。</li>
+</ul>
+</li>
+<li>
+<p>NP类问题：</p>
+</li>
+<li>
+<p>语言 <span class="arithmatex">\(L \subseteq \{0, 1\}^*\)</span> 属于 <span class="arithmatex">\(NP\)</span>，如果存在一个多项式时间验证算法 <span class="arithmatex">\(A(x, y)\)</span> 和一个常数 <span class="arithmatex">\(c\)</span>，满足：</p>
+<ul>
+<li>对于任意 <span class="arithmatex">\(x \in \{0, 1\}^*\)</span>，
+  <span class="arithmatex">\(x \in L \iff \exists y \in \{0, 1\}^* \text{ 且 } |y| = O(|x|^c) \text{ 使得 } A(x, y) = 1\)</span>。</li>
+<li><span class="arithmatex">\(y\)</span> 是验证算法使用的“证书”(certificate)。</li>
+</ul>
+</li>
+<li>
+<p>co-NP： <span class="arithmatex">\(\{L:\bar{L}\in NP\}\)</span></p>
+</li>
+<li>
+<p>若 <span class="arithmatex">\(P=NP\)</span> ，则有 <span class="arithmatex">\(NP=co-NP\)</span></p>
+</li>
+<li>具体可能的关系如下</li>
+</ul>
+<p><img alt="image-20241230120124114" src="/img/ads/ads-NPC-4poss.jpg" /></p>
+<ul>
+<li>
+<p>多项式时间规约：一个语言 <span class="arithmatex">\(L_1\)</span> 多项式时间归约到语言 <span class="arithmatex">\(L_2\)</span> （记作 <span class="arithmatex">\(L_1 \leq_P L_2\)</span>）即存在一个多项式时间可计算函数 <span class="arithmatex">\(f : \{0, 1\}^* \to \{0, 1\}^*\)</span>，使得对于所有 <span class="arithmatex">\(x \in \{0, 1\}^*\)</span>，<span class="arithmatex">\(x \in L_1 \iff f(x) \in L_2\)</span></p>
+</li>
+<li>
+<p>称 <span class="arithmatex">\(f\)</span> 为 reduction function, 能多项式时间计算 <span class="arithmatex">\(f\)</span> 的算法 <span class="arithmatex">\(F\)</span> 为 reduction algorithm</p>
+</li>
+<li>
+<p>注意这个 <span class="arithmatex">\(iff\)</span> 符号，如果题目只有单向的话是错的，此事在98亦有记载</p>
+</li>
+<li>
+<p>NPC：<span class="arithmatex">\(L \subseteq \{0, 1\}^*\)</span> 是NPC问题，需满足</p>
+</li>
+<li>
+<p><span class="arithmatex">\(L \in NP\)</span>。</p>
+</li>
+<li>
+<p><span class="arithmatex">\(\forall L' \in NP\)</span>，<span class="arithmatex">\(L' \leq_P L\)</span>。</p>
+</li>
+</ul>
+<h3 id="_32">实例<a class="headerlink" href="#_32" title="Permanent link">⚓︎</a></h3>
+<h4 id="halting-problem">Halting Problem 停机问题<a class="headerlink" href="#halting-problem" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>若可判定，则存在一个函数P，对于一段代码，返回1/0（不停机/停机）</p>
+</li>
+<li>
+<p>则</p>
+</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">Loop</span><span class="p">(</span><span class="n">P</span><span class="p">){</span>
+<span class="w">  </span><span class="k">if</span><span class="p">(</span><span class="n">P</span><span class="p">(</span><span class="n">P</span><span class="p">))</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">  </span><span class="k">else</span><span class="w"> </span><span class="n">infinityloop</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>则 Loop(Loop) 无法判断停机</p>
+<p>构成悖论 <del>可能写的不对，意会一下这个理发师悖论就好了</del></p>
+<ul>
+<li>它是一个不可判定问题</li>
+</ul>
+<h4 id="postpone-corresponding-problempcp">Postpone Corresponding Problem(PCP)<a class="headerlink" href="#postpone-corresponding-problempcp" title="Permanent link">⚓︎</a></h4>
+<p>大意是每张牌分上下两个标签，提问是否存在某个线性放置方式使得前一张牌的下标签与后一张牌的上标签一致</p>
+<p>myc说略了</p>
+<h4 id="hamilton-cycle-problemhcp">Hamilton Cycle Problem(HCP)<a class="headerlink" href="#hamilton-cycle-problemhcp" title="Permanent link">⚓︎</a></h4>
+<blockquote>
+<p>Hamiltonian cycle problem: Given a graph G=(V, E), is there a simple cycle that visits all vertices?</p>
+</blockquote>
+<h4 id="traveling-salesman-problemtsp">Traveling Salesman Problem(TSP)<a class="headerlink" href="#traveling-salesman-problemtsp" title="Permanent link">⚓︎</a></h4>
+<blockquote>
+<p>Traveling salesman problem: Given a complete graph G=(V, E), with edge costs, and an integer K, is there a simple cycle that visits all vertices and has total cost <span class="arithmatex">\(\le\)</span> K?</p>
+</blockquote>
+<h4 id="circuit-sat">Circuit-SAT<a class="headerlink" href="#circuit-sat" title="Permanent link">⚓︎</a></h4>
+<p>第一个被证明是NPC的问题，又称 satisfiability problem</p>
+<blockquote>
+<p>Input a boolean expression and ask if it has an assignment to the variables that gives the expression a value of 1.</p>
+</blockquote>
+<h4 id="clique-problem">Clique Problem<a class="headerlink" href="#clique-problem" title="Permanent link">⚓︎</a></h4>
+<blockquote>
+<p>Given an undirected graph G = (V, E) and an integer K, does G contain a complete subgraph (clique) of (at least) K vertices?</p>
+<p>CLIQUE = { <G, K> : G is a graph with a clique of size K }.</p>
+</blockquote>
+<h4 id="vertex-cover-problem">Vertex Cover Problem<a class="headerlink" href="#vertex-cover-problem" title="Permanent link">⚓︎</a></h4>
+<blockquote>
+<p>Given an undirected graph G = (V, E) and an integer K, does G contain a subset V' <span class="arithmatex">\(\subseteq\)</span> V such that |V'| is (at most) K and every edge in G has a vertex in V' (vertex cover)?</p>
+<p>VERTEX-COVER = { <G, K> : G has a vertex cover of size K }.</p>
+</blockquote>
+<h4 id="_33">哈密顿回路问题到旅行商问题<a class="headerlink" href="#_33" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>已知Hamilton Cycle Problem是NPC的，求证Traveling Salesman Problem也是NPC的</p>
+</li>
+<li>
+<p>证明TSP是NP问题，并通过规约证明 <span class="arithmatex">\(HCP\le_P TSP\)</span> 即可</p>
+</li>
+<li>
+<p>Q：为什么要先证明是NP的</p>
+<p>A：如果不说明它是NP的，它完全可能落入NPH问题中</p>
+</li>
+<li>
+<p>NP：因为它可以多项式验证，显然</p>
+</li>
+<li>
+<p>规约方式：将HCP的输入图 G 转为完全图 <span class="arithmatex">\(G'\)</span> ，G中不存在的边的边权设为 <span class="arithmatex">\(K+1\)</span> ，那么如果 TSP 成立， HCP也成立</p>
+</li>
+</ul>
+<h4 id="clique">Clique问题到节点覆盖问题<a class="headerlink" href="#clique" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>已知Clique问题是NPC，求证节点覆盖问题是NPC</li>
+<li>NP：可以多项式验证<ul>
+<li>检查 <span class="arithmatex">\(|V'|\le K\)</span>，枚举图上每条边即可， <span class="arithmatex">\(O(N^3)\)</span> （其实我觉得用不着 <span class="arithmatex">\(N^3\)</span>， 可能是什么奇怪的实现方式）</li>
+</ul>
+</li>
+<li>规约 <span class="arithmatex">\(CLIQUE\le_P VERTEX-COVER\)</span><ul>
+<li>对于团问题的图 G ，构造其补图 <span class="arithmatex">\(G'\)</span></li>
+<li>则整张图上除了大小为 <span class="arithmatex">\(K\)</span> 的团之外的点全部选中必然构成一个大小为 <span class="arithmatex">\(|V|-K\)</span> 的节点覆盖（注意这里是判定问题而非优化问题），二者成对偶关系</li>
+</ul>
+</li>
+</ul>
+<h2 id="_34">近似<a id="approx"></a><a class="headerlink" href="#_34" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>目的：对于一些问题利用多项式时间找到近似的最优解</li>
+<li>近似比(approximation ratio)：称一个算法的近似比为 <span class="arithmatex">\(\rho(n) \iff\)</span> <span class="arithmatex">\(\forall n,\)</span> C是最优解，<span class="arithmatex">\(C^*\)</span>是近似解，则 <span class="arithmatex">\(\max(\frac{C}{C^*},\frac{C^*}{C})\le \rho(n)\)</span>  <span class="arithmatex">\(\iff\)</span> 说这个算法是 <span class="arithmatex">\(\rho(n)\)</span>-approximation algorithm</li>
+<li>近似范式(approximation scheme)：一种特殊的近似算法，除了数据以外接受 <span class="arithmatex">\(\varepsilon\)</span> 这个参数，保证是 <span class="arithmatex">\((1+\varepsilon)\)</span>-approximation algorithm</li>
+<li>PTAS(polynomial-time approximation scheme)：复杂度是对于 <span class="arithmatex">\(n\)</span> 的多项式，而对于 <span class="arithmatex">\(\varepsilon\)</span> 未必，例如 <span class="arithmatex">\(O(n^{2/\varepsilon})\)</span></li>
+<li>FPTAS(full polynomial-time approximation scheme)：复杂度对 <span class="arithmatex">\(\varepsilon\)</span> 也是多项式，如 <span class="arithmatex">\(O((1/\varepsilon)^2n^3)\)</span></li>
+</ul>
+<h3 id="_35">实例<a class="headerlink" href="#_35" title="Permanent link">⚓︎</a></h3>
+<h4 id="bin-packing">Bin Packing<a class="headerlink" href="#bin-packing" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>问题：一维装箱任务，给定 <span class="arithmatex">\(N\)</span> 个长度为 <span class="arithmatex">\(S_1,..,S_N\)</span> 的物品，将其装到长度固定的箱子中，求最少的箱子数量</li>
+<li>属于NPH问题</li>
+</ul>
+<h5 id="_36">在线算法<a class="headerlink" href="#_36" title="Permanent link">⚓︎</a></h5>
+<p>存在物品序列使得任意在线算法的相似比至少为5/3</p>
+<h6 id="next-fit">Next Fit<a class="headerlink" href="#next-fit" title="Permanent link">⚓︎</a></h6>
+<ul>
+<li>
+<p>思路：只看当前这一个，能装就装，装不了新开</p>
+</li>
+<li>
+<p>若 <span class="arithmatex">\(M\)</span> 为理想装箱数量，则该算法最多使用 <span class="arithmatex">\(2M-1\)</span> 个箱子</p>
+</li>
+<li>
+<p>证明思路：即证若NF需要 2M 或 2M+1 个箱子，则理想情况至少需要 M+1 个箱子</p>
+</li>
+<li>
+<p>称每个箱子 <span class="arithmatex">\(B_i\)</span> 的空间利用率为 <span class="arithmatex">\(0&lt;S(B_i)\le 1\)</span></p>
+<p>则有 <span class="arithmatex">\(S(B_{2k-1})+S(B_{2k}) &gt; 1\)</span></p>
+<p>求和得到 <span class="arithmatex">\(\sum_{i=1}^{2M} S(B_i) &gt; M\)</span> ，即理想情况也不止 <span class="arithmatex">\(M\)</span> 个箱子</p>
+</li>
+</ul>
+<details>
+    <summary>code</summary>
+    <pre><code>
+void NextFit ( )
+{   read item1;
+    while ( read item2 ) {
+        if ( item2 can be packed in the same bin as item1 )
+    place item2 in the bin;
+        else
+    create a new bin for item2;
+        item1 = item2;
+    } /* end-while */
+}
+  </code></pre>
+</details>
+
+<h6 id="first-fit">First Fit<a class="headerlink" href="#first-fit" title="Permanent link">⚓︎</a></h6>
+<ul>
+<li>
+<p>思路：寻找前面所有箱子中第一个能放下的</p>
+</li>
+<li>
+<p>若 <span class="arithmatex">\(M\)</span> 为理想装箱数量，则该算法使用不多于 <span class="arithmatex">\(1.7M\)</span> 个箱子（已有构造出来的使用 1.7M-1.7 箱子的序列</p>
+</li>
+</ul>
+<details>
+    <summary>code</summary>
+    <pre><code>
+void FirstFit ( )
+{   while ( read item ) {
+        scan for the first bin that is large enough for item;
+        if ( found )
+    place item in that bin;
+        else
+    create a new bin for item;
+    } /* end-while */
+}
+  </code></pre>
+</details>
+
+<h6 id="best-fit">Best Fit<a class="headerlink" href="#best-fit" title="Permanent link">⚓︎</a></h6>
+<ul>
+<li>
+<p>思路：寻找前面所有箱子中最刚刚好放下的</p>
+</li>
+<li>
+<p>若 <span class="arithmatex">\(M\)</span> 为理想装箱数量，则该算法使用不多于 <span class="arithmatex">\(1.7M\)</span> 个箱子</p>
+</li>
+</ul>
+<details>
+    <summary>code</summary>
+    <pre><code>
+void BestFit() {
+    while (read item) {
+        scan for the bin with the tightest fit (smallest remaining space) 
+        that is large enough for the item;
+        if (found)
+            place the item in that bin;
+        else
+            create a new bin for the item;
+    }
+}
+  </code></pre>
+</details>
+
+<h5 id="_37">离线算法<a class="headerlink" href="#_37" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>思路：物品大小降序排列后再使用 FF 或 BF</li>
+<li>该算法使用不多于 <span class="arithmatex">\((11M+6)/9\)</span> 个箱子，这是确界（存在构造）</li>
+</ul>
+<h4 id="_38">背包<a class="headerlink" href="#_38" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>分数背包是一个典型的贪心问题（按性价比排序）</p>
+</li>
+<li>
+<p>分数背包到01背包：强行按性价比选整件</p>
+</li>
+<li>
+<p>近似比为2（记P为最大收益）
+    $$
+    p_{max}\le P_{opt}\le P_{frac}\
+    p_{max}\le P_{greedy}\
+    P_{opt}\le P_{frac}\le P_{greedy}+p_{max}\
+    \Rightarrow P_{opt}/P_{greedy}\le 1+p_{max}/P_{greedy}\le 2
+    $$
+    其中</p>
+<ul>
+<li><span class="arithmatex">\(p_{max}\)</span> 是单个物品最大价值</li>
+<li><span class="arithmatex">\(P_{frac}\)</span> 是分数背包最优解</li>
+<li><span class="arithmatex">\(P_{greedy}\)</span> 是贪心01的解</li>
+<li><span class="arithmatex">\(P_{opt}\)</span> 是01的最优解</li>
+</ul>
+</li>
+<li>
+<p>DP算法的优化处理：在值域范围太大时</p>
+</li>
+<li>
+<p>将 <span class="arithmatex">\(p_i\)</span> 映射到更小的范围，通常除以一个常数 <span class="arithmatex">\(K\)</span></p>
+</li>
+<li>
+<p>但是要保证够高的精度，以保证：</p>
+<p><span class="arithmatex">\((1+\varepsilon)P_{ans}\ge P\)</span></p>
+</li>
+</ul>
+<h4 id="k-center-problem">K-center Problem<a class="headerlink" href="#k-center-problem" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>（2D）在平面中选择 K 个点，使得以这 <span class="arithmatex">\(K\)</span> 个点为圆心，r 为半径的圆能覆盖给出点集的所有点，且 r 最小化</li>
+</ul>
+<h5 id="1_1">贪心1<a class="headerlink" href="#1_1" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>首先选择所有点的中间值（取平均），然后持续添加点使得半径降低</li>
+<li>对于如图所示情形非常辣鸡</li>
+</ul>
+<p><img alt="image-20241230153157709" src="/img/ads/ads-approx-Kcgreedy1.jpg" /></p>
+<h5 id="_39">二分答案<a class="headerlink" href="#_39" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>
+<p>只需要判断在二分的半径 <span class="arithmatex">\(r\)</span> 时是否有解，然而这个也很难精确判定，因此使用近似算法</p>
+</li>
+<li>
+<p>过程：</p>
+</li>
+</ul>
+<p>随机选择点，将距离其在 2r 以内的点全部删除。重复K次后若还剩下点，则判断该 r 无解</p>
+<ul>
+<li>
+<p>若成功，说明 2r 是可行解，若失败，则说明 <strong>r 必定不是可行解</strong> （注意倍数）</p>
+</li>
+<li>
+<p>前者显然，对于后者：假设最优解中使用 r 覆盖的点集为 S，则从 S 中任意挑选一个点，以其为圆心， 2r 的圆必定能覆盖 S 中所有点</p>
+</li>
+<li>
+<p>近似比：通过成功的二分压缩上限，失败的二分压缩下限，最终得到可行解为 2r 。故 <span class="arithmatex">\(r &lt; r_{opt} &lt; 2r\)</span> ，即 <span class="arithmatex">\(\rho = 2\)</span></p>
+</li>
+<li>
+<p>小优化：从随机选点转变为离原来选的点最远的点，不改变近似比</p>
+</li>
+<li>
+<p>除非 P = NP ，否则不存在 <span class="arithmatex">\(\rho &lt; 2\)</span> 的算法</p>
+</li>
+<li>
+<p>Dominating-set Problem（NPC） ：能否找到一个大小不超过 <span class="arithmatex">\(K\)</span> 的点集，使得对于图上的所有点，要么属于 该点集，要么与点集有边相连</p>
+</li>
+<li>支配集问题是 K-center 的特殊情况：将图中每条边视作两个点距离为1，则如果存在支配集，<span class="arithmatex">\(r=1\)</span></li>
+<li>若 <span class="arithmatex">\(\rho &lt; 2\)</span> ，由于 r 为整数解，<span class="arithmatex">\(r=1\)</span> ，即这个NPC问题被多项式时间解决了</li>
+<li>综上若 <span class="arithmatex">\(P\neq NP\)</span> ， <span class="arithmatex">\(\rho \ge 2\)</span></li>
+</ul>
+<h2 id="local-search">Local Search<a id="local"></a><a class="headerlink" href="#local-search" title="Permanent link">⚓︎</a></h2>
+<h3 id="framework">Framework<a class="headerlink" href="#framework" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>Local: 确定 neighbor的范围，找到 local 的最优解</li>
+<li>Search: 从一个可行解开始，在邻域中搜索更优解，直到无法优化</li>
+</ul>
+<h3 id="neighbor-relation">Neighbor Relation<a class="headerlink" href="#neighbor-relation" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>称 S' 是 S 的邻居 <span class="arithmatex">\(\iff\)</span> S'可以通过对 S 进行微小修改得到 <span class="arithmatex">\(\iff\)</span> S~S'</li>
+<li>N(S) ： {S':S~S'}</li>
+</ul>
+<details>
+    <summary>例：梯度下降的代码</summary>
+    <pre><code>
+SolutionType Gradient_descent()
+{   Start from a feasible solution S in FS ;
+    MinCost = cost(S);
+    while (1) {
+        S’ = Search( N(S) ); /* find the best S’ in N(S) */
+        CurrentCost = cost(S’);
+        if ( CurrentCost < MinCost ) {
+            MinCost = CurrentCost;    S = S’;
+        }
+        else  break;
+    }
+    return S;
+}
+  </code></pre>
+</details>
+
+<h3 id="_40">实例<a class="headerlink" href="#_40" title="Permanent link">⚓︎</a></h3>
+<h4 id="vertex-cover-problem_1">Vertex Cover Problem<a class="headerlink" href="#vertex-cover-problem_1" title="Permanent link">⚓︎</a></h4>
+<blockquote>
+<p>Given an undirected graph G = (V, E).  Find a minimum subset S of  V such that for each edge (u, v) in E, either u or v  is in S.</p>
+</blockquote>
+<ul>
+<li>cost(S) = |S|</li>
+<li>起始 S = V，扰动：删去某个点</li>
+<li>极其容易陷入局部最优解，例如菊花图删去中心</li>
+</ul>
+<h5 id="metropolis-algorithm">优化：大都市算法(metropolis algorithm)<a class="headerlink" href="#metropolis-algorithm" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>idea ：一定概率接受非更优解</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">SolutionType</span><span class="w"> </span><span class="nf">Metropolis</span><span class="p">()</span>
+<span class="p">{</span><span class="w">   </span><span class="n">Define</span><span class="w"> </span><span class="n">constants</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">T</span><span class="p">;</span>
+<span class="w">    </span><span class="n">Start</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">feasible</span><span class="w"> </span><span class="n">solution</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">FS</span><span class="w"> </span><span class="p">;</span>
+<span class="w">    </span><span class="n">MinCost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cost</span><span class="p">(</span><span class="n">S</span><span class="p">);</span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="n">S</span><span class="err">’</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Randomly</span><span class="w"> </span><span class="n">chosen</span><span class="w"> </span><span class="n">from</span><span class="w"> </span><span class="n">N</span><span class="p">(</span><span class="n">S</span><span class="p">);</span><span class="w"> </span>
+<span class="w">        </span><span class="n">CurrentCost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cost</span><span class="p">(</span><span class="n">S</span><span class="err">’</span><span class="p">);</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">CurrentCost</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">MinCost</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">MinCost</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">CurrentCost</span><span class="p">;</span><span class="w">    </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S</span><span class="err">’</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">        </span><span class="k">else</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="n">With</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">probability</span><span class="w"> </span><span class="n">p</span><span class="p">,</span><span class="w"> </span><span class="n">let</span><span class="w"> </span><span class="n">S</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">S</span><span class="err">’</span><span class="p">;</span>
+<span class="w">            </span><span class="k">else</span><span class="w">  </span><span class="k">break</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">S</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>其中 <span class="arithmatex">\(p=e^{-\Delta cost/(kT)}\)</span> ， k 是一个系数，T是固定的“温度”</p>
+<h5 id="simulated-annealing">优化：模拟退火(Simulated Annealing)<a class="headerlink" href="#simulated-annealing" title="Permanent link">⚓︎</a></h5>
+<p>在metropolis基础上，T逐渐下降</p>
+<p>所谓退火就是锻造过程中温度下降的过程，随着温度下降原子排列趋于稳定。</p>
+<h4 id="hopfield-neural-networks">Hopfield Neural Networks<a class="headerlink" href="#hopfield-neural-networks" title="Permanent link">⚓︎</a></h4>
+<h5 id="_41">问题<a class="headerlink" href="#_41" title="Permanent link">⚓︎</a></h5>
+<p>对于G=(V,E)，边带权，为每个点分配状态(<span class="arithmatex">\(s_v=\pm 1\)</span>) ,使得：</p>
+<ul>
+<li>若 <span class="arithmatex">\(w_e \ge 0\)</span>，u,v 不同状态</li>
+<li>若 <span class="arithmatex">\(w_e &lt; 0\)</span> ， u,v 同状态</li>
+</ul>
+<p><span class="arithmatex">\(|w_e|\)</span> 表示需求强烈程度</p>
+<p>也即：<span class="arithmatex">\(\sum s_us_vw_e\)</span> 的最小值求解</p>
+<h5 id="_42">求解<a class="headerlink" href="#_42" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>
+<p>定义：</p>
+</li>
+<li>
+<p>称一条边是好的当且仅当 <span class="arithmatex">\(s_us_vw_e &lt;0\)</span> </p>
+</li>
+<li>
+<p>称一个局面是好的当且仅当<span class="arithmatex">\(\sum s_us_vw_e\le 0\)</span> </p>
+</li>
+<li>
+<p>称一个局面是稳定的当且仅当所有节点的要求被满足，即每个节点的邻接边中好边的边权绝对值总和小于坏边边权总和</p>
+</li>
+<li>
+<p>流程：每次选择一个没有被满足的点，翻转</p>
+</li>
+<li>
+<p>正确性：</p>
+</li>
+<li>
+<p>定义整个图的能量 <span class="arithmatex">\(E=-\frac{1}{2}\sum_i\sum_jw_{ij}s_is_j\)</span></p>
+</li>
+<li>
+<p>对不满足的点 <span class="arithmatex">\(i\)</span> 进行翻转，能量改变量为$\Delta E=-v_i\sum_{i\neq j}w_{ij}v_j $ ，希望 E 变小即希望 <span class="arithmatex">\(v_i\sum_{i\neq j}w_{ij}v_j \ge 0\)</span> ，即其邻接边中好边的边权绝对值总和小于坏边边权总和</p>
+</li>
+</ul>
+<h5 id="_43">复杂度<a class="headerlink" href="#_43" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>势能函数 <span class="arithmatex">\(\Phi(S) =\sum_{\text{e is good}} |w_e|\)</span></li>
+<li>则每次翻转 <span class="arithmatex">\(\Phi\)</span> 都会增加，最坏情况每次增加1</li>
+<li>复杂度是 <span class="arithmatex">\(O(W)\)</span> 的（其中W是最大权重），因而不一定是多项式</li>
+</ul>
+<h4 id="_44">最大割问题<a class="headerlink" href="#_44" title="Permanent link">⚓︎</a></h4>
+<h5 id="_45">问题<a class="headerlink" href="#_45" title="Permanent link">⚓︎</a></h5>
+<p>将节点分为AB两个集合，所有链接A中点和B中点的边称为割，目标是最大化割的权重</p>
+<h5 id="_46">求解<a class="headerlink" href="#_46" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>
+<p>类似hopfield的状态翻转，考虑更改某个节点的归属，收益为<span class="arithmatex">\(gain(u)=W(新增的割边)-W(减少的割边)\)</span> ,挑选 <span class="arithmatex">\(gain &gt; 0\)</span> 的节点翻转</p>
+</li>
+<li>
+<p>同样不一定是多项式算法</p>
+</li>
+<li>
+<p>可以证明的近似比： 2 ，即<span class="arithmatex">\(W_{local}\ge 0.5 W_{global}\)</span></p>
+</li>
+<li>
+<p>证明：</p>
+<p><span class="arithmatex">\((A, B)\)</span> 是局部最优 <span class="arithmatex">\(\Rightarrow\)</span> <span class="arithmatex">\(\forall u \in A\)</span>,<span class="arithmatex">\(\sum_{v\in A} w_{uv}\leq\sum_{v\in B}w_{uv}\)</span> </p>
+<p>则</p>
+</li>
+</ul>
+<p>$$
+   2\sum_{u,v \in A}w_{uv}=\sum_{u\in A} \sum_{v\in A}w_{uv}\leq\sum_{u\in A} \sum_{v\in B}w_{uv}=w(A,B)\
+   2 \sum_{u,v \in A} w_{uv} \leq w(A, B)
+  $$</p>
+<p>​ 同理$ 2 \sum_{u,v \in B} w_{uv} \leq w(A, B)$ ，则合起来得到 <span class="arithmatex">\(\sum_{u,v \in A} w_{uv}+\sum_{u,v \in B} w_{uv} \leq w(A, B)\)</span></p>
+<p>​ <span class="arithmatex">\((A^*, B^*)\)</span>是全局最优<span class="arithmatex">\(\Rightarrow\)</span></p>
+<p>​ 带入上面的结论，有$ w(A^<em>, B^</em>) \leq w(A, B) + w(A, B) = 2w(A, B)$</p>
+<p>​ 即$ w(A, B) \geq \frac{1}{2} w(A^<em>, B^</em>)$</p>
+<ul>
+<li>学者结果：除非 P=NP，否则 近似比不小于 17/16</li>
+</ul>
+<h5 id="_47">复杂度<a class="headerlink" href="#_47" title="Permanent link">⚓︎</a></h5>
+<ul>
+<li>不是多项式时间复杂度</li>
+<li>如果限制为**仅在有足够大的优化时才继续运行**则可以做到</li>
+<li><strong>Big-improvement-flip</strong> : 只更新翻转后收益增加大于 <span class="arithmatex">\(\frac{2\varepsilon}{|V|}w(A,B)\)</span> 的点</li>
+<li>求得的答案满足 <span class="arithmatex">\((2+\varepsilon)w(A,B)\ge w(A^*,B^*)\)</span></li>
+<li>至多翻转 <span class="arithmatex">\(O(n/\varepsilon \log{W})\)</span> 次</li>
+</ul>
+<h4 id="_48">其他优化<a class="headerlink" href="#_48" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>k-flip以增加搜索的邻域</li>
+<li><span class="arithmatex">\(O(n^k)\)</span> 寻找邻居</li>
+<li>K-L算法：计算一批节点的增益，选其中一批统一更新</li>
+</ul>
+<h3 id="_49">作业<a class="headerlink" href="#_49" title="Permanent link">⚓︎</a></h3>
+<p><img alt="image-20241231155954347" src="/img/ads/Local-HW.jpg" /></p>
+<p>构造，不会</p>
+<h1 id="_50">随机化算法<a id="random"></a><a class="headerlink" href="#_50" title="Permanent link">⚓︎</a></h1>
+<ul>
+<li>对于离散变量X，我们有</li>
+</ul>
+<div class="arithmatex">\[
+E(X) = \sum i*Pr(X=i)
+\]</div>
+<h3 id="1the-hiring-problem">例1：The Hiring Problem<a class="headerlink" href="#1the-hiring-problem" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>只招一个员工，共有 n 个面试者，每天面试一个人，如果被面素质高于当前员工则替换</li>
+<li>雇人的价格是 <span class="arithmatex">\(C_h\)</span>  Hiring cost</li>
+<li>找一个面试者的价格是 <span class="arithmatex">\(C_i\)</span> Interviewing cost</li>
+<li><span class="arithmatex">\(C_i &lt;&lt; C_h\)</span></li>
+</ul>
+<h4 id="sol-1">Sol 1<a class="headerlink" href="#sol-1" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>
+<p>策略如上</p>
+</li>
+<li>
+<p>第一个人必定被雇佣，第二个人被雇佣概率为 &frac12;，第三个人概率为 &#8531;，...，第 n 个人为 1/n</p>
+</li>
+<li>
+<p>最坏情况开销即素质递增， <span class="arithmatex">\(O(nC_h)\)</span> </p>
+</li>
+<li>
+<p><strong>Randomness assumption</strong></p>
+</li>
+</ul>
+<blockquote>
+<p>any of first i candidates is equally likely to be best-qualified so far</p>
+</blockquote>
+<ul>
+<li>对于随机的情况，雇佣次数的期望利用期望的线性性，转化为每个人被雇佣期望的加和，则有</li>
+</ul>
+<div class="arithmatex">\[
+E(X) = \sum_{i=1}^n \frac{1}{n}=\ln{n}+O(1)
+\]</div>
+<p>​       平均的花销为 <span class="arithmatex">\(O(\ln{n}C_h + nC_i)\)</span></p>
+<p>因此可以将面试者数列随机打乱再进行面试</p>
+<p>范例代码：</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">])</span>
+<span class="w">    </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">P</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">+</span><span class="n">rand</span><span class="p">()</span><span class="o">%</span><span class="p">(</span><span class="n">N</span><span class="o">^</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">sort</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="n">base</span><span class="w"> </span><span class="n">on</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">P</span>
+</code></pre></div>
+<h3 id="1-ver">例1 在线ver<a class="headerlink" href="#1-ver" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>无法获取全部面试者名单，只能雇佣一次</li>
+</ul>
+<h4 id="sol2">Sol2<a class="headerlink" href="#sol2" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>对前 k 个人做调研，获取 max 不雇佣</li>
+<li>对后 n-k 个人，雇佣遇到的第一个超过 max 的人，否则雇佣最后一个</li>
+</ul>
+<p>定义<span class="arithmatex">\(S\)</span> 为雇佣到最佳， <span class="arithmatex">\(S_i\)</span> 为第 i 个面试者是最佳且被雇佣的</p>
+<p>则 
+$$
+\begin{aligned}
+Pr[S_i] &amp;= Pr[i is the best]<em>Pr[no one at k+1~i-1 are hired] \
+&amp;= \frac{1}{n}</em>\frac{k}{i-1} = \frac{k}{n(i-1)}
+\end{aligned}
+$$
+PS: 后面那一项等价于 [1,i-1]的最大值出现在[1,k]，故概率为 <span class="arithmatex">\(\frac{k}{i-1}\)</span>
+$$
+Pr[S] = \sum_{i=k+1}^n Pr[S_i]=\sum_{i=k}^{n-1}\frac{k}{ni}
+$$
+由微寄分小知识
+$$
+\int_k^n \frac{1}{x}dx\le \sum_{i=k}^{n-1} \frac{1}{i}\le\int_{k-1}^{n-1} \frac{1}{x}dx
+$$
+不会就回去看看伟大的<a href="https://ckc-agc.bowling233.top/">辅学网站</a></p>
+<p>则 <span class="arithmatex">\(Pr[S]=\frac{k}{n}\ln{\frac{n}{k}}\)</span></p>
+<p>取 <span class="arithmatex">\(k=N/e\)</span> 则 <span class="arithmatex">\(Pr_{max}=1/e\)</span></p>
+<h3 id="_51">快排<a class="headerlink" href="#_51" title="Permanent link">⚓︎</a></h3>
+<p>随机化选择 split，直到选到中间部分也即[&frac14;N,&frac34;N]（称为找到一个 central splitter）</p>
+<p>期望选择次数
+$$
+E{X} = \frac{1}{2}+\frac{1}{2<sup>2}+\frac{1}{2</sup>3}+..+\frac{1}{2^n}=2
+$$
+（提示，这里不是 <span class="arithmatex">\(\sum_{i=1}^ni2^{-i}\)</span> 的原因是其展开思路是期望线性性）</p>
+<ul>
+<li><strong>type j</strong> : the subporblem S is of type j iff <span class="arithmatex">\(N(\frac{3}{4})^{j+1}\le |S|\le N(\frac{3}{4})^j\)</span></li>
+<li>性质： 至多有 <span class="arithmatex">\((\frac{4}{3})^{j+1}\)</span> 个 type j 的子问题</li>
+</ul>
+<p><img alt="image-20241224112956436" src="C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20241224112956436.png" /></p>
+<h1 id="parallel-algorithms">Parallel Algorithms<a id="parallel"></a><a class="headerlink" href="#parallel-algorithms" title="Permanent link">⚓︎</a></h1>
+<h2 id="_52">省流<a class="headerlink" href="#_52" title="Permanent link">⚓︎</a></h2>
+<table>
+<thead>
+<tr>
+<th>问题-算法</th>
+<th>T</th>
+<th>W</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>前缀和</td>
+<td><span class="arithmatex">\(O(\log{n})\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>单轮归并-并行二分</td>
+<td><span class="arithmatex">\(O(\log{n})\)</span></td>
+<td><span class="arithmatex">\(O(n\log{n})\)</span></td>
+</tr>
+<tr>
+<td>单轮归并-<span class="arithmatex">\(\log{n}\)</span>分块</td>
+<td><span class="arithmatex">\(O(\log{n})\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>找最大值-朴素并行</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(n^2)\)</span></td>
+</tr>
+<tr>
+<td>找最大值-<span class="arithmatex">\(\sqrt{n}\)</span> 分块</td>
+<td><span class="arithmatex">\(O(\log{\log{n}})\)</span></td>
+<td><span class="arithmatex">\(O(n\log{\log{n}})\)</span></td>
+</tr>
+<tr>
+<td>找最大值-<span class="arithmatex">\(\log{\log{n}}\)</span> 分块</td>
+<td><span class="arithmatex">\(O(\log{\log{n}})\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+<tr>
+<td>找最大值-随机采样</td>
+<td><span class="arithmatex">\(O(1)\)</span></td>
+<td><span class="arithmatex">\(O(n)\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><span class="arithmatex">\(W(n)/P(n)+T(n)\)</span></li>
+</ul>
+<h2 id="pram">PRAM 模型<a class="headerlink" href="#pram" title="Permanent link">⚓︎</a></h2>
+<h3 id="_53">特性<a class="headerlink" href="#_53" title="Permanent link">⚓︎</a></h3>
+<ol>
+<li>假设存在多个处理器，且同时执行操作</li>
+<li>假设所有处理器可以同时访问同一个全局的内存</li>
+<li>假设所有处理器同步运行</li>
+</ol>
+<h3 id="_54">运算过程<a class="headerlink" href="#_54" title="Permanent link">⚓︎</a></h3>
+<ol>
+<li>同时读</li>
+<li>各自计算</li>
+<li>同时写</li>
+</ol>
+<h3 id="_55">缺陷<a class="headerlink" href="#_55" title="Permanent link">⚓︎</a></h3>
+<ol>
+<li>无法说明算法在不同数量处理器的实际表现</li>
+<li>分配到处理器，过于细节繁琐而忽视算法总体架构</li>
+</ol>
+<h3 id="work-depth-presentation">Work-Depth Presentation<a class="headerlink" href="#work-depth-presentation" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>
+<p>Work load(总操作数) W(n)</p>
+</li>
+<li>
+<p>Worst-case running time T(n)</p>
+</li>
+</ul>
+<p>按我的理解，T(n)表征了算法中不得不品的串行部分，不包括W(n) 的并行部分</p>
+<ul>
+<li>
+<p><strong>WD-presentation Sufficiency Theorem</strong> : 对于一个用WD模式表示的算法，在任意的 <span class="arithmatex">\(P(n)\)</span> 个处理器上需要运行 <span class="arithmatex">\(O(W(n)/P(n)+T(n))\)</span> 的时间</p>
+</li>
+<li>
+<p>但是要求算法遵循与WD表示法中相同的并发写入规则（不知道什么鬼）</p>
+</li>
+</ul>
+<h2 id="_56">冲突处理规则<a class="headerlink" href="#_56" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li>EREW(Exclusive read exclusive write)：同时读或者写同一个单元都不允许</li>
+<li>CREW(Concurrent read exclusive write)：允许同时读同一个单元，不允许同时写</li>
+<li>CRCW(Concurrent read Concurrent write)：允许同时读和写同一个单元</li>
+<li>Common rule : 要求所有写入值一致否则无效</li>
+<li>Arbitrary rule : 随机选一个写</li>
+<li>Priority rule : 依据优先级选一个写（PPT上说选择编号最小的处理器的结果）</li>
+</ul>
+<h2 id="_57">实例<a class="headerlink" href="#_57" title="Permanent link">⚓︎</a></h2>
+<h3 id="_58">前缀和<a class="headerlink" href="#_58" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>B(h,i) 表示第 h 层（从0开始）第 i 号节点的计算结果，成树型结构向上累加</li>
+</ul>
+<p><img alt="image-20241230203949806" src="/img/ads/ads-par-sum.jpg" /></p>
+<h4 id="pram_1">PRAM 模型<a class="headerlink" href="#pram_1" title="Permanent link">⚓︎</a></h4>
+<p>复制数据</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">P_i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="err">≤</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">≤</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<p>逐层向上累加</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="c1">//这层循环有层数依赖无法并行</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="err">≤</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">2</span><span class="o">^</span><span class="n">h</span>
+<span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="k">else</span>
+<span class="w">        </span><span class="n">stay</span><span class="w"> </span><span class="n">idle</span>
+</code></pre></div>
+<p>输出顶层节点</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">output</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">log</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span><span class="w"> </span>
+<span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">1</span><span class="o">:</span><span class="w"> </span><span class="n">stay</span><span class="w"> </span><span class="n">idle</span>
+</code></pre></div>
+<h4 id="wd">WD表示<a class="headerlink" href="#wd" title="Permanent link">⚓︎</a></h4>
+<p>忽略部分细节</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w">  </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">   </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">n</span><span class="w"> </span>
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">        </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="mi">-1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">   </span><span class="n">output</span><span class="w">  </span><span class="n">B</span><span class="p">(</span><span class="n">log</span><span class="w"> </span><span class="n">n</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<ul>
+<li><span class="arithmatex">\(T(n)=\log{n}+2\)</span></li>
+<li><span class="arithmatex">\(W(n) = n+n/2+n/4+...+n/2^k+1 = 2n\)</span></li>
+</ul>
+<hr />
+<p>进一步，若要求出每一个位置的前缀和，需要增加一个向下传播的过程，完整代码如下</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">  </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">n</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">even</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">odd</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">  </span><span class="n">Output</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<p><span class="arithmatex">\(T(n)=O(\log{n})\)</span>   <span class="arithmatex">\(W(n)=O(n)\)</span></p>
+<h3 id="_59">归并<a class="headerlink" href="#_59" title="Permanent link">⚓︎</a></h3>
+<p>将有序的A(1),...,A(n)和B(1),...B(m)合并为有序的C(1),...,C(n+m)</p>
+<ul>
+<li>
+<p>思路：转合并为求解排名</p>
+</li>
+<li>
+<p>Rank(i,B)表示 <span class="arithmatex">\(A_i\)</span> 在B中的排名，即<span class="arithmatex">\(B(Rank(i,B)) &lt; A_i &lt; B(Rank(i,B)+1)\)</span></p>
+</li>
+<li>Rank(i,A)表示 <span class="arithmatex">\(B_i\)</span> 在A中的排名</li>
+</ul>
+<p>则Merge转化为如下两步</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">))</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">))</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<p>可以 <span class="arithmatex">\(O(1)\)</span> 计算（并行），故以下讨论Rank的求法</p>
+<h4 id="sol-1_1">sol 1 : 二分<a class="headerlink" href="#sol-1_1" title="Permanent link">⚓︎</a></h4>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">BS</span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">B</span><span class="p">)</span>
+<span class="w">    </span><span class="n">RANK</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="n">BS</span><span class="p">(</span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">),</span><span class="w"> </span><span class="n">A</span><span class="p">)</span>
+</code></pre></div>
+<p><span class="arithmatex">\(T(n)=O(\log{n})\)</span>   <span class="arithmatex">\(W(n) = O(n\log{n})\)</span> </p>
+<h4 id="sol-2">sol 2 : 顺序计算<a class="headerlink" href="#sol-2" title="Permanent link">⚓︎</a></h4>
+<div class="highlight"><pre><span></span><code><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">m</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">)</span>
+<span class="w">        </span><span class="n">RANK</span><span class="p">(</span><span class="o">++</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">B</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">j</span><span class="p">;</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">RANK</span><span class="p">(</span><span class="o">++</span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">A</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+<p><span class="arithmatex">\(T(n) = W(n) = O(n+m)\)</span></p>
+<h4 id="sol-3">sol 3 : 分块处理<a class="headerlink" href="#sol-3" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>前置条件：n=m，且A(n+1)与B(n+1)都大于A(n)和B(n)</li>
+<li>则取 <span class="arithmatex">\(p=n/\log{n}\)</span> ，对A和B按等间隔 <span class="arithmatex">\(\log{n}\)</span> 分成 <span class="arithmatex">\(p\)</span> 个块，对每个块的第一个元素先求Rank</li>
+<li>这一步 <span class="arithmatex">\(T=O(\log{n})\)</span>  <span class="arithmatex">\(W=O(p\log{n}) = O(n)\)</span></li>
+<li>然后在两个大小为 <span class="arithmatex">\(\log{n}\)</span> 的块内求每个元素的Rank，使用串行（因为这里没有办法对这 <span class="arithmatex">\(2\log{n}\)</span> 个元素作并行了）</li>
+<li>这一步 <span class="arithmatex">\(T=O(\log{n})\)</span> <span class="arithmatex">\(W = O(p\log{n}) = O(n)\)</span> </li>
+<li>综上所述，总复杂度为<span class="arithmatex">\(T=O(\log{n})\)</span> <span class="arithmatex">\(W=O(n)\)</span></li>
+</ul>
+<h3 id="_60">找最大值<a class="headerlink" href="#_60" title="Permanent link">⚓︎</a></h3>
+<h4 id="ver0">并行 ver0<a class="headerlink" href="#ver0" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>思路：并行比较 <span class="arithmatex">\(n^2\)</span> 对数的大小关系，唯一全都大于的就是 max</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">0</span>
+<span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="w"> </span><span class="p">(</span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="p">((</span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">j</span><span class="p">))</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">j</span><span class="p">))</span><span class="w"> </span><span class="p">)</span>
+<span class="w">            </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">    </span><span class="k">else</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<span class="k">for</span><span class="w"> </span><span class="n">Pi</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">n</span><span class="w">  </span><span class="n">pardo</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">       </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="n">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">maximum</span><span class="w"> </span><span class="n">in</span><span class="w"> </span><span class="n">A</span>
+</code></pre></div>
+<ul>
+<li>使用CRCW-Arbitrary rule</li>
+<li><span class="arithmatex">\(T(n)=O(1)\)</span>   <span class="arithmatex">\(W(n) = n^2\)</span></li>
+</ul>
+<h4 id="doubly-logarithmic-paradigm">Doubly-logarithmic Paradigm<a class="headerlink" href="#doubly-logarithmic-paradigm" title="Permanent link">⚓︎</a></h4>
+<ol class="task-list">
+<li>
+<p>若按照 <span class="arithmatex">\(\sqrt{n}\)</span> 分块</p>
+</li>
+<li>
+<p>对于每个块，使用上述的ver 0求解 max 得到 <span class="arithmatex">\(\{M_i\}\)</span> ，（并行执行），<span class="arithmatex">\(T=T(\sqrt{n}) = O(1)\)</span>   <span class="arithmatex">\(W=W(\sqrt{n}) = O(n)\)</span></p>
+</li>
+<li>然后对 <span class="arithmatex">\({M_i}\)</span> 再做同样的操作（按根号分块，聚合，如此反复）</li>
+<li>一共要执行 <span class="arithmatex">\(n=2^{2^h}\)</span> 的 <span class="arithmatex">\(h\)</span> ，即 <span class="arithmatex">\(\log{\log{n}}\)</span> 次</li>
+<li>
+<p>故$ T = O(\log{\log{n}})  W=O(n\log{\log{n}})$</p>
+</li>
+<li>
+<p>若按照 <span class="arithmatex">\(h=\log{\log{n}}\)</span> 的大小分块，总组数 <span class="arithmatex">\(n/h\)</span></p>
+</li>
+<li>
+<p>同上述操作进行，共进行 <span class="arithmatex">\(\log{\log{(n/h)}}\)</span> 次递归</p>
+</li>
+<li><span class="arithmatex">\(T = O(h+\log{\log{(n/h)}}) = O(\log{\log{n}})\)</span>   <span class="arithmatex">\(W=O(h\times(n/h)+(n/h)\log{\log{(n/h)}})=O(n)\)</span></li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> 理解这里多出来的h和h*n/h从何而来（目前猜测第一层使用了直接的线性求解max）</li>
+</ol>
+<h4 id="random-sampling">随机采样Random Sampling<a class="headerlink" href="#random-sampling" title="Permanent link">⚓︎</a></h4>
+<ul>
+<li>高可能性（但不是一定）失败概率 <span class="arithmatex">\(O(1/n^c)\)</span>，c是一个正常数（不知道是几）</li>
+<li>T(n) = O(1) W(n)=O(n)</li>
+</ul>
+<p>步骤：</p>
+<ul>
+<li><span class="arithmatex">\(n^{1/8}\)</span> 中随机取样，得到 <span class="arithmatex">\(n^{7/8}\)</span> 个元素</li>
+<li><span class="arithmatex">\(T=O(1),W=O(n^{7/8})\)</span></li>
+<li>将这 <span class="arithmatex">\(n^{7/8}\)</span> 个元素再按 <span class="arithmatex">\(n^{1/8}\)</span> 为单位分块，一共就 <span class="arithmatex">\(n^{3/4}\)</span> 块；每个 <span class="arithmatex">\(n^{1/8}\)</span> 块取最大值</li>
+<li><span class="arithmatex">\(T=O(1),W=O(n^{3/4}×n^{2×1/8})=O(n)\)</span></li>
+<li>现在剩下<span class="arithmatex">\(n^{3/4}\)</span> 个元素，按<span class="arithmatex">\(n^{1/4}\)</span> 为单位分块，共计 <span class="arithmatex">\(n^{1/2}\)</span> 个块；每个 <span class="arithmatex">\(n^{1/4}\)</span>取最大值</li>
+<li><span class="arithmatex">\(T=O(1),W=O(n^{1/2}×n^{2×1/4})=O(n)\)</span></li>
+<li>剩下 <span class="arithmatex">\(n^{1/2}\)</span> 个元素，直接取最大值</li>
+<li><span class="arithmatex">\(T=O(1),W=O(n^{2×1/2})=O(n)\)</span></li>
+</ul>
+<h2 id="_61">习题<a class="headerlink" href="#_61" title="Permanent link">⚓︎</a></h2>
+<ol>
+<li>In order to solve  the maximum finding problem by a parallel  algorithm  with <em>T</em>(<em>n</em>)=<em>O</em>(1) , we need work load <span class="arithmatex">\(W(n)=Ω(n^2)\)</span> in return.(F)</li>
+</ol>
+<p>ver0确实需要 <span class="arithmatex">\(W(n)=O(n^2)\)</span> ，但是随机采样不是，认为随机采样可以解决问题（实在不行多跑几次）</p>
+<p>以下的另外一道题就是正确的表述</p>
+<blockquote>
+<p>To solve the Maximum Finding problem with parallel Random Sampling method, <em>O</em>(<em>n</em>) processors are required to get <em>T</em>(<em>n</em>)=<em>O</em>(1) and <em>W</em>(<em>n</em>)=<em>O</em>(<em>n</em>) with very high probability. </p>
+</blockquote>
+<ol>
+<li>The prefix-min problem is to find for each <em>i</em>, 1≤<em>i</em>≤<em>n</em>, the smallest element among <em>A</em>(1), <em>A</em>(2), ⋯, <em>A</em>(<em>i</em>).  What is the run time and work load for the following algorithm?</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="err">≤</span><span class="n">i</span><span class="err">≤</span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">  </span><span class="n">B</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="err">≤</span><span class="n">i</span><span class="err">≤</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="p">{</span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="mi">-1</span><span class="p">),</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="n">i</span><span class="p">)}</span>
+<span class="k">for</span><span class="w"> </span><span class="n">h</span><span class="o">=</span><span class="n">log</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="mi">0</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">even</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="err">≤</span><span class="n">i</span><span class="err">≤</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="n">odd</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="err">≤</span><span class="n">i</span><span class="err">≤</span><span class="n">n</span><span class="o">/</span><span class="mi">2</span><span class="o">^</span><span class="n">h</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">    </span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min</span><span class="w"> </span><span class="p">{</span><span class="n">C</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span><span class="w"> </span><span class="n">B</span><span class="p">(</span><span class="n">h</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)}</span>
+<span class="k">for</span><span class="w"> </span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="err">≤</span><span class="n">i</span><span class="err">≤</span><span class="n">n</span><span class="w"> </span><span class="n">pardo</span>
+<span class="w">  </span><span class="n">Output</span><span class="w"> </span><span class="n">C</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">i</span><span class="p">)</span>
+</code></pre></div>
+<p>​       <span class="arithmatex">\(T=O(\log{n})\)</span>   <span class="arithmatex">\(W=O(n)\)</span></p>
+<p>​       同求前缀和  <del>这道题题面写的lofn我真的会笑死</del></p>
+<h1 id="external-sorting">External Sorting<a id="external"></a><a class="headerlink" href="#external-sorting" title="Permanent link">⚓︎</a></h1>
+<p><del>这个开篇真的会梦回计组</del></p>
+<ul>
+<li>内存不足以排序的数据量，访问磁盘开销巨大（记得看看计组cache那一章）<span class="arithmatex">\(\Rightarrow\)</span> 使用归并排序，但是磁盘访问次数尽可能最小化</li>
+<li>why归并排序？ 内存一次性能处理的数据量有限，归并能够在这一基础下把有序数列规模增大直到有序 <del>其他排序做得到吗.jpg</del></li>
+</ul>
+<p>以下令内存最大容量为 <span class="arithmatex">\(M\)</span> , 总数据量 <span class="arithmatex">\(N\)</span> ，实行 <span class="arithmatex">\(k\)</span> 路归并</p>
+<h2 id="_62">一些名词<a class="headerlink" href="#_62" title="Permanent link">⚓︎</a></h2>
+<ul>
+<li><strong>run</strong> : 一段数据，它应当是内部有序的</li>
+<li><strong>pass</strong> : 将 <span class="arithmatex">\(k\)</span> 路数据归并到其他路的过程</li>
+<li><strong>copy</strong> : 从一路将数据分发到若干路的过程（正常不会出现在计数中，只是老师在用3 tapes做2路归并的例子时出现过)</li>
+<li><strong>tape</strong> : 一个磁盘，这里可以理解为一个无限大的存放 runs 的地方</li>
+</ul>
+<h2 id="_63">性能优化<a class="headerlink" href="#_63" title="Permanent link">⚓︎</a></h2>
+<h3 id="passes">Passes<a class="headerlink" href="#passes" title="Permanent link">⚓︎</a></h3>
+<p><span class="arithmatex">\(2k\)</span> 个磁盘时</p>
+<ul>
+<li>Number of passes = <span class="arithmatex">\(1+\lceil\log_k{N/M}\rceil\)</span></li>
+<li>"1" 是从 <span class="arithmatex">\(T_1\)</span> 向其他磁带分发 pass 的过程，由于是第一次还需要将每个 pass 内部变为有序</li>
+<li>
+<p>此后每一次 pass （假设还是统一归并到 <span class="arithmatex">\(T_1\)</span> ）会让 <span class="arithmatex">\(pass\)</span> 数量变为 <span class="arithmatex">\(\frac{1}{k}\)</span>  （上取整）</p>
+</li>
+<li>
+<p>老师给出的其中一个例子如下</p>
+</li>
+</ul>
+<p><img alt="image-20241229120325961" src="/img/ads/Extsort-2kexample.jpg" /></p>
+<p>此时要优化passes的数量：</p>
+<ol>
+<li>
+<p>增加 <span class="arithmatex">\(k\)</span>  <span class="arithmatex">\(\Rightarrow\)</span> tape数量、排序复杂度增加</p>
+</li>
+<li>
+<p>算法优化：Replacement Selection</p>
+</li>
+<li>
+<p>可以获得更长的run从而减少passes</p>
+</li>
+</ol>
+<details>
+    <summary> Replacement Selection </summary>
+       <pre>
+   When the input is much too large to fit into memory, we have to do **external sorting** instead of internal sorting.  One of the key steps in external sorting is to generate sets of sorted records (also called **runs**) with limited internal memory.  The simplest method is to read as many records as possible into the memory, and sort them internally, then write the resulting run back to some tape.  The size of each run is the same as the capacity of the internal memory.
+   **Replacement Selection** sorting algorithm was described in 1965 by Donald Knuth.  Notice that as soon as the first record is written to an output tape, the memory it used becomes available for another record.  Assume that we are sorting in ascending order, if the next record is not smaller than the record we have just output, then it can be included in the run.
+   For example, suppose that we have a set of input { 81, 94, 11, 96, 12, 99, 35 }, and our memory can sort 3 records only.  By the simplest method we will obtain three runs: { 11, 81, 94 }, { 12, 96, 99 } and { 35 }.  According to the replacement selection algorithm, we would read and sort the first 3 records { 81, 94, 11 } and output 11 as the smallest one.  Then one space is available so 96 is read in and will join the first run since it is larger than 11. Now we have { 81, 94, 96 }.  After 81 is out, 12 comes in but it must belong to the next run since it is smaller than 81.  Hence we have { 94, 96, 12 } where 12 will stay since it belongs to the next run.  When 94 is out and 99 is in, since 99 is larger than 94, it must belong to the **first run**.  Eventually we will obtain two runs: the first one contains { 11, 81, 94, 96, 99 } and the second one contains { 12, 35 }.
+       </pre>
+   </details>
+
+<h3 id="tapespolyphase-merge-sorting">Tapes:Polyphase Merge Sorting多相归并<a class="headerlink" href="#tapespolyphase-merge-sorting" title="Permanent link">⚓︎</a></h3>
+<p><span class="arithmatex">\(k+1\)</span> 个磁盘</p>
+<ul>
+<li>
+<p>合并规则有所变化：不会把现有runs的磁盘一定要搬空了</p>
+</li>
+<li>
+<p>二路归并时</p>
+</li>
+</ul>
+<blockquote>
+<p>If the number of runs is a fibonacci number <span class="arithmatex">\(F_N\)</span> , then the best way to distribute them is to split them into <span class="arithmatex">\(F_{N-1}\)</span> and <span class="arithmatex">\(F_{N-2}\)</span></p>
+</blockquote>
+<p>例：<span class="arithmatex">\((a,b,c)\)</span> 表示 <span class="arithmatex">\(T_1T_2T_3\)</span> 中的 runs 数量
+  $$
+  (21,13,0)\rightarrow(8,0,13)\rightarrow(0,8,5)\rightarrow\
+  (5,3,0)\rightarrow(2,0,3)\rightarrow(0,2,1)\rightarrow\(1,1,0)\rightarrow
+  (0,0,1)
+  $$</p>
+<ul>
+<li>
+<p><span class="arithmatex">\(k\)</span> 路归并时</p>
+</li>
+<li>
+<p>定义 <span class="arithmatex">\(k\)</span> 阶斐波那契数： <span class="arithmatex">\(F_N^{(k)} = \sum_{i=1}^k F_{N-i}^{(k)}\)</span></p>
+</li>
+<li>按照 <span class="arithmatex">\(k\)</span> 阶斐波那契数拆分更优</li>
+<li>
+<p>实现方式（参考修佬的PPT）：</p>
+<ul>
+<li>每次 <span class="arithmatex">\(k\)</span> 路归一路，取 <span class="arithmatex">\(k\)</span> 路中的 min ，然后 <span class="arithmatex">\(k\)</span> 路各自减去 min</li>
+<li>显而易见这样能始终保持一路为空</li>
+</ul>
+</li>
+<li>
+<p>Q：如果数量不恰好为斐波那契数？</p>
+</li>
+</ul>
+<p>A：在后面补上空的 runs 即可</p>
+<h3 id="parallel-operation">Parallel Operation<a class="headerlink" href="#parallel-operation" title="Permanent link">⚓︎</a></h3>
+<p>对于 <span class="arithmatex">\(k\)</span> 路归并需要 <span class="arithmatex">\(2k\)</span> 个读缓存和 2 个写缓存</p>
+<p>（GPT对于这个2的系数的解释，以读为例：一个缓冲区正在被读取时，另一个缓冲区可以并行加载下一块数据）</p>
+<ul>
+<li>如果 <span class="arithmatex">\(k\)</span> 增长，IO时间会增加但是 passes 会减少，buffer空间减小</li>
+<li>为达到最高效率，需要依据硬件的参数找到 trade-off 的较优解</li>
+</ul>
+<h3 id="merge-time">Merge Time<a class="headerlink" href="#merge-time" title="Permanent link">⚓︎</a></h3>
+<ul>
+<li>利用哈夫曼编码数</li>
+</ul>
+<p>例如：对四个2,4,5,15的runs作合并，如图所示的合并效率最高， <span class="arithmatex">\(T=O(the\ weighted\ external\  path\ length)\)</span></p>
+<p><img alt="image-20241229162209552" src="/img/ads/ads-ext-huffman.jpg" /></p>
+<h1 id="left-undone">Left Undone<a id="SOS"></a><a class="headerlink" href="#left-undone" title="Permanent link">⚓︎</a></h1>
+<p><img alt="image-20241231184319762" src="/img/ads/SOS-1.jpg" /></p>
+<p>cuo?</p>
+<p><img alt="image-20250102150425613" src="/img/ads/SOS-2.jpg" /></p>
+<p><img alt="image-20250102150745147" src="C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20250102150745147.png" /></p>
+<p><img alt="image-20250102154801138" src="/img/ads/SOS-3.jpg" /></p>
+<p>利用期望，单个盒子一个没中的概率为 <span class="arithmatex">\((1-\frac{1}{m})^m\rightarrow \frac{1}{e}\)</span></p>
+<p><img alt="image-20250102163541647" src="/img/ads/SOS-4.jpg" /></p>
+<p><img alt="image-20250102234714756" src="C:\Users\JA2012\AppData\Roaming\Typora\typora-user-images\image-20250102234714756.png" /></p>
+<p>这。。。。。猜测可能是因为不一定是常数</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  回到页面顶部
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy 2025 静安
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/JA101617" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.sections", "navigation.indexes", "navigation.top", "search.suggest", "search.highlight", "search.share", "header.autohide"], "search": "../../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "\u5df2\u590d\u5236", "clipboard.copy": "\u590d\u5236", "search.result.more.one": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.more.other": "\u5728\u8be5\u9875\u4e0a\u8fd8\u6709 # \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.none": "\u6ca1\u6709\u627e\u5230\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.one": "\u627e\u5230 1 \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.other": "# \u4e2a\u7b26\u5408\u6761\u4ef6\u7684\u7ed3\u679c", "search.result.placeholder": "\u952e\u5165\u4ee5\u5f00\u59cb\u641c\u7d22", "search.result.term.missing": "\u7f3a\u5c11", "select.version": "\u9009\u62e9\u5f53\u524d\u7248\u672c"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      
+        <script src="../../../javascripts/mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
