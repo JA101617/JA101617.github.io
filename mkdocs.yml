@@ -26,6 +26,7 @@ nav:
 
 theme:  #主题
   name: material  #名称
+  custom_dir: overrides
   language: zh    #语言，可设置多套切换
 #  direction: ltr  #默认ltr从左到右，rtl则从右到左
   logo: assets/avatar.jpg  #logo图片
