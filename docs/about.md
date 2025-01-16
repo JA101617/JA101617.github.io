@@ -16,5 +16,5 @@
 ## 友链
 
 - [Lane](http://lane-home.top) 佬！
-- [靈](https://herobrine101.top/) 佬中佬！
+- [靈](https://herobrine101.top/) 佬中佬！她含糖量极高的 [cp博客](https://starforyou.top/)
 - [ZJU CS ASIO](https://isshikihugh.github.io/zju-cs-asio/) 好多眼熟的大佬
