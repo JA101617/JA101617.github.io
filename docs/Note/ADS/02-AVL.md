@@ -247,7 +247,7 @@ $$
 
 其他的操作都和正常的二叉树一致，不再赘述（应该也不会考），都是 $O(\log{n})$ 的
 
-### 作业题
+## 作业 {#作业}
 
 ??? note "T1:计算最少节点"
     If the depth of an AVL tree is 6 (the depth of an empty tree is defined to be -1), then the minimum possible number of nodes in this tree is ___

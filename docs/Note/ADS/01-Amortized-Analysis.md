@@ -89,7 +89,7 @@ $$
 
 之所以一开始就讲均摊分析，是因为在后面数据结构的复杂度分析中会频繁用到，所以并不和其他算法分析放一起。
 
-### 作业 {#作业}
+## 作业 {#作业}
 
 ??? note "T1:概念"
     When doing amortized analysis, which one of the following statements is FALSE?
