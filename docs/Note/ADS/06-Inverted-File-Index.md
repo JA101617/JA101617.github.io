@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # Inverted File Index倒排索引 {#倒排索引}
 
 !!! definition "定义"

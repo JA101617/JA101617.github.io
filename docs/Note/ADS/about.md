@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # 导航
 
 - [补天](#SOS)

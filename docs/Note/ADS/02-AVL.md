@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # AVL Trees {#AVL}
 
 AVL属于平衡树的一种，通过要求整棵树的平衡性并对其进行维护以保证树高为 $O(\log{n})$ 的。

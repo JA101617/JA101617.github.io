@@ -1,3 +1,6 @@
+---
+comments: true
+---
 # Splay {#Splay}
 
 ## 概述 {#概述}
