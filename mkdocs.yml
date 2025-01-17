@@ -40,7 +40,7 @@ theme:  #主题
     - navigation.tabs  #导航选项卡
     - navigation.tabs.sticky  #粘性导航选项卡
     - navigation.sections  #次级目录在侧边栏中呈现为组，与tabs同存则有2级导航
-#    - navigation.expand  #左侧边栏全展开，取消则折叠其他只展开当选
+    #- navigation.expand  #左侧边栏全展开，取消则折叠其他只展开当选
     - navigation.indexes  #次级索引页，直接将文档附加到章节，提供概览页面，在相应文件夹中创建index.md添加到导航nav开头。不兼容toc.integrate。
 #    - toc.integrate  #导航集成，文章小标题目录是左侧边栏的一部分
     - navigation.top  #返回顶端
