@@ -130,7 +130,7 @@ splay相较于AVL并没有那么严格的平衡维护，而是通过每个操作
 
 ## Splay操作的复杂度分析 {#Splay操作的复杂度分析}
 
-写完才发现oiwiki上有很详细的分析...挂个[链接](https://oi-wiki.org/ds/splay/#时间复杂度)
+写完才发现oiwiki上有很详细的分析...挂个[链接](https://oi-wiki.org/ds/splay/#时间复杂度){:target="_blank"}
 
 - 势能函数$\Phi(p) =\sum_{i\in subtree(p)} \log{S(i)}$，其中 $S(i)$ 指 $i$ 的子树大小。记 $\log{S(i)} = rank(i)$ ，则 $\Phi(p)=\sum_{i\in subtree(p)} rank(i)$
 

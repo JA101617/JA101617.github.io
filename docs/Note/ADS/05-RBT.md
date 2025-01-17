@@ -77,7 +77,7 @@ comments: true
 
 ### Delete {#Delete}
 
-赞美[修佬](https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec02/#删除)
+赞美[修佬](https://note.isshikih.top/cour_note/D2CX_AdvancedDataStructure/Lec02/#删除){:target="_blank"}
 
 - 考虑分成两部分进行分类讨论：删除和删除后平衡维护
 

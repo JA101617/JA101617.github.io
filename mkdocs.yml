@@ -7,8 +7,8 @@ nav:
   - "关于": about.md
   - "课堂笔记": 
     - Note/index.md
-    - "ADS": 
-       - Note/ADS/about.md
+    - "ADS":
+       - Note/ADS/index.md
        - "均摊分析": Note/ADS/01-Amortized-Analysis.md
        - "AVL": Note/ADS/02-AVL.md
        - "Splay": Note/ADS/03-Splay.md
@@ -17,9 +17,10 @@ nav:
        - "倒排索引": Note/ADS/06-Inverted-File-Index.md
        - "左偏树": Note/ADS/07-Leftist.md
        - "斜堆": Note/ADS/08-SkewHeap.md
-  - "杂项": 
-    - Other/index.md
-    - "大二上吐槽": Other/Sem3Exp.md
+       - "二项队列": Note/ADS/09-BinomialHeap.md
+  #- "杂项": 
+  #  - Other/index.md
+  #  - "大二上吐槽": Other/Sem3Exp.md
 
 
 

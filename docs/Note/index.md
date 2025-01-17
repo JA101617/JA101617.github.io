@@ -2,8 +2,7 @@
 
 ??? note "相关资源"
     - [课程资源索引](https://www.yuque.com/xianyuxuan/saltfish_shop/course_res_index#cIhfl)
-  
-    - [修佬的笔记本](https://note.isshikih.top)
+
 
 ## 大二上
 
