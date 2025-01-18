@@ -18,6 +18,13 @@ nav:
        - "左偏树": Note/ADS/07-Leftist.md
        - "斜堆": Note/ADS/08-SkewHeap.md
        - "二项队列": Note/ADS/09-BinomialHeap.md
+       - "数据结构阶段总结": Note/ADS/10-ds-summarize.md
+       - "回溯算法": Note/ADS/11-Backtracking.md
+       - "分治算法": Note/ADS/12-Divide-and-Conquer.md
+       - "动态规划": Note/ADS/13-DP.md
+       - "贪心": Note/ADS/14-Greedy.md
+       - "NP完全性": Note/ADS/15-NPC.md
+       - "近似算法": Note/ADS/16-Approximation.md
   #- "杂项": 
   #  - Other/index.md
   #  - "大二上吐槽": Other/Sem3Exp.md
