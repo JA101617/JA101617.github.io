@@ -245,8 +245,8 @@ for Pi , 1 <= i <= n  pardo
 
 #### 随机采样Random Sampling
 
-- 高可能性（但不是一定）失败概率 $O(1/n^c)$，c是一个正常数（不知道是几）
-- T(n) = O(1) W(n)=O(n)
+- 高可能性（但不是一定）失败概率 $O(1/n^c)$，c是一个正常数
+- T(n) = O(1) , W(n)=O(n)
 
 步骤：
 
@@ -259,7 +259,7 @@ for Pi , 1 <= i <= n  pardo
 - 剩下 $n^{1/2}$ 个元素，直接取最大值
   - $T=O(1),W=O(n^{2×1/2})=O(n)$
 
-## 习题
+## 作业 {#作业}
 
 ??? note "T1"
     判断：In order to solve  the maximum finding problem by a parallel  algorithm  with *T*(*n*)=*O*(1) , we need work load $W(n)=Ω(n^2)$ in return.
