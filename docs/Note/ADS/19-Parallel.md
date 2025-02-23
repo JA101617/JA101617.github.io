@@ -1,4 +1,4 @@
-# Parallel Algorithms<a id="parallel"></a>
+# Parallel Algorithms {#并行计算}
 
 ## 省流
 

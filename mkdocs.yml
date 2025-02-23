@@ -2,41 +2,51 @@ site_name: JA's Blog
 site_author: 静安
 copyright: 'Copyright &copy 2025 静安'
 # 文章结构
+
 nav:
   - "封面": index.md
   - "关于": about.md
   - "课堂笔记": 
     - Note/index.md
-    - "ADS":
-       - Note/ADS/index.md
-       - "均摊分析": Note/ADS/01-Amortized-Analysis.md
-       - "AVL": Note/ADS/02-AVL.md
-       - "Splay": Note/ADS/03-Splay.md
-       - "B+树": Note/ADS/04-B+.md
-       - "红黑树": Note/ADS/05-RBT.md
-       - "倒排索引": Note/ADS/06-Inverted-File-Index.md
-       - "左偏树": Note/ADS/07-Leftist.md
-       - "斜堆": Note/ADS/08-SkewHeap.md
-       - "二项队列": Note/ADS/09-BinomialHeap.md
-       - "数据结构阶段总结": Note/ADS/10-ds-summarize.md
-       - "回溯算法": Note/ADS/11-Backtracking.md
-       - "分治算法": Note/ADS/12-Divide-and-Conquer.md
-       - "动态规划": Note/ADS/13-DP.md
-       - "贪心": Note/ADS/14-Greedy.md
-       - "NP完全性": Note/ADS/15-NPC.md
-       - "近似算法": Note/ADS/16-Approximation.md
-       - "局部搜索": Note/ADS/17-Local-Search.md
-       - "随机化算法": Note/ADS/18-Random.md
-       - "并行计算": Note/ADS/19-Parallel.md
-       - "外部排序": Note/ADS/20-External.md
-    - "Computer Organization":
-       - Note/CO/index.md
-       - "Chapter 1": Note/CO/Ch1.md
-       - "Chapter 2": Note/CO/Ch2.md
-       - "Chapter 3": Note/CO/Ch3.md
-       - "Chapter 4": Note/CO/Ch4.md
-       - "Chapter 5": Note/CO/Ch5.md
-       - "Appendix": Note/CO/Apendix.md
+    - "高级数据结构与算法分析 | ADS":
+      - Note/ADS/index.md
+      - "均摊分析": Note/ADS/01-Amortized-Analysis.md
+      - "AVL": Note/ADS/02-AVL.md
+      - "Splay": Note/ADS/03-Splay.md
+      - "B+树": Note/ADS/04-B+.md
+      - "红黑树": Note/ADS/05-RBT.md
+      - "倒排索引": Note/ADS/06-Inverted-File-Index.md
+      - "左偏树": Note/ADS/07-Leftist.md
+      - "斜堆": Note/ADS/08-SkewHeap.md
+      - "二项队列": Note/ADS/09-BinomialHeap.md
+      - "数据结构阶段总结": Note/ADS/10-ds-summarize.md
+      - "回溯算法": Note/ADS/11-Backtracking.md
+      - "分治算法": Note/ADS/12-Divide-and-Conquer.md
+      - "动态规划": Note/ADS/13-DP.md
+      - "贪心": Note/ADS/14-Greedy.md
+      - "NP完全性": Note/ADS/15-NPC.md
+      - "近似算法": Note/ADS/16-Approximation.md
+      - "局部搜索": Note/ADS/17-Local-Search.md
+      - "随机化算法": Note/ADS/18-Random.md
+      - "并行计算": Note/ADS/19-Parallel.md
+      - "外部排序": Note/ADS/20-External.md
+    - "计算机组成 | CO":
+      - Note/CO/index.md
+      - "Chapter 1": Note/CO/Ch1.md
+      - "Chapter 2": Note/CO/Ch2.md
+      - "Chapter 3": Note/CO/Ch3.md
+      - "Chapter 4": Note/CO/Ch4.md
+      - "Chapter 5": Note/CO/Ch5.md
+      - "Appendix": Note/CO/Appendix.md
+    - "计算机体系结构 | CA":
+      - Note/CA/index.md
+      - "Lecture 01: intro": Note/CA/Lec1.md
+    - "面向对象程序设计 | OOP":
+      - Note/OOP/index.md
+    - "数据库系统 | DB":
+      - Note/DB/index.md
+      - "Chapter 01": Note/DB/Ch1.md
+
 
 
 
@@ -60,8 +70,8 @@ theme:  #主题
     # - navigation.instant  #即时加载，修佬说会导致渲染不当？
     - navigation.tracking  #锚点跟踪
     - navigation.tabs  #导航选项卡
-    - navigation.tabs.sticky  #粘性导航选项卡
-    - navigation.sections  #次级目录在侧边栏中呈现为组，与tabs同存则有2级导航
+    # - navigation.tabs.sticky  #粘性导航选项卡
+    # - navigation.sections  #次级目录在侧边栏中呈现为组，与tabs同存则有2级导航
     #- navigation.expand  #左侧边栏全展开，取消则折叠其他只展开当选
     - navigation.indexes  #次级索引页，直接将文档附加到章节，提供概览页面，在相应文件夹中创建index.md添加到导航nav开头。不兼容toc.integrate。
 #    - toc.integrate  #导航集成，文章小标题目录是左侧边栏的一部分

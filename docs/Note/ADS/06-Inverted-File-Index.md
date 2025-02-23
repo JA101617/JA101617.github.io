@@ -1,7 +1,7 @@
 ---
 comments: true
 ---
-# Inverted File Index倒排索引 {#倒排索引}
+# Inverted File Index {#倒排索引}
 
 !!! definition "定义"
     Index: 对于一个词/词组，查询其在诸多文档中的出现情况

@@ -1,7 +1,5 @@
 # Appendix<a id="Appendix"></a>
 
-- - 
-
 ## Buses and Other Connections between Processors Memory, and I/O devices
 
 - 总线(Bus)：分北桥和南桥,"shared communication link"
